@@ -14,6 +14,67 @@
 	</Application.Styles>
 
 	<Application.Resources>
+		<ControlTheme x:Key="SquareButtonN" TargetType="Button">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Foreground" Value="White" />
+			<Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Width" Value="40" />
+			<Setter Property="Height" Value="40" />
+			<Setter Property="RenderTransform" Value="none" />
+			<Setter Property="Transitions">
+				<Transitions>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:.075" />
+				</Transitions>
+			</Setter>
+
+			<Setter Property="Template">
+				<ControlTemplate>
+					<ContentPresenter x:Name="PART_ContentPresenter"
+									  Background="{TemplateBinding Background}"
+									  Content="{TemplateBinding Content}"
+									  Padding="{TemplateBinding Padding}"
+									  RecognizesAccessKey="True"
+									  HorizontalContentAlignment="Center"
+									  VerticalContentAlignment="Center" />
+				</ControlTemplate>
+			</Setter>
+
+			<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
+			</Style>
+
+			<Style Selector="^:pressed">
+				<Setter Property="RenderTransform" Value="scale(0.98)" />
+			</Style>
+
+			<Style Selector="^:pressed  /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value="#e8bcf0" />
+			</Style>
+
+			<Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+				<Setter Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
+			</Style>
+
+			<Style Selector="^.accent">
+				<Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+					<Setter Property="Background" Value="{DynamicResource AccentButtonBackground}" />
+				</Style>
+
+				<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+					<Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}" />
+				</Style>
+
+				<Style Selector="^:pressed  /template/ ContentPresenter#PART_ContentPresenter">
+					<Setter Property="Background" Value="#e8bcf0" />
+				</Style>
+
+				<Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+					<Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundDisabled}" />
+				</Style>
+			</Style>
+		</ControlTheme>
 		<ControlTheme x:Key="SquareButton" TargetType="RadioButton">
 			<Setter Property="Background" Value="Transparent" />
 			<Setter Property="Foreground" Value="White" />
@@ -50,7 +111,7 @@
 			</Style>
 
 			<Style Selector="^:checked  /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Background" Value="#bbbbbb" />
+				<Setter Property="Background" Value="#e8bcf0" />
 			</Style>
 
 			<Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
@@ -67,7 +128,7 @@
 				</Style>
 
 				<Style Selector="^:checked  /template/ ContentPresenter#PART_ContentPresenter">
-					<Setter Property="Background" Value="#bbbbbb" />
+					<Setter Property="Background" Value="#e8bcf0" />
 				</Style>
 
 				<Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">

@@ -26,3 +26,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/MenuBarView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/SelectionButtonView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ToolButtonView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

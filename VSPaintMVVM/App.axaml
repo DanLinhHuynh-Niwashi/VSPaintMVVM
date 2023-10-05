@@ -3,13 +3,116 @@
              x:Class="VSPaintMVVM.App"
              xmlns:local="using:VSPaintMVVM"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
+	<Application.DataTemplates>
+		<local:ViewLocator/>
+	</Application.DataTemplates>
+
+	<Application.Styles>
+		<FluentTheme />
+	</Application.Styles>
+
+	<Application.Resources>
+		<ControlTheme x:Key="TitleBarButton" TargetType="MenuItem">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Foreground" Value="White" />
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Name="root"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="{TemplateBinding CornerRadius}">
+						<Panel>
+							<ContentPresenter Name="PART_HeaderPresenter"
+											  Margin="{TemplateBinding Padding}"
+											  VerticalContentAlignment="Center"
+											  HorizontalContentAlignment="Center"
+											  Content="{TemplateBinding Header}"
+											  ContentTemplate="{TemplateBinding HeaderTemplate}">
+							</ContentPresenter>
+							<!--Child menu-->
+							<Popup Name="PART_Popup"
+									WindowManagerAddShadowHint="False"
+									Placement="BottomEdgeAlignedLeft"
+									HorizontalOffset="0"
+									IsLightDismissEnabled="False"
+									IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
+								<Border Background="#301934"
+										MaxWidth="200"
+										MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+										HorizontalAlignment="Left"
+										CornerRadius="0">
+									<ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+										<ItemsPresenter Name="PART_ItemsPresenter"
+														ItemsPanel="{TemplateBinding ItemsPanel}"
+														Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+														Grid.IsSharedSizeScope="True" />
+									</ScrollViewer>
+								</Border>
+							</Popup>
+						</Panel>
+					</Border>
+				</ControlTemplate>
+			</Setter>
+			<Style Selector="^:pointerover">
+				<Setter Property="Background" Value="Gray"/>
+				<Setter Property="Opacity" Value="70"/>
+				<Setter Property="Foreground" Value="White"/>
+			</Style>
+
+		</ControlTheme>
+		<ControlTheme x:Key="TitleBarButtonChild" TargetType="MenuItem">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Foreground" Value="White" />
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Name="root"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="{TemplateBinding CornerRadius}">
+						<Panel>
+							<ContentPresenter Name="PART_HeaderPresenter"
+											  Margin="10 2 2 2"
+											  VerticalContentAlignment="Center"
+											  HorizontalContentAlignment="Left"
+											  Content="{TemplateBinding Header}"
+											  ContentTemplate="{TemplateBinding HeaderTemplate}">
+							</ContentPresenter>
+							<!--Child menu-->
+							<Popup Name="PART_Popup"
+									WindowManagerAddShadowHint="False"
+									Placement="RightEdgeAlignedTop"
+									HorizontalOffset="0"
+									IsLightDismissEnabled="False"
+									IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}">
+								<Border Background="#301934"
+										MaxWidth="200"
+										MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+										HorizontalAlignment="Left"
+										CornerRadius="0">
+									<ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+										<ItemsPresenter Name="PART_ItemsPresenter"
+														ItemsPanel="{TemplateBinding ItemsPanel}"
+														Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+														Grid.IsSharedSizeScope="True" />
+									</ScrollViewer>
+								</Border>
+							</Popup>
+						</Panel>
+					</Border>
+				</ControlTemplate>
+			</Setter>
+			<Style Selector="^:pointerover">
+				<Setter Property="Background" Value="Gray"/>
+				<Setter Property="Opacity" Value="70"/>
+				<Setter Property="Foreground" Value="White"/>
+			</Style>
+
+		</ControlTheme>
+	</Application.Resources>
 </Application>

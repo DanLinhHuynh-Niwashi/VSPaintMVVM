@@ -27,12 +27,7 @@
 			<!--Left setting panel-->
 			<Grid ColumnDefinitions="Auto,*" Grid.Column="0" MinWidth="100" Background="Red">
 				<!--Draw Buttons-->
-				<StackPanel Grid.Column="0" Background="Azure" Width="30" HorizontalAlignment="Center" Orientation="Vertical">
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">P</Button>
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">E</Button>
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">S</Button>
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">F</Button>
-				</StackPanel>
+				<local:ToolButtonView/>
 				<!--Draw setting-->
 				<Grid Grid.Column="1" Background="Black">
 					<Grid.RowDefinitions>
@@ -50,30 +45,8 @@
 			<GridSplitter Grid.Column="1" Background="Transparent" ResizeDirection="Columns"/>
 			<!--Drawing Canvas and Selection Tools-->
 			<Grid Grid.Column="2" RowDefinitions="Auto,*" Background="Orange">
-				<!--Selection Tools-->
-				<WrapPanel Grid.Row="0" Background="Aquamarine" Height="30" Orientation="Horizontal">
-
-					<!--Select-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">1</Button>
-					<!--Deselect-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">2</Button>
-					<!--Select All-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">3</Button>
-					<!--Deselect All-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">4</Button>
-					<!--Reverse Selection-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">5</Button>
-
-					<Separator Width="0.2" Height="20"></Separator>
-
-					<!--Free transform-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">6</Button>
-					<!--Deform-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">7</Button>
-					<!--Scale/ Rotate-->
-					<Button Height="30" Width="30" Background="Transparent" HorizontalContentAlignment="Center">8</Button>
-
-				</WrapPanel>
+				<!--SelectionButtonView-->
+				<local:SelectionButtonView/>
 				<!--Drawing Space-->
 				<Panel Background="Gray" Grid.Row="1">
 

@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="VSPaintMVVM.Views.ToolButtonView">
+	<StackPanel Grid.Column="0" Background="WhiteSmoke" Width="40" HorizontalAlignment="Center" Orientation="Vertical">
+		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+			<Image Source="/Assets/Icons/PenIcon.png" Margin="3"></Image>
+		</RadioButton>
+		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+			<Image Source="/Assets/Icons/EraserIcon.png" Margin="3"></Image>
+		</RadioButton>
+		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+			<Image Source="/Assets/Icons/FillIcon.png" Margin="3"></Image>
+		</RadioButton>
+		<Separator Margin="0" Width="30" Height="0.2"></Separator>
+		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+			<Image Source="/Assets/Icons/SelIcon.png" Margin="3"></Image>
+		</RadioButton>
+	</StackPanel>
+</UserControl>

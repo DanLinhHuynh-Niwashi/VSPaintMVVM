@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="VSPaintMVVM.Views.SelectionButtonView">
+	<!--Selection Tools-->
+	<WrapPanel Grid.Row="0" Background="WhiteSmoke" Height="40" Orientation="Horizontal">
+
+		<!--RecSel-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+			<Image Source="/Assets/Icons/RecSel.png" Margin="2"></Image>
+		</RadioButton>
+		<!--EllipseSel-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+			<Image Source="/Assets/Icons/EllipseSel.png" Margin="2"></Image>
+		</RadioButton>
+		<!--LassoSel-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+			<Image Source="/Assets/Icons/LassoSel.png" Margin="1"></Image>
+		</RadioButton>
+		
+		<Separator Width="0.2" Height="20"></Separator>
+		
+		<!--Select-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+				</RadioButton>
+		<!--Deselect-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+		</RadioButton>
+		<!--Select All-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+		</RadioButton>
+		<!--Deselect All-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+		</RadioButton>
+		<!--Reverse Selection-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+		</RadioButton>
+
+		<Separator Width="0.2" Height="20"></Separator>
+
+		<!--Free transform-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+		</RadioButton>
+		<!--Deform-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+		</RadioButton>
+		<!--Scale/ Rotate-->
+		<RadioButton GroupName="Sel" Theme="{StaticResource SquareButton}">
+		</RadioButton>
+
+	</WrapPanel>
+</UserControl>

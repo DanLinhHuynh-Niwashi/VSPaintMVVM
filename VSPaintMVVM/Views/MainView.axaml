@@ -8,7 +8,7 @@
              UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
              Focusable="True"
              mc:Ignorable="d"
-             d:DesignWidth="1320" d:DesignHeight="690"
+             
              x:Class="VSPaintMVVM.Views.MainView">
 
 	<Grid RowDefinitions="Auto,*,Auto">

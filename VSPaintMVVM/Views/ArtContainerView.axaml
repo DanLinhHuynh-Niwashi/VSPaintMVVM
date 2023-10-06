@@ -1,0 +1,31 @@
+<UserControl
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:VSPaintMVVM.Views"
+             xmlns:app="clr-namespace:VSPaintMVVM"
+			 xmlns:vm="using:VSPaintMVVM.ViewModels"
+			 x:CompileBindings="True"
+             Focusable="True"
+             mc:Ignorable="d"
+			 x:DataType="vm:ArtContainerViewModel"
+             x:Class="VSPaintMVVM.Views.ArtContainerView">
+
+	<Panel Name="container" Background="Gray">
+		<ScrollViewer HorizontalScrollBarVisibility="Visible" 
+					  VerticalScrollBarVisibility="Visible"
+					  VerticalAlignment="Center"
+					  HorizontalAlignment="Center"
+					  Offset="500 500">
+			<Panel Name="canvasContainer" Background="Gray" MinWidth="2000" MinHeight="2000">
+				<local:SkiaCanvas Name="mainCanvas">
+
+				</local:SkiaCanvas>
+			</Panel>
+			
+		</ScrollViewer>
+	</Panel>
+
+
+</UserControl>

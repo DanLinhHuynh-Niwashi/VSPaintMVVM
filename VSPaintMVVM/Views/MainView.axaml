@@ -46,17 +46,15 @@
 			<!--Drawing Canvas and Selection Tools-->
 			<Grid Grid.Column="2" RowDefinitions="Auto,*" Background="Orange">
 				<!--SelectionButtonView-->
-				<local:SelectionButtonView/>
+				<local:SelectionButtonView Grid.Row="0"/>
 				<!--Drawing Space-->
-				<Panel Background="Gray" Grid.Row="1">
-
-				</Panel>
+				<local:ArtContainerView Grid.Row="1"/>
 			</Grid>
 			<GridSplitter Grid.Column="3" Background="Transparent" ResizeDirection="Columns"/>
 			<Rectangle Grid.Column="4" MinWidth="200" Fill="Red"></Rectangle>
 		</Grid>
 
 		<!--Footer-->
-		<Border Grid.Row="2" Background="Gray" Height="20"></Border>
+		<Border Grid.Row="2" Background="Black" Height="20"></Border>
 	</Grid>
 </UserControl>

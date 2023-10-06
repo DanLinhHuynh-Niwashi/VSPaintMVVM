@@ -1,4 +1,6 @@
-﻿namespace VSPaintMVVM.ViewModels
+﻿using VSPaintMVVM.Views;
+
+namespace VSPaintMVVM.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {

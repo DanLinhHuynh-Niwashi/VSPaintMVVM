@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 
 namespace VSPaintMVVM.Views
@@ -7,6 +8,7 @@ namespace VSPaintMVVM.Views
         public MainWindow()
         {
             InitializeComponent();
+            this.AttachDevTools();
         }
     }
 }

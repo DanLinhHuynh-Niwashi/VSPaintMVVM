@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:VSPaintMVVM.Views"
+             mc:Ignorable="d"
+             x:Class="VSPaintMVVM.Views.ArtContainerModView">
+	
+		<Grid Background="WhiteSmoke">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="5*"></RowDefinition>
+				<RowDefinition Height="5*"></RowDefinition>
+			</Grid.RowDefinitions>
+			<Border Grid.Row="0" Background="Gray" Margin="4">
+				<Viewbox>
+					<local:SkiaCanvas Margin="40" />
+				</Viewbox>
+			</Border>
+			<Border Grid.Row="1" Margin="4">
+				<Viewbox>
+					<Grid RowDefinitions="Auto, 5*, 5*">
+						<WrapPanel Grid.Row="0" Background="WhiteSmoke" 
+								   HorizontalAlignment="Center"
+								   MaxHeight="35">
+							<!--Reset-->
+							<Button Name="ResetB"
+								Theme="{StaticResource SquareButtonN}">
+								<Image Source="/Assets/Icons/ResetB.png" Margin="1"></Image>
+							</Button>
+							<!--Flip Horizontal-->
+							<Button Name="FlipHB"
+								Theme="{StaticResource SquareButtonN}">
+								<Image Source="/Assets/Icons/FlipHIcon.png" Margin="1"></Image>
+							</Button>
+							<!--Flip Vertical-->
+							<Button Name="FlipVB"
+								Theme="{StaticResource SquareButtonN}">
+								<Image Source="/Assets/Icons/FlipVIcon.png" Margin="1"></Image>
+							</Button>
+						</WrapPanel>
+						<Grid Grid.Row="1" ColumnDefinitions="0.5*, 9*, 0.5*">
+							<Border Grid.Column="0" VerticalAlignment="Center">
+								<Label FontSize="10" Margin="10">Scale</Label>
+							</Border>
+							<Border Grid.Column="1" VerticalAlignment="Center">
+								<Slider Value="50"
+									Width="150"
+									TickPlacement="TopLeft" TickFrequency="5"
+									Theme="{StaticResource HoriSlider}"/>
+							</Border>
+							<Border Grid.Column="2" VerticalAlignment="Center">
+								<TextBox FontSize="10"
+									 Margin="10" MinHeight="5" MinWidth="10"
+									 Text="0.0"/>
+							</Border>
+						</Grid>
+
+						<Grid Grid.Row="2" ColumnDefinitions="0.5*, 9*, 0.5*">
+							<Border Grid.Column="0" VerticalAlignment="Center">
+								<Label FontSize="10" Margin="10">Rotate</Label>
+							</Border>
+							<Border Grid.Column="1" VerticalAlignment="Center">
+								<Slider Value="50"
+									Width="150"
+									TickPlacement="TopLeft" TickFrequency="5"
+									Theme="{StaticResource HoriSlider}"/>
+							</Border>
+							<Border Grid.Column="2" VerticalAlignment="Center">
+								<TextBox FontSize="10"
+									 Margin="10" MinHeight="5" MinWidth="10"
+									 Text="0.0"/>
+							</Border>
+						</Grid>
+						
+						
+					</Grid>
+
+				</Viewbox>
+			</Border>
+		</Grid>
+		
+</UserControl>

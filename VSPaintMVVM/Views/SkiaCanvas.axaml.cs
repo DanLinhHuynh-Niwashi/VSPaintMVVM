@@ -12,8 +12,7 @@ namespace VSPaintMVVM.Views
 {
     public partial class SkiaCanvas : UserControl
     {
-        public int Width = 400;
-        public int Height = 400;
+
         public SkiaCanvas()
         {
             InitializeComponent();

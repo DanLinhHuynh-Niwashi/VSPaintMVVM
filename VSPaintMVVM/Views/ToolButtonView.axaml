@@ -5,17 +5,25 @@
              mc:Ignorable="d"
              x:Class="VSPaintMVVM.Views.ToolButtonView">
 	<StackPanel Grid.Column="0" Background="WhiteSmoke" Width="40" HorizontalAlignment="Center" Orientation="Vertical">
-		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+		<RadioButton GroupName="Tool" 
+					 Name="PenB"
+					 Theme="{StaticResource SquareButton}">
 			<Image Source="/Assets/Icons/PenIcon.png" Margin="3"></Image>
 		</RadioButton>
-		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+		<RadioButton GroupName="Tool"
+					 Name="EraserB"
+					 Theme="{StaticResource SquareButton}">
 			<Image Source="/Assets/Icons/EraserIcon.png" Margin="3"></Image>
 		</RadioButton>
-		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+		<RadioButton GroupName="Tool"
+					 Name="BucketB"
+					 Theme="{StaticResource SquareButton}">
 			<Image Source="/Assets/Icons/FillIcon.png" Margin="3"></Image>
 		</RadioButton>
 		<Separator Margin="0" Width="30" Height="0.2"></Separator>
-		<RadioButton GroupName="Tool" Theme="{StaticResource SquareButton}">
+		<RadioButton GroupName="Tool"
+					 Name="SelB"
+					 Theme="{StaticResource SquareButton}">
 			<Image Source="/Assets/Icons/SelIcon.png" Margin="3"></Image>
 		</RadioButton>
 	</StackPanel>

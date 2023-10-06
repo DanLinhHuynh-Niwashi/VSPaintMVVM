@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[11.0.2, )"
             },
+            "Avalonia.Controls.PanAndZoom": {
+              "target": "Package",
+              "version": "[11.0.0, )"
+            },
             "Avalonia.Desktop": {
               "target": "Package",
               "version": "[11.0.2, )"
@@ -71,6 +75,10 @@
             "CommunityToolkit.Mvvm": {
               "target": "Package",
               "version": "[8.2.1, )"
+            },
+            "SkiaSharp.Views": {
+              "target": "Package",
+              "version": "[2.88.6, )"
             }
           },
           "imports": [

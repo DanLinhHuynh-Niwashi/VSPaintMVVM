@@ -130,3 +130,11 @@ D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\obj\Debug\net6.0\VSPaintMVVM.pdb
 D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\obj\Debug\net6.0\VSPaintMVVM.csproj.CopyComplete
 D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\obj\Debug\net6.0\VSPaintMVVM.genruntimeconfig.cache
 D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\obj\Debug\net6.0\ref\VSPaintMVVM.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\Avalonia.Controls.PanAndZoom.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\OpenTK.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\OpenTK.GLControl.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\SkiaSharp.Views.Desktop.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\SkiaSharp.Views.Desktop.Common.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\SkiaSharp.Views.Gtk.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\SkiaSharp.Views.WindowsForms.dll
+D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\bin\Debug\net6.0\SkiaSharp.Views.WPF.dll

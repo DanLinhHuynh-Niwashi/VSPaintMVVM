@@ -136,6 +136,22 @@
           }
         }
       },
+      "Avalonia.Controls.PanAndZoom/11.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Avalonia.Controls.PanAndZoom.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Avalonia.Controls.PanAndZoom.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Avalonia.Desktop/11.0.2": {
         "type": "package",
         "dependencies": {
@@ -771,11 +787,40 @@
           }
         }
       },
-      "SkiaSharp/2.88.3": {
+      "OpenTK/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net20/OpenTK.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net20/OpenTK.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.GLControl/3.1.0": {
         "type": "package",
         "dependencies": {
-          "SkiaSharp.NativeAssets.Win32": "2.88.3",
-          "SkiaSharp.NativeAssets.macOS": "2.88.3"
+          "OpenTK": "3.1.0"
+        },
+        "compile": {
+          "lib/net20/OpenTK.GLControl.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net20/OpenTK.GLControl.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SkiaSharp/2.88.6": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "2.88.6",
+          "SkiaSharp.NativeAssets.macOS": "2.88.6"
         },
         "compile": {
           "lib/net6.0/SkiaSharp.dll": {
@@ -818,13 +863,13 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.macOS/2.88.3": {
+      "SkiaSharp.NativeAssets.macOS/2.88.6": {
         "type": "package",
         "compile": {
-          "lib/net5.0/_._": {}
+          "lib/net6.0/_._": {}
         },
         "runtime": {
-          "lib/net5.0/_._": {}
+          "lib/net6.0/_._": {}
         },
         "runtimeTargets": {
           "runtimes/osx/native/libSkiaSharp.dylib": {
@@ -846,13 +891,13 @@
           "buildTransitive/netstandard1.0/SkiaSharp.NativeAssets.WebAssembly.targets": {}
         }
       },
-      "SkiaSharp.NativeAssets.Win32/2.88.3": {
+      "SkiaSharp.NativeAssets.Win32/2.88.6": {
         "type": "package",
         "compile": {
-          "lib/net5.0/_._": {}
+          "lib/net6.0/_._": {}
         },
         "runtime": {
-          "lib/net5.0/_._": {}
+          "lib/net6.0/_._": {}
         },
         "runtimeTargets": {
           "runtimes/win-arm64/native/libSkiaSharp.dll": {
@@ -866,6 +911,96 @@
           "runtimes/win-x86/native/libSkiaSharp.dll": {
             "assetType": "native",
             "rid": "win-x86"
+          }
+        }
+      },
+      "SkiaSharp.Views/2.88.6": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp": "2.88.6",
+          "SkiaSharp.Views.Desktop.Common": "2.88.6",
+          "SkiaSharp.Views.Gtk2": "2.88.6",
+          "SkiaSharp.Views.WPF": "2.88.6",
+          "SkiaSharp.Views.WindowsForms": "2.88.6"
+        },
+        "compile": {
+          "lib/net462/SkiaSharp.Views.Desktop.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net462/SkiaSharp.Views.Desktop.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SkiaSharp.Views.Desktop.Common/2.88.6": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp": "2.88.6",
+          "System.Drawing.Common": "4.7.3"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/SkiaSharp.Views.Desktop.Common.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/SkiaSharp.Views.Desktop.Common.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SkiaSharp.Views.Gtk2/2.88.6": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp": "2.88.6",
+          "SkiaSharp.Views.Desktop.Common": "2.88.6"
+        },
+        "compile": {
+          "lib/net462/SkiaSharp.Views.Gtk.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net462/SkiaSharp.Views.Gtk.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SkiaSharp.Views.WindowsForms/2.88.6": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK": "3.1.0",
+          "OpenTK.GLControl": "3.1.0",
+          "SkiaSharp": "2.88.6",
+          "SkiaSharp.Views.Desktop.Common": "2.88.6"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/SkiaSharp.Views.WindowsForms.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/SkiaSharp.Views.WindowsForms.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SkiaSharp.Views.WPF/2.88.6": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp": "2.88.6",
+          "SkiaSharp.Views.Desktop.Common": "2.88.6"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/SkiaSharp.Views.WPF.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/SkiaSharp.Views.WPF.dll": {
+            "related": ".pdb;.xml"
           }
         }
       },
@@ -1642,6 +1777,23 @@
         "lib/net6.0/Avalonia.Controls.DataGrid.xml",
         "lib/netstandard2.0/Avalonia.Controls.DataGrid.dll",
         "lib/netstandard2.0/Avalonia.Controls.DataGrid.xml"
+      ]
+    },
+    "Avalonia.Controls.PanAndZoom/11.0.0": {
+      "sha512": "Jq6QYCIq22Zditla6mcdKyMBDN9Hp/C0Bpf5WJhCc9hjZOzyD0KWW2gr29UOMTwbeinoAdBiNGStmlYPI/y8Og==",
+      "type": "package",
+      "path": "avalonia.controls.panandzoom/11.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "avalonia.controls.panandzoom.11.0.0.nupkg.sha512",
+        "avalonia.controls.panandzoom.nuspec",
+        "lib/net6.0/Avalonia.Controls.PanAndZoom.dll",
+        "lib/net6.0/Avalonia.Controls.PanAndZoom.xml",
+        "lib/netstandard2.0/Avalonia.Controls.PanAndZoom.dll",
+        "lib/netstandard2.0/Avalonia.Controls.PanAndZoom.xml",
+        "lib/netstandard2.1/Avalonia.Controls.PanAndZoom.dll",
+        "lib/netstandard2.1/Avalonia.Controls.PanAndZoom.xml"
       ]
     },
     "Avalonia.Desktop/11.0.2": {
@@ -2432,10 +2584,39 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "SkiaSharp/2.88.3": {
-      "sha512": "GG8X3EdfwyBfwjl639UIiOVOKEdeoqDgYrz0P1MUCnefXt9cofN+AK8YB/v1+5cLMr03ieWCQdDmPqnFIzSxZw==",
+    "OpenTK/3.1.0": {
+      "sha512": "xoP5kb81lRSY5RzbntaFA9yXK+aGF5SLShhns55MyZtxtNafIxRH5KvRTFss/N653brTzE+AfepjKsbMexYlBQ==",
       "type": "package",
-      "path": "skiasharp/2.88.3",
+      "path": "opentk/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/OpenTK.dll.config",
+        "lib/net20/OpenTK.dll",
+        "lib/net20/OpenTK.pdb",
+        "lib/net20/OpenTK.xml",
+        "opentk.3.1.0.nupkg.sha512",
+        "opentk.nuspec"
+      ]
+    },
+    "OpenTK.GLControl/3.1.0": {
+      "sha512": "BjDzF+MhJd2LaZYzkXmgkzzXgHAko/Iur4rGy6+DPdZA1Jcc0X6jXZ6QsUsjlLRNzgevO7uAj2h1TqX7sguaYg==",
+      "type": "package",
+      "path": "opentk.glcontrol/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/OpenTK.GLControl.dll",
+        "lib/net20/OpenTK.GLControl.pdb",
+        "lib/net20/OpenTK.GLControl.xml",
+        "opentk.glcontrol.3.1.0.nupkg.sha512",
+        "opentk.glcontrol.nuspec"
+      ]
+    },
+    "SkiaSharp/2.88.6": {
+      "sha512": "wdfeBAQrEQCbJIRgAiargzP1Uy+0grZiG4CSgBnhAgcJTsPzlifIaO73JRdwIlT3TyBoeU9jEqzwFUhl4hTYnQ==",
+      "type": "package",
+      "path": "skiasharp/2.88.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2448,9 +2629,6 @@
         "lib/net462/SkiaSharp.dll",
         "lib/net462/SkiaSharp.pdb",
         "lib/net462/SkiaSharp.xml",
-        "lib/net5.0/SkiaSharp.dll",
-        "lib/net5.0/SkiaSharp.pdb",
-        "lib/net5.0/SkiaSharp.xml",
         "lib/net6.0-android30.0/SkiaSharp.dll",
         "lib/net6.0-android30.0/SkiaSharp.pdb",
         "lib/net6.0-android30.0/SkiaSharp.xml",
@@ -2505,7 +2683,7 @@
         "lib/xamarinwatchos1.0/SkiaSharp.dll",
         "lib/xamarinwatchos1.0/SkiaSharp.pdb",
         "lib/xamarinwatchos1.0/SkiaSharp.xml",
-        "skiasharp.2.88.3.nupkg.sha512",
+        "skiasharp.2.88.6.nupkg.sha512",
         "skiasharp.nuspec"
       ]
     },
@@ -2532,10 +2710,10 @@
         "skiasharp.nativeassets.linux.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.macOS/2.88.3": {
-      "sha512": "CEbWAXMGFkPV3S1snBKK7jEG3+xud/9kmSAhu0BEUKKtlMdxx+Qal0U9bntQREM9QpqP5xLWZooodi8IlV8MEg==",
+    "SkiaSharp.NativeAssets.macOS/2.88.6": {
+      "sha512": "Sko9LFxRXSjb3OGh5/RxrVRXxYo48tr5NKuuSy6jB85GrYt8WRqVY1iLOLwtjPiVAt4cp+pyD4i30azanS64dw==",
       "type": "package",
-      "path": "skiasharp.nativeassets.macos/2.88.3",
+      "path": "skiasharp.nativeassets.macos/2.88.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2548,13 +2726,13 @@
         "buildTransitive/net6.0-macos10.15/SkiaSharp.NativeAssets.macOS.targets",
         "buildTransitive/xamarinmac2.0/SkiaSharp.NativeAssets.macOS.targets",
         "lib/net462/_._",
-        "lib/net5.0/_._",
         "lib/net6.0-macos10.15/_._",
+        "lib/net6.0/_._",
         "lib/netcoreapp3.1/_._",
         "lib/netstandard1.3/_._",
         "lib/xamarinmac2.0/_._",
         "runtimes/osx/native/libSkiaSharp.dylib",
-        "skiasharp.nativeassets.macos.2.88.3.nupkg.sha512",
+        "skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
         "skiasharp.nativeassets.macos.nuspec"
       ]
     },
@@ -2581,10 +2759,10 @@
         "skiasharp.nativeassets.webassembly.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Win32/2.88.3": {
-      "sha512": "MU4ASL8VAbTv5vSw1PoiWjjjpjtGhWtFYuJnrN4sNHFCePb2ohQij9JhSdqLLxk7RpRtWPdV93fbA53Pt+J0yw==",
+    "SkiaSharp.NativeAssets.Win32/2.88.6": {
+      "sha512": "7TzFO0u/g2MpQsTty4fyCDdMcfcWI+aLswwfnYXr3gtNS6VLKdMXPMeKpJa3pJSLnUBN6wD0JjuCe8OoLBQ6cQ==",
       "type": "package",
-      "path": "skiasharp.nativeassets.win32/2.88.3",
+      "path": "skiasharp.nativeassets.win32/2.88.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2593,14 +2771,145 @@
         "build/net462/SkiaSharp.NativeAssets.Win32.targets",
         "buildTransitive/net462/SkiaSharp.NativeAssets.Win32.targets",
         "lib/net462/_._",
-        "lib/net5.0/_._",
+        "lib/net6.0/_._",
         "lib/netcoreapp3.1/_._",
         "lib/netstandard1.3/_._",
         "runtimes/win-arm64/native/libSkiaSharp.dll",
         "runtimes/win-x64/native/libSkiaSharp.dll",
         "runtimes/win-x86/native/libSkiaSharp.dll",
-        "skiasharp.nativeassets.win32.2.88.3.nupkg.sha512",
+        "skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",
         "skiasharp.nativeassets.win32.nuspec"
+      ]
+    },
+    "SkiaSharp.Views/2.88.6": {
+      "sha512": "L0uTf64DcYLomN3thAT4z6PBKjYU8qWJUj/bdYhb2m8pfaIlLKrxxDx356sUZjPMjTZbkgNiJZ8TVKCLr6IQew==",
+      "type": "package",
+      "path": "skiasharp.views/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/monoandroid1.0/SkiaSharp.Views.Android.dll",
+        "lib/monoandroid1.0/SkiaSharp.Views.Android.pdb",
+        "lib/monoandroid1.0/SkiaSharp.Views.Android.xml",
+        "lib/net462/SkiaSharp.Views.Desktop.dll",
+        "lib/net462/SkiaSharp.Views.Desktop.pdb",
+        "lib/net462/SkiaSharp.Views.Desktop.xml",
+        "lib/net6.0-android30.0/SkiaSharp.Views.Android.aar",
+        "lib/net6.0-android30.0/SkiaSharp.Views.Android.dll",
+        "lib/net6.0-android30.0/SkiaSharp.Views.Android.pdb",
+        "lib/net6.0-android30.0/SkiaSharp.Views.Android.xml",
+        "lib/net6.0-ios13.6/SkiaSharp.Views.iOS.dll",
+        "lib/net6.0-ios13.6/SkiaSharp.Views.iOS.pdb",
+        "lib/net6.0-ios13.6/SkiaSharp.Views.iOS.xml",
+        "lib/net6.0-maccatalyst13.5/SkiaSharp.Views.iOS.dll",
+        "lib/net6.0-maccatalyst13.5/SkiaSharp.Views.iOS.pdb",
+        "lib/net6.0-maccatalyst13.5/SkiaSharp.Views.iOS.xml",
+        "lib/net6.0-macos10.15/SkiaSharp.Views.Mac.dll",
+        "lib/net6.0-macos10.15/SkiaSharp.Views.Mac.pdb",
+        "lib/net6.0-macos10.15/SkiaSharp.Views.Mac.xml",
+        "lib/net6.0-tizen7.0/SkiaSharp.Views.Tizen.dll",
+        "lib/net6.0-tizen7.0/SkiaSharp.Views.Tizen.pdb",
+        "lib/net6.0-tizen7.0/SkiaSharp.Views.Tizen.xml",
+        "lib/net6.0-tvos13.4/SkiaSharp.Views.tvOS.dll",
+        "lib/net6.0-tvos13.4/SkiaSharp.Views.tvOS.pdb",
+        "lib/net6.0-tvos13.4/SkiaSharp.Views.tvOS.xml",
+        "lib/tizen40/SkiaSharp.Views.Tizen.dll",
+        "lib/tizen40/SkiaSharp.Views.Tizen.pdb",
+        "lib/tizen40/SkiaSharp.Views.Tizen.xml",
+        "lib/uap10.0/SkiaSharp.Views.UWP.dll",
+        "lib/uap10.0/SkiaSharp.Views.UWP.pdb",
+        "lib/uap10.0/SkiaSharp.Views.UWP.xml",
+        "lib/xamarinios1.0/SkiaSharp.Views.iOS.dll",
+        "lib/xamarinios1.0/SkiaSharp.Views.iOS.pdb",
+        "lib/xamarinios1.0/SkiaSharp.Views.iOS.xml",
+        "lib/xamarinmac2.0/SkiaSharp.Views.Mac.dll",
+        "lib/xamarinmac2.0/SkiaSharp.Views.Mac.pdb",
+        "lib/xamarinmac2.0/SkiaSharp.Views.Mac.xml",
+        "lib/xamarintvos1.0/SkiaSharp.Views.tvOS.dll",
+        "lib/xamarintvos1.0/SkiaSharp.Views.tvOS.pdb",
+        "lib/xamarintvos1.0/SkiaSharp.Views.tvOS.xml",
+        "lib/xamarinwatchos1.0/SkiaSharp.Views.watchOS.dll",
+        "lib/xamarinwatchos1.0/SkiaSharp.Views.watchOS.pdb",
+        "lib/xamarinwatchos1.0/SkiaSharp.Views.watchOS.xml",
+        "runtimes/win10-arm/nativeassets/uap10.0/SkiaSharp.Views.Interop.UWP.dll",
+        "runtimes/win10-arm64/nativeassets/uap10.0/SkiaSharp.Views.Interop.UWP.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/SkiaSharp.Views.Interop.UWP.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/SkiaSharp.Views.Interop.UWP.dll",
+        "skiasharp.views.2.88.6.nupkg.sha512",
+        "skiasharp.views.nuspec"
+      ]
+    },
+    "SkiaSharp.Views.Desktop.Common/2.88.6": {
+      "sha512": "Ectb9s9+xH8zh82UbagYX4l6bdR1PcWz7xmaVzcyBcmVhrDmty61U0vIlXgthZH0wJ9fmFX3X+71OwrA9c9adw==",
+      "type": "package",
+      "path": "skiasharp.views.desktop.common/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/net462/SkiaSharp.Views.Desktop.Common.dll",
+        "lib/net462/SkiaSharp.Views.Desktop.Common.pdb",
+        "lib/net462/SkiaSharp.Views.Desktop.Common.xml",
+        "lib/netcoreapp3.1/SkiaSharp.Views.Desktop.Common.dll",
+        "lib/netcoreapp3.1/SkiaSharp.Views.Desktop.Common.pdb",
+        "lib/netcoreapp3.1/SkiaSharp.Views.Desktop.Common.xml",
+        "lib/netstandard2.0/SkiaSharp.Views.Desktop.Common.dll",
+        "lib/netstandard2.0/SkiaSharp.Views.Desktop.Common.pdb",
+        "lib/netstandard2.0/SkiaSharp.Views.Desktop.Common.xml",
+        "skiasharp.views.desktop.common.2.88.6.nupkg.sha512",
+        "skiasharp.views.desktop.common.nuspec"
+      ]
+    },
+    "SkiaSharp.Views.Gtk2/2.88.6": {
+      "sha512": "Rci/NiXHSKnw+FMfmO/aYdUxkpxnyGT+LEEwSvZgL+G6+Ea8BsMuBDWuPXfdEkngzHDgYyOeyjNK2gCVY+ytcQ==",
+      "type": "package",
+      "path": "skiasharp.views.gtk2/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/net462/SkiaSharp.Views.Gtk.dll",
+        "lib/net462/SkiaSharp.Views.Gtk.pdb",
+        "lib/net462/SkiaSharp.Views.Gtk.xml",
+        "skiasharp.views.gtk2.2.88.6.nupkg.sha512",
+        "skiasharp.views.gtk2.nuspec"
+      ]
+    },
+    "SkiaSharp.Views.WindowsForms/2.88.6": {
+      "sha512": "QK/b8SZuRRtSgQUo4X45Qvp0++lpk2XdHWhc43evIXxAiFHUh6k+TypEVJqdPA1wR0MHNGOJgGR9x/It9LGNGw==",
+      "type": "package",
+      "path": "skiasharp.views.windowsforms/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/net462/SkiaSharp.Views.WindowsForms.dll",
+        "lib/net462/SkiaSharp.Views.WindowsForms.pdb",
+        "lib/net462/SkiaSharp.Views.WindowsForms.xml",
+        "lib/netcoreapp3.1/SkiaSharp.Views.WindowsForms.dll",
+        "lib/netcoreapp3.1/SkiaSharp.Views.WindowsForms.pdb",
+        "lib/netcoreapp3.1/SkiaSharp.Views.WindowsForms.xml",
+        "skiasharp.views.windowsforms.2.88.6.nupkg.sha512",
+        "skiasharp.views.windowsforms.nuspec"
+      ]
+    },
+    "SkiaSharp.Views.WPF/2.88.6": {
+      "sha512": "JQFZ8BeEg7Lv4uMMbgGnbq7GLi9w63mvL+tzkMzFYmXBEDuFibubWPQmYwOkEo5dlWee0Wn7K1SBhMb8EMFROg==",
+      "type": "package",
+      "path": "skiasharp.views.wpf/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/net462/SkiaSharp.Views.WPF.dll",
+        "lib/net462/SkiaSharp.Views.WPF.pdb",
+        "lib/net462/SkiaSharp.Views.WPF.xml",
+        "lib/netcoreapp3.1/SkiaSharp.Views.WPF.dll",
+        "lib/netcoreapp3.1/SkiaSharp.Views.WPF.pdb",
+        "lib/netcoreapp3.1/SkiaSharp.Views.WPF.xml",
+        "skiasharp.views.wpf.2.88.6.nupkg.sha512",
+        "skiasharp.views.wpf.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -4521,12 +4830,14 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Avalonia >= 11.0.2",
+      "Avalonia.Controls.PanAndZoom >= 11.0.0",
       "Avalonia.Desktop >= 11.0.2",
       "Avalonia.Diagnostics >= 11.0.2",
       "Avalonia.Fonts.Inter >= 11.0.2",
       "Avalonia.Skia >= 11.0.2",
       "Avalonia.Themes.Fluent >= 11.0.2",
-      "CommunityToolkit.Mvvm >= 8.2.1"
+      "CommunityToolkit.Mvvm >= 8.2.1",
+      "SkiaSharp.Views >= 2.88.6"
     ]
   },
   "packageFolders": {
@@ -4577,6 +4888,10 @@
             "target": "Package",
             "version": "[11.0.2, )"
           },
+          "Avalonia.Controls.PanAndZoom": {
+            "target": "Package",
+            "version": "[11.0.0, )"
+          },
           "Avalonia.Desktop": {
             "target": "Package",
             "version": "[11.0.2, )"
@@ -4600,6 +4915,10 @@
           "CommunityToolkit.Mvvm": {
             "target": "Package",
             "version": "[8.2.1, )"
+          },
+          "SkiaSharp.Views": {
+            "target": "Package",
+            "version": "[2.88.6, )"
           }
         },
         "imports": [
@@ -4621,5 +4940,47 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'OpenTK 3.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "OpenTK",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'OpenTK.GLControl 3.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "OpenTK.GLControl",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'SkiaSharp.Views 2.88.6' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "SkiaSharp.Views",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'SkiaSharp.Views.Gtk2 2.88.6' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "SkiaSharp.Views.Gtk2",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

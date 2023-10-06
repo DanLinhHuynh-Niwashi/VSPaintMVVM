@@ -18,6 +18,9 @@ build_property.ProjectDir = D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\
 [D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ArtContainerModView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ArtContainerView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 

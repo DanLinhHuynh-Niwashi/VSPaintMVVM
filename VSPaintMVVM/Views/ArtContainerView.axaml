@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:VSPaintMVVM.Views"
              xmlns:app="clr-namespace:VSPaintMVVM"
+			 xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+			 
 			 xmlns:vm="using:VSPaintMVVM.ViewModels"
 			 x:CompileBindings="True"
              Focusable="True"
@@ -12,20 +14,22 @@
 			 x:DataType="vm:ArtContainerViewModel"
              x:Class="VSPaintMVVM.Views.ArtContainerView">
 
-	<Panel Name="container" Background="Gray">
+
 		<ScrollViewer HorizontalScrollBarVisibility="Visible" 
 					  VerticalScrollBarVisibility="Visible"
 					  VerticalAlignment="Center"
 					  HorizontalAlignment="Center"
 					  Offset="500 500">
-			<Panel Name="canvasContainer" Background="Gray" MinWidth="2000" MinHeight="2000">
+			<paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                            Background="Gray" ClipToBounds="True" Focusable="True"
+                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+			<Panel Name="canvasContainer" MinWidth="2000" MinHeight="2000">
 				<local:SkiaCanvas Name="mainCanvas">
 
 				</local:SkiaCanvas>
 			</Panel>
-			
+			</paz:ZoomBorder>
 		</ScrollViewer>
-	</Panel>
 
 
 </UserControl>

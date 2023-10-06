@@ -51,7 +51,23 @@
 				<local:ArtContainerView Grid.Row="1"/>
 			</Grid>
 			<GridSplitter Grid.Column="3" Background="Transparent" ResizeDirection="Columns"/>
-			<Rectangle Grid.Column="4" MinWidth="200" Fill="Red"></Rectangle>
+			<Border Grid.Column="4" Padding="7" 
+					Background="WhiteSmoke"
+					BoxShadow="-3 0 20 0.5 #444444">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="4*" MinHeight="200"></RowDefinition>
+						<RowDefinition Height="10"></RowDefinition>
+						<RowDefinition Height="6*" MinHeight="200"></RowDefinition>
+					</Grid.RowDefinitions>
+					<!--Canvas View Setting-->
+					<Border BorderThickness="1.5" BorderBrush="Gray" CornerRadius="3">
+						<local:ArtContainerModView Grid.Row="0"/>
+					</Border>
+					<!--Layer setting-->
+					<Rectangle Grid.Row="2" Fill="Green"></Rectangle>
+				</Grid>
+			</Border>
 		</Grid>
 
 		<!--Footer-->

@@ -6,7 +6,7 @@
         mc:Ignorable="d" 
 		WindowState="Maximized"
 		MinHeight="400"
-		MinWidth="600"
+		MinWidth="830"
         x:Class="VSPaintMVVM.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"

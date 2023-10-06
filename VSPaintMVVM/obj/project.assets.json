@@ -4524,6 +4524,7 @@
       "Avalonia.Desktop >= 11.0.2",
       "Avalonia.Diagnostics >= 11.0.2",
       "Avalonia.Fonts.Inter >= 11.0.2",
+      "Avalonia.Skia >= 11.0.2",
       "Avalonia.Themes.Fluent >= 11.0.2",
       "CommunityToolkit.Mvvm >= 8.2.1"
     ]
@@ -4585,6 +4586,10 @@
             "version": "[11.0.2, )"
           },
           "Avalonia.Fonts.Inter": {
+            "target": "Package",
+            "version": "[11.0.2, )"
+          },
+          "Avalonia.Skia": {
             "target": "Package",
             "version": "[11.0.2, )"
           },

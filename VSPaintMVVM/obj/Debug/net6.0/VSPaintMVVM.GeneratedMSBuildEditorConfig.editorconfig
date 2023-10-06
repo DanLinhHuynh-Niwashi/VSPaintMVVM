@@ -18,6 +18,9 @@ build_property.ProjectDir = D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\
 [D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ArtContainerView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/MainView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -28,6 +31,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/SelectionButtonView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/SkiaCanvas.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ToolButtonView.axaml]

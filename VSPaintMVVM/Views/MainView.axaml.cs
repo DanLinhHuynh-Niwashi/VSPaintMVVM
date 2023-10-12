@@ -18,6 +18,7 @@ public partial class MainView : UserControl
     private bool isDrawing = false;
     private List<ITool> shapeList = new List<ITool>();
     private Stack<ITool> shapeUndoStack = new Stack<ITool>();
+    private Stack<ITool> shapeRedoStack = new Stack<ITool>();
 
     private static int currentThickness = 1;
     private ITool drawingShape = null;
@@ -89,6 +90,7 @@ public partial class MainView : UserControl
 
         // add to list
         shapeList.Add(drawingShape);
+        shapeUndoStack.Push(drawingShape);
         drawingShape.Brush = currentColor;
         drawingShape.Thickness = currentThickness;
 
@@ -97,6 +99,8 @@ public partial class MainView : UserControl
         drawingShape = shapeCollection.Create(selectedShapeName);
 
         Redraw();
+
+        isDrawing = false;
     }
 
     private void Redraw()

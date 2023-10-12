@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VSPaintMVVM.Tool;
 
+
 namespace VSPaintMVVM.Shapes
 {
     public class RectangleCustom:ShapeCustom, ITool
@@ -38,11 +39,11 @@ namespace VSPaintMVVM.Shapes
         }
         public Control Draw (SolidColorBrush brush, int thickness)
         {
-            var left = boxStart.x;
-            var top = boxStart.y;
+            var left = Math.Min(boxStart.x, boxEnd.x);
+            var top = Math.Min(boxStart.y, boxEnd.y);
 
-            var right = boxEnd.x;
-            var bottom = boxEnd.y;
+            var right = Math.Max(boxStart.x, boxEnd.x);
+            var bottom = Math.Max(boxStart.y, boxEnd.y);
 
             var width = right - left;
             var height = bottom - top;

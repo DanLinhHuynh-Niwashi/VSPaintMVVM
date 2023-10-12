@@ -18,8 +18,9 @@ public partial class MainView : UserControl
     private bool isDrawing = false;
     private List<ITool> shapeList = new List<ITool>();
     private Stack<ITool> shapeUndoStack = new Stack<ITool>();
+    private Stack<ITool> shapeRedoStack = new Stack<ITool>();
 
-    private static int currentThickness = 1;
+    private static int currentThickness = 3;
     private ITool drawingShape = null;
     private string selectedShapeName = "Rectangle";
 
@@ -73,7 +74,8 @@ public partial class MainView : UserControl
         byte r = (byte)(RSlider.Value / 100 * 255);
         byte g = (byte)(GSlider.Value / 100 * 255);
         byte b = (byte)(BSlider.Value / 100 * 255);
-        Color tempC = new Color(100, r, g, b);
+        Color tempC = new Color(255, r, g, b);
+        strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         currentColor = new SolidColorBrush(tempC);
     }
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
@@ -110,12 +112,13 @@ public partial class MainView : UserControl
         drawingShape.Brush = currentColor;
         drawingShape.Thickness = currentThickness;
         shapeList.Add(drawingShape);
-
+        shapeUndoStack.Push(drawingShape);
 
         // new ready to draw shape
         drawingShape = shapeCollection.Create(selectedShapeName);
 
         Redraw();
+        isDrawing=false;
     }
 
     private void Redraw()

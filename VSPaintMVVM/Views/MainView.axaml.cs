@@ -1,6 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
+using System.Collections.Generic;
+using VSPaintMVVM.Tool;
+using VSPaintMVVM.Shapes;
+using OpenTK.Input;
+using Avalonia.Input;
+using Avalonia.Media;
+using System;
 
 namespace VSPaintMVVM.Views;
 
@@ -10,7 +18,6 @@ public partial class MainView : UserControl
     private bool isDrawing = false;
     private List<ITool> shapeList = new List<ITool>();
     private Stack<ITool> shapeUndoStack = new Stack<ITool>();
-    private Stack<ITool> shapeRedoStack = new Stack<ITool>();
 
     private static int currentThickness = 1;
     private ITool drawingShape = null;
@@ -21,11 +28,12 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
+        drawingShape = shapeCollection.Create(selectedShapeName);
     }
 
-    
 
- 
+
+
     class ShapeCollection
     {
         Dictionary<string, ITool> prototypes;
@@ -43,12 +51,12 @@ public partial class MainView : UserControl
             if (prototypes[id] is ITool)
             {
                 return prototypes[id].Clone();
-            }    
+            }
             return null;
         }
     }
 
-    
+
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         isDrawing = true;
@@ -79,10 +87,8 @@ public partial class MainView : UserControl
         Point pos = e.GetPosition(canvas);
         drawingShape.EndCorner(pos.X, pos.Y);
 
-        // add to list and undo stack
+        // add to list
         shapeList.Add(drawingShape);
-        shapeUndoStack.Push(drawingShape);
-
         drawingShape.Brush = currentColor;
         drawingShape.Thickness = currentThickness;
 
@@ -91,8 +97,6 @@ public partial class MainView : UserControl
         drawingShape = shapeCollection.Create(selectedShapeName);
 
         Redraw();
-
-        isDrawing = false;
     }
 
     private void Redraw()

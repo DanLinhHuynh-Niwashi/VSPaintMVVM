@@ -13,31 +13,31 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = VSPaintMVVM
-build_property.ProjectDir = D:\UIT\LTTQ\DoAn\VSPaintMVVM\VSPaintMVVM\
+build_property.ProjectDir = E:\Học\Năm 2\Thực hành\HKI\LTTQ\Đồ án\VSPaintMVVM\
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/App.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ArtContainerModView.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/ArtContainerModView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ArtContainerView.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/ArtContainerView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/MainView.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/MainView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/MainWindow.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/MenuBarView.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/MenuBarView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/SelectionButtonView.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/SelectionButtonView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/SkiaCanvas.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/SkiaCanvas.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[D:/UIT/LTTQ/DoAn/VSPaintMVVM/VSPaintMVVM/Views/ToolButtonView.axaml]
+[E:/Học/Năm 2/Thực hành/HKI/LTTQ/Đồ án/VSPaintMVVM/Views/ToolButtonView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

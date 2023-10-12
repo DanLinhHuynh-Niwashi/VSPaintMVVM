@@ -18,7 +18,6 @@ public partial class MainView : UserControl
     private bool isDrawing = false;
     private List<ITool> shapeList = new List<ITool>();
     private Stack<ITool> shapeUndoStack = new Stack<ITool>();
-    private Stack<ITool> shapeRedoStack = new Stack<ITool>();
 
     private static int currentThickness = 1;
     private ITool drawingShape = null;
@@ -31,10 +30,6 @@ public partial class MainView : UserControl
         InitializeComponent();
         drawingShape = shapeCollection.Create(selectedShapeName);
     }
-
-
-
-
     class ShapeCollection
     {
         Dictionary<string, ITool> prototypes;
@@ -57,7 +52,30 @@ public partial class MainView : UserControl
         }
     }
 
+    private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        BText.Text = ((int)(BSlider.Value / 100 * 255)).ToString();
+        ColorChange();
+    }
+    private void RedSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        RText.Text = ((int)(RSlider.Value / 100 * 255)).ToString();
+        ColorChange();
+    }
+    private void GreenSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        GText.Text = ((int)(GSlider.Value / 100 * 255)).ToString();
+        ColorChange();
+    }
 
+    private void ColorChange()
+    {
+        byte r = (byte)(RSlider.Value / 100 * 255);
+        byte g = (byte)(GSlider.Value / 100 * 255);
+        byte b = (byte)(BSlider.Value / 100 * 255);
+        Color tempC = new Color(100, r, g, b);
+        currentColor = new SolidColorBrush(tempC);
+    }
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         isDrawing = true;
@@ -89,18 +107,15 @@ public partial class MainView : UserControl
         drawingShape.EndCorner(pos.X, pos.Y);
 
         // add to list
-        shapeList.Add(drawingShape);
-        shapeUndoStack.Push(drawingShape);
         drawingShape.Brush = currentColor;
         drawingShape.Thickness = currentThickness;
+        shapeList.Add(drawingShape);
 
 
         // new ready to draw shape
         drawingShape = shapeCollection.Create(selectedShapeName);
 
         Redraw();
-
-        isDrawing = false;
     }
 
     private void Redraw()

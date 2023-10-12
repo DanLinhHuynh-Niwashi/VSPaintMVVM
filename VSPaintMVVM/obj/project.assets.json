@@ -4841,24 +4841,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\LENOVO\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Quynh\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\UIT\\LTTQ\\DoAn\\VSPaintMVVM\\VSPaintMVVM\\VSPaintMVVM.csproj",
+      "projectUniqueName": "E:\\Học\\Năm 2\\Thực hành\\HKI\\LTTQ\\Đồ án\\VSPaintMVVM\\VSPaintMVVM.csproj",
       "projectName": "VSPaintMVVM",
-      "projectPath": "D:\\UIT\\LTTQ\\DoAn\\VSPaintMVVM\\VSPaintMVVM\\VSPaintMVVM.csproj",
-      "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "D:\\UIT\\LTTQ\\DoAn\\VSPaintMVVM\\VSPaintMVVM\\obj\\",
+      "projectPath": "E:\\Học\\Năm 2\\Thực hành\\HKI\\LTTQ\\Đồ án\\VSPaintMVVM\\VSPaintMVVM.csproj",
+      "packagesPath": "C:\\Users\\Quynh\\.nuget\\packages\\",
+      "outputPath": "E:\\Học\\Năm 2\\Thực hành\\HKI\\LTTQ\\Đồ án\\VSPaintMVVM\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Quynh\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4937,7 +4932,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   },

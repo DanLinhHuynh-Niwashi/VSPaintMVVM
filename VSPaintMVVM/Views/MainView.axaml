@@ -125,7 +125,7 @@
 									</Border>
 									<Border Grid.Column="2" VerticalAlignment="Center">
 										<TextBox Name="RText" FontSize="10"
-											 Margin="10" MinHeight="5" MinWidth="10"
+											 Margin="10" MinHeight="5" MinWidth="40"
 											 Text="0.0"/>
 									</Border>
 								</Grid>
@@ -146,7 +146,7 @@
 									</Border>
 									<Border Grid.Column="2" VerticalAlignment="Center">
 										<TextBox  Name="GText" FontSize="10"
-											 Margin="10" MinHeight="5" MinWidth="10"
+											 Margin="10" MinHeight="5" MinWidth="40"
 											 Text="0.0"/>
 									</Border>
 								</Grid>
@@ -166,7 +166,7 @@
 									</Border>
 									<Border Grid.Column="2" VerticalAlignment="Center">
 										<TextBox Name="BText" FontSize="10"
-											 Margin="10" MinHeight="5" MinWidth="10"
+											 Margin="10" MinHeight="5" MinWidth="40"
 											 Text="0.0"/>
 									</Border>
 								</Grid>

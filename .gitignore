@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/VSPaintMVVM/obj/Debug/net6.0/VSPaintMVVM.csproj.AssemblyReference.cache
+/.vs
+/VSPaintMVVM/obj/Release/net6.0

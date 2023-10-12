@@ -11,7 +11,6 @@
 			 x:CompileBindings="True"
              Focusable="True"
              mc:Ignorable="d"
-			 x:DataType="vm:ArtContainerViewModel"
              x:Class="VSPaintMVVM.Views.ArtContainerView">
 
 
@@ -24,8 +23,10 @@
                             Background="Gray" ClipToBounds="True" Focusable="True"
                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 			<Panel Name="canvasContainer" MinWidth="2000" MinHeight="2000">
-				<local:SkiaCanvas Name="mainCanvas">
-
+				<local:SkiaCanvas Width="400" Height="400" RenderOptions.BitmapInterpolationMode="LowQuality">
+					<local:SkiaCanvas.RenderTransform>
+						<ScaleTransform ScaleX="1" ScaleY="1"></ScaleTransform>
+					</local:SkiaCanvas.RenderTransform>
 				</local:SkiaCanvas>
 			</Panel>
 			</paz:ZoomBorder>

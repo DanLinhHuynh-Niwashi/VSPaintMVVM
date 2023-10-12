@@ -3,11 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+			 xmlns:vm="using:VSPaintMVVM.ViewModels"
              x:Class="VSPaintMVVM.Views.ToolButtonView">
 	<StackPanel Grid.Column="0" Background="WhiteSmoke" Width="40" HorizontalAlignment="Center" Orientation="Vertical">
 		<RadioButton GroupName="Tool" 
 					 Name="PenB"
-					 Theme="{StaticResource SquareButton}">
+					 Theme="{StaticResource SquareButton}"
+					 >
 			<Image Source="/Assets/Icons/PenIcon.png" Margin="3"></Image>
 		</RadioButton>
 		<RadioButton GroupName="Tool"

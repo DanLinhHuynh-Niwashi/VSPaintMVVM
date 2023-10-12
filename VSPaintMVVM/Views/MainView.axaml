@@ -8,12 +8,49 @@
              UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
              Focusable="True"
              mc:Ignorable="d"
-             
+			 xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+			 xmlns:vm="using:VSPaintMVVM.ViewModels"
+			 x:DataType="vm:MainWindowViewModel"
+			 x:CompileBindings="True"
              x:Class="VSPaintMVVM.Views.MainView">
 
 	<Grid RowDefinitions="Auto,*,Auto">
 		<!--title bar-->
-		<local:MenuBarView Grid.Row="0" DockPanel.Dock="Top"/>
+		<Menu Background="#301934">
+			<!--File menu item-->
+			<MenuItem Width="50"
+				Theme="{StaticResource TitleBarButton}"
+					  Header="File">
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="New" Width="200"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Open" Width="200"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Save As..." Width="200"/>
+				<Separator Background="White" Height="0.2"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Exit" Width="200"/>
+			</MenuItem>
+			<!--Edit menu item-->
+			<MenuItem Width="50"
+					Theme="{StaticResource TitleBarButton}" Header="Edit">
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Cut" Width="200"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
+				<Separator Background="White" Height="0.2"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Transform..." Width="200">
+					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Free Transform..." Width="200"/>
+					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Deform..." Width="200"/>
+					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Scale/ Rotate..." Width="200"/>
+					<Separator Background="White" Height="0.2"/>
+					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Flip Horizontal" Width="200"/>
+					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Flip Vertical" Width="200"/>
+				</MenuItem>
+
+			</MenuItem>
+
+			<!--Help menu item-->
+			<MenuItem Width="50"
+					Theme="{StaticResource TitleBarButton}" Header="Help">
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Go to Main Page..." Width="200"/>
+			</MenuItem>
+		</Menu>
 
 		<!--Main view-->
 		<Grid Grid.Row="1" Background="Azure">
@@ -21,13 +58,34 @@
 				<ColumnDefinition Width="1.8*" MinWidth="180"></ColumnDefinition>
 				<ColumnDefinition Width="0.2"></ColumnDefinition>
 				<ColumnDefinition Width="6.4*" MinWidth="150"></ColumnDefinition>
-				<ColumnDefinition Width="0.2"></ColumnDefinition>
-				<ColumnDefinition Width="1.8*" MinWidth="100"></ColumnDefinition>
 			</Grid.ColumnDefinitions>
 			<!--Left setting panel-->
 			<Grid ColumnDefinitions="Auto,*" Grid.Column="0" MinWidth="100" Background="Red">
 				<!--Draw Buttons-->
-				<local:ToolButtonView/>
+				<StackPanel Grid.Column="0" Background="WhiteSmoke" Width="40" HorizontalAlignment="Center" Orientation="Vertical">
+					<RadioButton GroupName="Tool"
+								 Name="PenB"
+								 Theme="{StaticResource SquareButton}"
+								 >
+						<Image Source="/Assets/Icons/PenIcon.png" Margin="3"></Image>
+					</RadioButton>
+					<RadioButton GroupName="Tool"
+								 Name="EraserB"
+								 Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/EraserIcon.png" Margin="3"></Image>
+					</RadioButton>
+					<RadioButton GroupName="Tool"
+								 Name="BucketB"
+								 Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/FillIcon.png" Margin="3"></Image>
+					</RadioButton>
+					<Separator Margin="0" Width="30" Height="0.2"></Separator>
+					<RadioButton GroupName="Tool"
+								 Name="SelB"
+								 Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/SelIcon.png" Margin="3"></Image>
+					</RadioButton>
+				</StackPanel>
 				<!--Draw setting-->
 				<Grid Grid.Column="1" Background="Black">
 					<Grid.RowDefinitions>
@@ -46,28 +104,122 @@
 			<!--Drawing Canvas and Selection Tools-->
 			<Grid Grid.Column="2" RowDefinitions="Auto,*" Background="Orange">
 				<!--SelectionButtonView-->
-				<local:SelectionButtonView Grid.Row="0"/>
+				<!--Selection Tools-->
+				<WrapPanel Background="WhiteSmoke" MinHeight="40" Grid.Row="0">
+
+					<Button Name="UndoB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/Undo.png" Margin="0"></Image>
+					</Button>
+					<!--Deselect All-->
+					<Button Name="RedoB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/Redo.png" Margin="0"></Image>
+					</Button>
+					<Separator Width="0.2" Height="20"></Separator>
+
+					<!--RecSel-->
+					<RadioButton Name="RecSelB"
+						GroupName="SelTool" Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/RecSel.png" Margin="2"></Image>
+					</RadioButton>
+					<!--EllipseSel-->
+					<RadioButton Name="EllipseSelB"
+						GroupName="SelTool" Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/EllipseSel.png" Margin="2"></Image>
+					</RadioButton>
+					<!--LassoSel-->
+					<RadioButton Name="LassoSelB"
+						GroupName="SelTool" Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/LassoSel.png" Margin="1"></Image>
+					</RadioButton>
+
+					<Separator Width="0.2" Height="20"></Separator>
+
+					<!--Replace-->
+					<RadioButton Name="ReplaceSelB"
+						GroupName="SelOp" Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/ReplaceSelIcon.png" Margin="2"></Image>
+					</RadioButton>
+					<!--Add-->
+					<RadioButton Name="AddSelB"
+						GroupName="SelOp" Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/AddSelIcon.png" Margin="2"></Image>
+					</RadioButton>
+					<!--Subtract-->
+					<RadioButton Name="SubtrSelB"
+						GroupName="SelOp" Theme="{StaticResource SquareButton}">
+						<Image Source="/Assets/Icons/SubtrSelIcon.png" Margin="2"></Image>
+					</RadioButton>
+
+					<Separator Width="0.2" Height="20"></Separator>
+					<!--Select All-->
+					<Button Name="SelAllB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/SelAllIcon.png" Margin="2"></Image>
+					</Button>
+					<!--Deselect All-->
+					<Button Name="DeSelAllB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/DeSelIcon.png" Margin="2"></Image>
+					</Button>
+					<!--Reverse Selection-->
+					<Button Name="InvSelAllB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/InvSelIcon.png" Margin="2"></Image>
+					</Button>
+
+					<!--Transform-->
+					<ToggleButton Name="TransFB"
+						Theme="{StaticResource SquareButtonT}">
+						<Image Source="/Assets/Icons/TransF.png" Margin="0"></Image>
+					</ToggleButton>
+
+					<Separator Width="0.2" Height="20"></Separator>
+
+					<!--Cut-->
+					<Button Name="CutB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/Cut.png" Margin="2"></Image>
+					</Button>
+					<!--Copy-->
+					<Button Name="CopyB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/Copy.png" Margin="2"></Image>
+					</Button>
+					<!--Paste-->
+					<Button Name="PasteB"
+						Theme="{StaticResource SquareButtonN}">
+						<Image Source="/Assets/Icons/Paste.png" Margin="2"></Image>
+					</Button>
+
+				</WrapPanel>
 				<!--Drawing Space-->
-				<local:ArtContainerView Grid.Row="1"/>
+				<ScrollViewer HorizontalScrollBarVisibility="Visible"
+					  VerticalScrollBarVisibility="Visible"
+					  VerticalAlignment="Center"
+					  HorizontalAlignment="Center"
+					  Offset="500 500" Grid.Row="1">
+					<paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+									Background="Gray" ClipToBounds="True" Focusable="True"
+									VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+						<Panel Name="canvasContainer" MinWidth="2000" MinHeight="2000">
+							<Border Background="Transparent" PointerPressed="canvas_PointerPressed" PointerReleased="canvas_PointerReleased"
+									PointerMoved="canvas_PointerMoved"/>
+							<Canvas Name="canvas"  IsHitTestVisible="False" ClipToBounds="True" Background="White" Height="1000" Width="1000"/>
+						</Panel>
+					</paz:ZoomBorder>
+				</ScrollViewer>
 			</Grid>
-			<GridSplitter Grid.Column="3" Background="Transparent" ResizeDirection="Columns"/>
+			<!--<GridSplitter Grid.Column="3" Background="Transparent" ResizeDirection="Columns"/>
 			<Border Grid.Column="4" Padding="7" 
 					Background="WhiteSmoke"
 					BoxShadow="-3 0 20 0.5 #444444">
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="4*" MinHeight="200"></RowDefinition>
-						<RowDefinition Height="10"></RowDefinition>
-						<RowDefinition Height="6*" MinHeight="200"></RowDefinition>
-					</Grid.RowDefinitions>
-					<!--Canvas View Setting-->
-					<Border BorderThickness="1.5" BorderBrush="Gray" CornerRadius="3">
-						<local:ArtContainerModView Grid.Row="0"/>
-					</Border>
-					<!--Layer setting-->
-					<Rectangle Grid.Row="2" Fill="Green"></Rectangle>
-				</Grid>
-			</Border>
+					<Canvas View Setting>-->
+					<!--<Border BorderThickness="1.5" BorderBrush="Gray" CornerRadius="3">-->
+			<!--<local:ArtContainerModView Grid.Row="0"/>-->
+					<!--</Border>-->
+					<!--</Border>-->
 		</Grid>
 
 		<!--Footer-->

@@ -130,7 +130,7 @@
 									<Border Grid.Column="2" VerticalAlignment="Center">
 										<TextBox Name="RText" FontSize="10"
 											 Margin="10" MinHeight="5" MinWidth="40"
-											 Text="0.0"/>
+											 />
 									</Border>
 								</Grid>
 
@@ -184,7 +184,25 @@
 					
 					<GridSplitter Grid.Row="1" Background="Transparent" ResizeDirection="Rows"/>
 					<!--Brush setting-->
-					<Rectangle Grid.Row="2" Fill="Green"></Rectangle>
+					<Border Grid.Row="2" Background="LightGray">
+							<Grid RowDefinitions="Auto, Auto">
+								<Border Grid.Row="0" VerticalAlignment="Center">
+									<Label Name="brushSizeLabel" Grid.Row="0" 
+										   Height="20" Width="100" Foreground="Black" 
+										   FontSize="15" Margin="7"
+										   FontWeight="Bold">Brush Size</Label>
+								</Border>
+								<Border Grid.Row="1" VerticalAlignment="Center">
+									<Slider
+										Name="brushSlider"
+										Width="200"
+										TickPlacement="TopLeft" TickFrequency="5"
+										Theme="{StaticResource HoriSlider}"
+										Minimum="1" Maximum="100"
+										PropertyChanged="BrushSizeSlider_Change"/>
+								</Border>
+							</Grid>
+					</Border>
 				</Grid>
 			</Grid>
 			<GridSplitter Grid.Column="1" Background="Transparent" ResizeDirection="Columns"/>

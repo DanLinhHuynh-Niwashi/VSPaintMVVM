@@ -56,7 +56,8 @@ public partial class MainView : UserControl
             return null;
         }
     }
-
+    
+    //Color slider
     private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         BText.Text = ((int)(BSlider.Value / 100 * 255)).ToString();
@@ -81,6 +82,12 @@ public partial class MainView : UserControl
         Color tempC = new Color(255, r, g, b);
         strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         currentColor = new SolidColorBrush(tempC);
+    }
+
+    //Brush size slider
+    private void BrushSizeSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        currentThickness = (int)(brushSlider.Value);
     }
 
     //selection tool

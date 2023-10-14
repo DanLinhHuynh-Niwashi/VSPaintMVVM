@@ -66,23 +66,27 @@
 					<RadioButton GroupName="Tool"
 								 Name="PenB"
 								 Theme="{StaticResource SquareButton}"
+								 Click="Tool_Checked"
 								 >
 						<Image Source="/Assets/Icons/PenIcon.png" Margin="3"></Image>
 					</RadioButton>
 					<RadioButton GroupName="Tool"
 								 Name="EraserB"
-								 Theme="{StaticResource SquareButton}">
+								 Theme="{StaticResource SquareButton}"
+								 Click="Tool_Checked">
 						<Image Source="/Assets/Icons/EraserIcon.png" Margin="3"></Image>
 					</RadioButton>
 					<RadioButton GroupName="Tool"
 								 Name="BucketB"
-								 Theme="{StaticResource SquareButton}">
+								 Theme="{StaticResource SquareButton}"
+								 Click="Tool_Checked">
 						<Image Source="/Assets/Icons/FillIcon.png" Margin="3"></Image>
 					</RadioButton>
 					<Separator Margin="0" Width="30" Height="0.2"></Separator>
 					<RadioButton GroupName="Tool"
 								 Name="SelB"
-								 Theme="{StaticResource SquareButton}">
+								 Theme="{StaticResource SquareButton}"
+								 Click="Tool_Checked">
 						<Image Source="/Assets/Icons/SelIcon.png" Margin="3"></Image>
 					</RadioButton>
 				</StackPanel>
@@ -286,10 +290,10 @@
 					<paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
 									Background="Gray" ClipToBounds="True" Focusable="True"
 									VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-						<Panel Name="canvasContainer" MinWidth="2000" MinHeight="2000">
+						<Panel Name="canvasContainer">
 							<Border Background="Transparent" PointerPressed="canvas_PointerPressed" PointerReleased="canvas_PointerReleased"
 									PointerMoved="canvas_PointerMoved"/>
-							<Canvas Name="canvas"  IsHitTestVisible="False" ClipToBounds="True" Background="White" Height="1000" Width="1000"/>
+							<Canvas Name="canvas"  IsHitTestVisible="False" ClipToBounds="True" Background="White"/>
 						</Panel>
 					</paz:ZoomBorder>
 				</ScrollViewer>

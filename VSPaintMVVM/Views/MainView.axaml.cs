@@ -9,6 +9,7 @@ using OpenTK.Input;
 using Avalonia.Input;
 using Avalonia.Media;
 using System;
+using Avalonia.Interactivity;
 
 namespace VSPaintMVVM.Views;
 
@@ -16,6 +17,7 @@ public partial class MainView : UserControl
 {
 
     private bool isDrawing = false;
+    private bool isSelecting = false;
     private List<ITool> shapeList = new List<ITool>();
     private Stack<ITool> shapeUndoStack = new Stack<ITool>();
     private Stack<ITool> shapeRedoStack = new Stack<ITool>();
@@ -29,6 +31,8 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
+        canvas.Height = 700; canvas.Width = 700;
+        canvasContainer.Height = canvas.Height + 2000; canvasContainer.Width = canvas.Width + 2000;
         drawingShape = shapeCollection.Create(selectedShapeName);
     }
     class ShapeCollection
@@ -78,18 +82,30 @@ public partial class MainView : UserControl
         strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         currentColor = new SolidColorBrush(tempC);
     }
+
+    //selection tool
+    private void Tool_Checked(object sender, RoutedEventArgs e)
+    {
+        if ((bool)SelB.IsChecked)
+        {
+            isSelecting = true;
+        }    
+        else
+        {
+            isSelecting = false;
+        }
+    }
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         isDrawing = true;
         Point pos = e.GetPosition(canvas);
 
         drawingShape.StartCorner(pos.X, pos.Y);
+        
     }
 
     private void canvas_PointerMoved(object sender, PointerEventArgs e)
     {
-
-
         if (isDrawing)
         {
             Point pos = e.GetPosition(canvas);

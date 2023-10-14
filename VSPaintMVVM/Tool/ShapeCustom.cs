@@ -14,6 +14,7 @@ namespace VSPaintMVVM.Tool
     {
         protected PointCustom boxStart = new PointCustom();
         protected PointCustom boxEnd = new PointCustom();
+        protected bool isChosen;
         public PointCustom BoxStart
         {
             get { return boxStart; }
@@ -26,6 +27,11 @@ namespace VSPaintMVVM.Tool
             set { boxEnd = value; }
         }
 
+        public bool IsChosen
+        {
+            get => isChosen;
+            set => isChosen = value;
+        }    
 
         virtual public PointCustom BoxCenter()
         {
@@ -36,6 +42,51 @@ namespace VSPaintMVVM.Tool
             return boxCenter;
         }
 
+        virtual public bool isHovering (Point pos)
+        {
+            double x1, x2, y1, y2;
+            x1 = BoxStart.x;
+            x2 = BoxEnd.x;
+            y1 = BoxStart.y;
+            y2 = BoxEnd.y;
+            if (BoxEnd.x > BoxStart.x)
+            {
+                x1 = BoxEnd.x;
+                x2 = BoxStart.x;
+            }
+            if (BoxEnd.y > BoxStart.y)
+            {
+                y1 = BoxEnd.y;
+                y2 = BoxStart.y;
+            }
+            return pos.X >= x1 && pos.X <= x2 && pos.Y >= y1 && pos.Y <= y2; 
+        }
+
+        virtual public Control drawChosenLine()
+        {
+            var left = Math.Min(boxStart.x, boxEnd.x) - 2;
+            var top = Math.Min(boxStart.y, boxEnd.y) - 2;
+
+            var right = Math.Max(boxStart.x, boxEnd.x);
+            var bottom = Math.Max(boxStart.y, boxEnd.y);
+
+            var width = right - left + 4;
+            var height = bottom - top + 4;
+
+            var rect = new Rectangle()
+            {
+                Width = width,
+                Height = height,
+                StrokeThickness = 1,
+                Stroke = new SolidColorBrush(Colors.Black),
+              
+            };
+
+            Canvas.SetLeft(rect, left);
+            Canvas.SetTop(rect, top);
+
+            return rect;
+        }
         virtual public ShapeCustom Copy()
         {
             ShapeCustom temp = new ShapeCustom()

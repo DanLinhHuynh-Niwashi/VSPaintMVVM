@@ -20,6 +20,7 @@ public partial class MainView : UserControl
     private bool isDrawing = false;
     private bool isSelecting = false;
     private bool isErasing = false;
+    private bool isChangingFromText = false;
 
     private List<ITool> shapeList = new List<ITool>();
     private List<ShapeCustom> chosenList = new List<ShapeCustom>();
@@ -65,25 +66,66 @@ public partial class MainView : UserControl
     //Color slider
     private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        BText.Text = ((int)(BSlider.Value / 100 * 255)).ToString();
+        if (isChangingFromText)
+            isChangingFromText = false;
+        else
+            BText.Text = ((int)BSlider.Value).ToString();
         ColorChange();
     }
     private void RedSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        RText.Text = ((int)(RSlider.Value / 100 * 255)).ToString();
+        if (isChangingFromText)
+            isChangingFromText = false;
+        else
+            RText.Text = ((int)RSlider.Value).ToString();
         ColorChange();
     }
     private void GreenSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        GText.Text = ((int)(GSlider.Value / 100 * 255)).ToString();
+        if (isChangingFromText)
+            isChangingFromText = false;
+        else
+            GText.Text = ((int)GSlider.Value).ToString();
         ColorChange();
+    }
+
+    //Color textbox
+    private void BlueTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        double blueValue;
+        if (double.TryParse(BText.Text, out blueValue))
+        {
+            isChangingFromText = true;
+            BSlider.Value = blueValue;
+            ColorChange();
+        }
+    }
+    private void RedTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        double redValue;
+        if (double.TryParse(RText.Text, out redValue))
+        {
+            isChangingFromText = true;
+            RSlider.Value = redValue;
+            ColorChange();
+        }
+    }
+    private void GreenTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        double greenValue;
+        if (double.TryParse(GText.Text, out greenValue))
+        {
+            isChangingFromText = true;
+            GSlider.Value = greenValue;
+            ColorChange();
+        }
     }
 
     private void ColorChange()
     {
-        byte r = (byte)(RSlider.Value / 100 * 255);
-        byte g = (byte)(GSlider.Value / 100 * 255);
-        byte b = (byte)(BSlider.Value / 100 * 255);
+        byte r = (byte)RSlider.Value;
+        byte g = (byte)GSlider.Value;
+        byte b = (byte)BSlider.Value;
         Color tempC = new Color(255, r, g, b);
         strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         currentColor = new SolidColorBrush(tempC);
@@ -102,14 +144,14 @@ public partial class MainView : UserControl
     //Brush size slider
     private void BrushSizeSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        currentThickness = (int)(brushSlider.Value);
+        currentThickness = (int)BrushSlider.Value;
     }
 
     //drawingtool
     private void DrawTool_Checked(object sender, RoutedEventArgs e)
     {
         isErasing = false;
-        isSelecting=false;
+        isSelecting = false;
     }
 
 

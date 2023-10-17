@@ -105,7 +105,15 @@ public partial class MainView : UserControl
         currentThickness = (int)(brushSlider.Value);
     }
 
-    //selection tool
+    //drawingtool
+    private void DrawTool_Checked(object sender, RoutedEventArgs e)
+    {
+        isErasing = false;
+        isSelecting=false;
+    }
+
+
+    //selection + deletion tool
     private void Tool_Checked(object sender, RoutedEventArgs e)
     {
         if ((bool)SelB.IsChecked)
@@ -119,6 +127,28 @@ public partial class MainView : UserControl
             isErasing = true;
         }
     }
+
+    private void SelectAll_Clicked(object sender, RoutedEventArgs e)
+    {
+        foreach (var shape in Enumerable.Reverse(shapeList))
+        {
+            ShapeCustom element = shape as ShapeCustom;
+            if (!chosenList.Contains(element))
+                chosenList.Add(element);
+        }
+        
+        Redraw() ;
+    }
+
+    private void DeselectAll_Clicked(object sender, RoutedEventArgs e)
+    {
+        foreach (var shape in Enumerable.Reverse(chosenList))
+        {
+                chosenList.Remove(shape);
+        }
+        Redraw();
+    }
+
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         if (!isSelecting || !isErasing)

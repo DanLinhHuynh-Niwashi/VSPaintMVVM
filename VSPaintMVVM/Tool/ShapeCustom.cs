@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
@@ -59,7 +60,7 @@ namespace VSPaintMVVM.Tool
                 y1 = BoxEnd.y;
                 y2 = BoxStart.y;
             }
-            return pos.X >= x1 && pos.X <= x2 && pos.Y >= y1 && pos.Y <= y2; 
+            return pos.X >= x2 && pos.X <= x1 && pos.Y >= y2 && pos.Y <= y1; 
         }
 
         virtual public Control drawChosenLine()
@@ -70,15 +71,16 @@ namespace VSPaintMVVM.Tool
             var right = Math.Max(boxStart.x, boxEnd.x);
             var bottom = Math.Max(boxStart.y, boxEnd.y);
 
-            var width = right - left + 4;
-            var height = bottom - top + 4;
+            var width = right - left;
+            var height = bottom - top;
 
             var rect = new Rectangle()
             {
-                Width = width,
-                Height = height,
+                Width = width+2,
+                Height = height+2,
                 StrokeThickness = 1,
-                Stroke = new SolidColorBrush(Colors.Black),
+                Stroke = new SolidColorBrush(Colors.BlueViolet),
+                StrokeDashArray = new AvaloniaList<double> { 5,5,5,5}
               
             };
 

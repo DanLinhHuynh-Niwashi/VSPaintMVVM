@@ -20,6 +20,7 @@ public partial class MainView : UserControl
     private bool isDrawing = false;
     private bool isSelecting = false;
     private bool isErasing = false;
+    private bool isTransforming = false;
     private bool isChangingFromText = false;
 
     private List<ITool> shapeList = new List<ITool>();
@@ -152,21 +153,39 @@ public partial class MainView : UserControl
     {
         isErasing = false;
         isSelecting = false;
+        isTransforming = false;
+        TransFB.IsChecked = false;
     }
 
 
     //selection + deletion tool
     private void Tool_Checked(object sender, RoutedEventArgs e)
     {
-        if ((bool)SelB.IsChecked)
+        if ((bool)TransFB.IsChecked)
         {
-            isSelecting = true;
-            isErasing = false;
-        }    
-        else if ((bool)EraserB.IsChecked)
-        {
+            isDrawing = false;
             isSelecting = false;
-            isErasing = true;
+            isErasing = false;
+            isTransforming = true;
+            Redraw();
+            return;
+        }
+        else
+        {
+            if ((bool)SelB.IsChecked)
+            {
+                isDrawing = false;
+                isSelecting = true;
+                isErasing = false;
+                isTransforming = false;
+            }
+            else if ((bool)EraserB.IsChecked)
+            {
+                isDrawing = false;
+                isSelecting = false;
+                isErasing = true;
+                isTransforming = false;
+            }
         }
     }
 
@@ -188,26 +207,219 @@ public partial class MainView : UserControl
         {
                 chosenList.Remove(shape);
         }
+        TransFB.IsChecked = false;
+        isTransforming = false;
         Redraw();
     }
 
+    AnchorPoint chosenAPoint;
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
-        if (!isSelecting || !isErasing)
+        Point pos = e.GetPosition(canvas);
+        if (!isSelecting && !isErasing && !isTransforming)
         {
             isDrawing = true;
-            Point pos = e.GetPosition(canvas);
-
             drawingShape.StartCorner(pos.X, pos.Y);
+        } 
+        else if (isTransforming)
+        {
+            if (chosenList.Count == 1)
+            {
+                foreach (var shape in chosenList)
+                {
+                    foreach (var apoint in shape.APoints)
+                    {
+                        if (apoint.isHovering(pos) == 1)
+                        {
+                            chosenAPoint = apoint;
+                        }
+                    }
+                }
+            }
         }    
         
     }
 
+    private void Resizing(AnchorPoint chosenAPoint, ShapeCustom shape, Point pos)
+    {
+        var left = Math.Min(shape.BoxStart.x, shape.BoxEnd.x);
+        var top = Math.Min(shape.BoxStart.y, shape.BoxEnd.y);
+
+        var right = Math.Max(shape.BoxStart.x, shape.BoxEnd.x);
+        var bottom = Math.Max(shape.BoxStart.y, shape.BoxEnd.y);
+        switch (chosenAPoint.type)
+        {
+            case "tl":
+                if (pos.X > right || pos.Y > bottom)
+                    break;
+                if (shape.BoxStart.x == left)
+                {
+                    shape.BoxStart.x = pos.X;
+                }
+                else
+                {
+                    shape.BoxEnd.x = pos.X;
+                }
+
+                if (shape.BoxStart.y == top)
+                {
+                    shape.BoxStart.y = pos.Y;
+                }
+                else
+                {
+                    shape.BoxEnd.y = pos.Y;
+                }
+
+                chosenAPoint.x = pos.X;
+                chosenAPoint.y = pos.Y;
+                break;
+
+            case "tr":
+                if (pos.X < left || pos.Y > bottom)
+                    break;
+                if (shape.BoxStart.x == right)
+                {
+                    shape.BoxStart.x = pos.X;
+                }
+                else
+                {
+                    shape.BoxEnd.x = pos.X;
+                }
+
+                if (shape.BoxStart.y == top)
+                {
+                    shape.BoxStart.y = pos.Y;
+                }
+                else
+                {
+                    shape.BoxEnd.y = pos.Y;
+                }
+
+                chosenAPoint.x = pos.X;
+                chosenAPoint.y = pos.Y;
+                break;
+            case "bl":
+                if (pos.X > right || pos.Y < top)
+                    break;
+                if (shape.BoxStart.x == left)
+                {
+                    shape.BoxStart.x = pos.X;
+                }
+                else
+                {
+                    shape.BoxEnd.x = pos.X;
+                }
+
+                if (shape.BoxStart.y == bottom)
+                {
+                    shape.BoxStart.y = pos.Y;
+                }
+                else
+                {
+                    shape.BoxEnd.y = pos.Y;
+                }
+
+                chosenAPoint.x = pos.X;
+                chosenAPoint.y = pos.Y;
+                break;
+
+            case "br":
+                if (pos.X < left || pos.Y < top)
+                    break;
+                if (shape.BoxStart.x == right)
+                {
+                    shape.BoxStart.x = pos.X;
+                }
+                else
+                {
+                    shape.BoxEnd.x = pos.X;
+                }
+
+                if (shape.BoxStart.y == bottom)
+                {
+                    shape.BoxStart.y = pos.Y;
+                }
+                else
+                {
+                    shape.BoxEnd.y = pos.Y;
+                }
+
+                chosenAPoint.x = pos.X;
+                chosenAPoint.y = pos.Y;
+                break;
+
+            case "tc":
+                if (pos.Y > bottom)
+                    break;
+
+                if (shape.BoxStart.y == top)
+                {
+                    shape.BoxStart.y = pos.Y;
+                }
+                else
+                {
+                    shape.BoxEnd.y = pos.Y;
+                }
+
+                chosenAPoint.y = pos.Y;
+                break;
+            case "bc":
+                if (pos.Y < top)
+                    break;
+
+                if (shape.BoxStart.y == bottom)
+                {
+                    shape.BoxStart.y = pos.Y;
+                }
+                else
+                {
+                    shape.BoxEnd.y = pos.Y;
+                }
+
+                chosenAPoint.y = pos.Y;
+                break;
+
+            case "lc":
+                if (pos.X > right)
+                    break;
+
+                if (shape.BoxStart.x == left)
+                {
+                    shape.BoxStart.x = pos.X;
+                }
+                else
+                {
+                    shape.BoxEnd.x = pos.X;
+                }
+
+                chosenAPoint.x = pos.X;
+                break;
+            case "rc":
+                if (pos.X < left)
+                    break;
+
+                if (shape.BoxStart.x == right)
+                {
+                    shape.BoxStart.x = pos.X;
+                }
+                else
+                {
+                    shape.BoxEnd.x = pos.X;
+                }
+
+                chosenAPoint.x = pos.X;
+                break;
+        }
+
+        Redraw();
+    }
     private void canvas_PointerMoved(object sender, PointerEventArgs e)
     {
-        if(isSelecting || isErasing)
+
+        Point pos = e.GetPosition(canvas);
+
+        if (isSelecting || isErasing)
         {
-            Point pos = e.GetPosition(canvas);
             Redraw();
             foreach (var shape in Enumerable.Reverse(shapeList))
             {
@@ -218,11 +430,25 @@ public partial class MainView : UserControl
                         canvas.Children.Add(((ShapeCustom)shape).drawChosenLine());
                     break;
                 }
+                
             }
+        }
+        else if (isTransforming)
+        {
+
+            if (chosenList.Count == 1 && chosenAPoint!=null)
+            {
+                foreach (var shape in chosenList)
+                {
+                    Resizing(chosenAPoint, shape, pos);
+                }
+            }    
+               
         }    
         else if (isDrawing)
         {
-            Point pos = e.GetPosition(canvas);
+            chosenList.Clear();
+            
 
             drawingShape.EndCorner(pos.X, pos.Y);
 
@@ -261,11 +487,16 @@ public partial class MainView : UserControl
                 if (element.isHovering(pos))
                 {
                     shapeList.Remove(shape);
+                    break;
                 }
             }
             Redraw();
         }
-
+        
+        else if (isTransforming)
+        {
+            chosenAPoint = null;
+        }    
         else
         {
             Point pos = e.GetPosition(canvas);
@@ -296,6 +527,20 @@ public partial class MainView : UserControl
             if (chosenList.Contains(((ShapeCustom)shape)))
             {
                 canvas.Children.Add(((ShapeCustom)shape).drawChosenLine());
+            }
+            if (isTransforming)
+            {
+                if (chosenList.Count != 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    foreach (var aPoint in ((ShapeCustom)chosenList[0]).drawAnchorPoint())
+                    {
+                        canvas.Children.Add(aPoint);
+                    }
+                }
             }
         }
     }

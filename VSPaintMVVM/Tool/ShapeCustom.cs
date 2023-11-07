@@ -2,6 +2,7 @@
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Input;
 using Avalonia.Media;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,42 @@ namespace VSPaintMVVM.Tool
 {
     public class ShapeCustom
     {
+        
         protected PointCustom boxStart = new PointCustom();
         protected PointCustom boxEnd = new PointCustom();
         protected bool isChosen;
+
+        protected List<AnchorPoint> apoints;
+
+        public void CreateAnchorPoints()
+        {
+            var left = Math.Min(boxStart.x, boxEnd.x);
+            var top = Math.Min(boxStart.y, boxEnd.y);
+
+            var right = Math.Max(boxStart.x, boxEnd.x);
+            var bottom = Math.Max(boxStart.y, boxEnd.y);
+
+            apoints = new List<AnchorPoint>()
+            {
+                new AnchorPoint(left, top, true, "tl"),
+                new AnchorPoint(right, top, true, "tr"),
+                new AnchorPoint(left, bottom , true, "bl"),
+                new AnchorPoint(right, bottom, true, "br"),
+                new AnchorPoint(BoxCenter().x, top, false, "tc"),
+                new AnchorPoint(BoxCenter().x, bottom, false, "bc"),
+                new AnchorPoint(right, BoxCenter().y, false, "rc"),
+                new AnchorPoint(left, BoxCenter().y, false, "lc"),
+            };
+         }
+
         public PointCustom BoxStart
         {
             get { return boxStart; }
             set { boxStart = value; }
+        }
+        public List<AnchorPoint> APoints
+        {
+            get { return apoints; }
         }
 
         public PointCustom BoxEnd
@@ -63,6 +93,18 @@ namespace VSPaintMVVM.Tool
             return pos.X >= x2 && pos.X <= x1 && pos.Y >= y2 && pos.Y <= y1; 
         }
 
+        virtual public List<Control> drawAnchorPoint()
+        {
+            CreateAnchorPoints();
+            List<Control> anchor = new List<Control>();
+
+            foreach (AnchorPoint aPoint in apoints)
+            {
+                anchor.Add(aPoint.Draw(new SolidColorBrush(Colors.Black), 1));
+            }    
+            
+            return anchor;
+        }
         virtual public Control drawChosenLine()
         {
             var left = Math.Min(boxStart.x, boxEnd.x) - 2;
@@ -76,8 +118,8 @@ namespace VSPaintMVVM.Tool
 
             var rect = new Rectangle()
             {
-                Width = width+2,
-                Height = height+2,
+                Width = width+1,
+                Height = height+1,
                 StrokeThickness = 1,
                 Stroke = new SolidColorBrush(Colors.BlueViolet),
                 StrokeDashArray = new AvaloniaList<double> { 5,5,5,5}

@@ -241,7 +241,8 @@
 
 					<!--Transform-->
 					<ToggleButton Name="TransFB"
-						Theme="{StaticResource SquareButtonT}">
+						Theme="{StaticResource SquareButtonT}"
+						Click="Tool_Checked">
 						<Image Source="/Assets/Icons/TransF.png" Margin="0"></Image>
 					</ToggleButton>
 

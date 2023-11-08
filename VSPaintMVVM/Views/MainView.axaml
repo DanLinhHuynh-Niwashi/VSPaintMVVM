@@ -66,7 +66,7 @@
 					<RadioButton GroupName="Tool"
 								 Name="PenB"
 								 Theme="{StaticResource SquareButton}"
-								 Click="DrawTool_Checked"
+								 Click="Tool_Checked"
 								 >
 						<Image Source="/Assets/Icons/PenIcon.png" Margin="3"></Image>
 					</RadioButton>
@@ -242,7 +242,7 @@
 					<!--Transform-->
 					<ToggleButton Name="TransFB"
 						Theme="{StaticResource SquareButtonT}"
-						Click="Tool_Checked">
+						Click="TransF_Move_Checked">
 						<Image Source="/Assets/Icons/TransF.png" Margin="0"></Image>
 					</ToggleButton>
 

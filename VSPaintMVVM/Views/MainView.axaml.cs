@@ -148,31 +148,34 @@ public partial class MainView : UserControl
         currentThickness = (int)BrushSlider.Value;
     }
 
-    //drawingtool
-    private void DrawTool_Checked(object sender, RoutedEventArgs e)
+    bool preIsDrawing, preIsSelecting, preIsErasing;
+    private void TransF_Move_Checked(object sender, RoutedEventArgs e)
     {
-        isErasing = false;
-        isSelecting = false;
-        isTransforming = false;
-        TransFB.IsChecked = false;
+        
+        if ((bool)TransFB.IsChecked)
+        {
+            preIsDrawing = isDrawing; preIsSelecting = isSelecting; preIsErasing = isErasing;
+            isDrawing = false;
+            isSelecting = false;
+            isErasing = false;
+            isTransforming = true;
+        }
+        else
+        {
+            isDrawing = preIsDrawing;
+            isSelecting = preIsSelecting;
+            isErasing = preIsErasing;
+            isTransforming = false;
+        }
+        Redraw();
     }
 
 
     //selection + deletion tool
     private void Tool_Checked(object sender, RoutedEventArgs e)
     {
-        if ((bool)TransFB.IsChecked)
-        {
-            isDrawing = false;
-            isSelecting = false;
-            isErasing = false;
-            isTransforming = true;
-            Redraw();
-            return;
-        }
-        else
-        {
-            if ((bool)SelB.IsChecked)
+        
+         if ((bool)SelB.IsChecked)
             {
                 isDrawing = false;
                 isSelecting = true;
@@ -186,7 +189,14 @@ public partial class MainView : UserControl
                 isErasing = true;
                 isTransforming = false;
             }
-        }
+            else if ((bool)PenB.IsChecked)
+            {
+                isErasing = false;
+                isSelecting = false;
+                isTransforming = false;
+                
+            }
+        TransFB.IsChecked = false;
     }
 
     private void SelectAll_Clicked(object sender, RoutedEventArgs e)
@@ -212,7 +222,8 @@ public partial class MainView : UserControl
         Redraw();
     }
 
-    AnchorPoint chosenAPoint;
+    Tuple<AnchorPoint, int, AnchorPoint> chosenAPoint;
+    Point startingPos = new Point();
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         Point pos = e.GetPosition(canvas);
@@ -227,11 +238,13 @@ public partial class MainView : UserControl
             {
                 foreach (var shape in chosenList)
                 {
-                    foreach (var apoint in shape.APoints)
+                    foreach (var apoint in shape.ShowingAPoints)
                     {
-                        if (apoint.isHovering(pos) == 1)
+                        if (apoint.isHovering(pos) != 0)
                         {
-                            chosenAPoint = apoint;
+                            int i = shape.ShowingAPoints.IndexOf(apoint);
+                            startingPos = pos;
+                            chosenAPoint = new Tuple<AnchorPoint, int, AnchorPoint>(shape.APoints[i], apoint.isHovering(pos), shape.APoints[i].Copy());
                         }
                     }
                 }
@@ -240,178 +253,313 @@ public partial class MainView : UserControl
         
     }
 
-    private void Resizing(AnchorPoint chosenAPoint, ShapeCustom shape, Point pos)
+    private void Resizing(AnchorPoint chosenAPoint, ShapeCustom shape, Point pos, AnchorPoint originalPoint)
     {
         var left = Math.Min(shape.BoxStart.x, shape.BoxEnd.x);
         var top = Math.Min(shape.BoxStart.y, shape.BoxEnd.y);
 
         var right = Math.Max(shape.BoxStart.x, shape.BoxEnd.x);
         var bottom = Math.Max(shape.BoxStart.y, shape.BoxEnd.y);
+
+
+        var angle = shape.Angle;
+        var a = angle * Math.PI / 180.0;
+        float cosa = (float)Math.Cos(-a);
+        float sina = (float)Math.Sin(-a);
+
+        double centerX = shape.BoxCenter().x;
+        double centerY = shape.BoxCenter().y;
+
+        AnchorPoint finPos = new AnchorPoint();
+        finPos.x = (pos.X - centerX) * cosa - (pos.Y - centerY) * sina + centerX;
+        finPos.y = (pos.X - centerX) * sina + (pos.Y - centerY) * cosa + centerY;
+      
+        AnchorPoint stopPoint = new AnchorPoint();
         switch (chosenAPoint.type)
         {
             case "tl":
-                if (pos.X > right || pos.Y > bottom)
-                    break;
-                if (shape.BoxStart.x == left)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.x = pos.X;
+                    if (stop.type == "br")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }    
                 }
-                else
-                {
-                    shape.BoxEnd.x = pos.X;
-                }
-
-                if (shape.BoxStart.y == top)
-                {
-                    shape.BoxStart.y = pos.Y;
-                }
-                else
-                {
-                    shape.BoxEnd.y = pos.Y;
-                }
-
-                chosenAPoint.x = pos.X;
-                chosenAPoint.y = pos.Y;
+                
                 break;
 
             case "tr":
-                if (pos.X < left || pos.Y > bottom)
-                    break;
-                if (shape.BoxStart.x == right)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.x = pos.X;
-                }
-                else
-                {
-                    shape.BoxEnd.x = pos.X;
+                    if (stop.type == "bl")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }
                 }
 
-                if (shape.BoxStart.y == top)
-                {
-                    shape.BoxStart.y = pos.Y;
-                }
-                else
-                {
-                    shape.BoxEnd.y = pos.Y;
-                }
-
-                chosenAPoint.x = pos.X;
-                chosenAPoint.y = pos.Y;
                 break;
             case "bl":
-                if (pos.X > right || pos.Y < top)
-                    break;
-                if (shape.BoxStart.x == left)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.x = pos.X;
+                    if (stop.type == "tr")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }
                 }
-                else
-                {
-                    shape.BoxEnd.x = pos.X;
-                }
-
-                if (shape.BoxStart.y == bottom)
-                {
-                    shape.BoxStart.y = pos.Y;
-                }
-                else
-                {
-                    shape.BoxEnd.y = pos.Y;
-                }
-
-                chosenAPoint.x = pos.X;
-                chosenAPoint.y = pos.Y;
                 break;
 
             case "br":
-                if (pos.X < left || pos.Y < top)
-                    break;
-                if (shape.BoxStart.x == right)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.x = pos.X;
+                    if (stop.type == "tl")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }
                 }
-                else
-                {
-                    shape.BoxEnd.x = pos.X;
-                }
-
-                if (shape.BoxStart.y == bottom)
-                {
-                    shape.BoxStart.y = pos.Y;
-                }
-                else
-                {
-                    shape.BoxEnd.y = pos.Y;
-                }
-
-                chosenAPoint.x = pos.X;
-                chosenAPoint.y = pos.Y;
                 break;
 
             case "tc":
-                if (pos.Y > bottom)
-                    break;
-
-                if (shape.BoxStart.y == top)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.y = pos.Y;
+                    if (stop.type == "bc")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }
                 }
-                else
-                {
-                    shape.BoxEnd.y = pos.Y;
-                }
-
-                chosenAPoint.y = pos.Y;
                 break;
             case "bc":
-                if (pos.Y < top)
-                    break;
-
-                if (shape.BoxStart.y == bottom)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.y = pos.Y;
+                    if (stop.type == "tc")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }
                 }
-                else
-                {
-                    shape.BoxEnd.y = pos.Y;
-                }
-
-                chosenAPoint.y = pos.Y;
                 break;
 
             case "lc":
-                if (pos.X > right)
-                    break;
-
-                if (shape.BoxStart.x == left)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.x = pos.X;
+                    if (stop.type == "rc")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }
                 }
-                else
-                {
-                    shape.BoxEnd.x = pos.X;
-                }
-
-                chosenAPoint.x = pos.X;
-                break;
+                break; 
             case "rc":
-                if (pos.X < left)
-                    break;
-
-                if (shape.BoxStart.x == right)
+                foreach (var stop in shape.ShowingAPoints)
                 {
-                    shape.BoxStart.x = pos.X;
+                    if (stop.type == "lc")
+                    {
+                        stopPoint = stop;
+                        break;
+                    }
                 }
-                else
-                {
-                    shape.BoxEnd.x = pos.X;
-                }
-
-                chosenAPoint.x = pos.X;
                 break;
         }
 
+        
+        AnchorPoint newPoint = new AnchorPoint();
+        switch (chosenAPoint.type)
+        {
+            case "tl":
+                if (shape.BoxStart.x == left)
+                    shape.BoxStart.x = finPos.x;
+                else shape.BoxEnd.x = finPos.x;
+
+                if (shape.BoxStart.y == top)
+                    shape.BoxStart.y = finPos.y;
+                else shape.BoxEnd.y = finPos.y;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "br")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+
+
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+                break;
+
+            case "tr":
+                if (shape.BoxStart.x == right)
+                    shape.BoxStart.x = finPos.x;
+                else shape.BoxEnd.x = finPos.x;
+
+                if (shape.BoxStart.y == top)
+                    shape.BoxStart.y = finPos.y;
+                else shape.BoxEnd.y = finPos.y;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "bl")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+                break;
+
+            case "bl":
+                if (shape.BoxStart.x == left)
+                    shape.BoxStart.x = finPos.x;
+                else shape.BoxEnd.x = finPos.x;
+
+                if (shape.BoxStart.y == bottom)
+                    shape.BoxStart.y = finPos.y;
+                else shape.BoxEnd.y = finPos.y;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "tr")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+        
+
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+                break;
+     
+
+            case "br":
+                if (shape.BoxStart.x == right)
+                    shape.BoxStart.x = finPos.x;
+                else shape.BoxEnd.x = finPos.x;
+
+                if (shape.BoxStart.y == bottom)
+                    shape.BoxStart.y = finPos.y;
+                else shape.BoxEnd.y = finPos.y;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "tl")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+         
+
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+                break;
+
+
+            case "tc":
+                if (shape.BoxStart.y == top)
+                    shape.BoxStart.y = finPos.y;
+                else shape.BoxEnd.y = finPos.y;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "bc")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+                break;
+
+            case "bc":
+                if (shape.BoxStart.y == bottom)
+                    shape.BoxStart.y = finPos.y;
+                else shape.BoxEnd.y = finPos.y;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "tc")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+               
+                break;
+
+            case "lc":
+                if (shape.BoxStart.x == left)
+                    shape.BoxStart.x = finPos.x;
+                else shape.BoxEnd.x = finPos.x;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "rc")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+                break;
+            case "rc":
+                if (shape.BoxStart.x == right)
+                    shape.BoxStart.x = finPos.x;
+                else shape.BoxEnd.x = finPos.x;
+
+                shape.drawAnchorPoint();
+                foreach (var stop in shape.ShowingAPoints)
+                {
+                    if (stop.type == "lc")
+                    {
+                        newPoint = stop;
+                        break;
+                    }
+                }
+                Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
+                break;
+        }
+
+        startingPos = new Point(pos.X, pos.Y);
         Redraw();
+    }
+
+    private void Moving(ShapeCustom shape, Point oriPos, Point afterPos)
+    {
+        double offsetX = oriPos.X - afterPos.X;
+        double offsetY = oriPos.Y - afterPos.Y;
+
+        shape.BoxEnd.x -= offsetX;
+        shape.BoxStart.x -= offsetX;
+        shape.BoxEnd.y -= offsetY;
+        shape.BoxStart.y -= offsetY;
+        Redraw();
+    }
+
+    private void Rotating(AnchorPoint chosenAPoint, ShapeCustom shape, Point pos, AnchorPoint originalPoint)
+    {
+        double rotatedAngle = Calculate_Angle(shape.BoxCenter(), pos, originalPoint);
+        shape.Angle = rotatedAngle;
+        Redraw();
+    }
+
+    private double Calculate_Angle (PointCustom center, Point endPoint, AnchorPoint originalPoint) 
+    {
+        double result = Math.Atan2(endPoint.Y - center.y, endPoint.X - center.x) 
+            - Math.Atan2(originalPoint.y - center.y, originalPoint.x - center.x);
+        return result * (180/Math.PI);
     }
     private void canvas_PointerMoved(object sender, PointerEventArgs e)
     {
@@ -440,7 +588,11 @@ public partial class MainView : UserControl
             {
                 foreach (var shape in chosenList)
                 {
-                    Resizing(chosenAPoint, shape, pos);
+                    if (chosenAPoint.Item2 == 1) Resizing(chosenAPoint.Item1, shape, pos, chosenAPoint.Item3);
+                    else if (chosenAPoint.Item2 == 2)
+                    {
+                        Rotating(chosenAPoint.Item1, shape, pos, chosenAPoint.Item3);
+                    }
                 }
             }    
                

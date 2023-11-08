@@ -59,6 +59,10 @@ namespace VSPaintMVVM.Shapes
             Canvas.SetLeft(rect, left);
             Canvas.SetTop(rect, top);
 
+            RotateTransform transform = new RotateTransform(angle);
+
+            rect.RenderTransform = transform;
+
             return rect;
         }
         public void StartCorner(double x, double y)

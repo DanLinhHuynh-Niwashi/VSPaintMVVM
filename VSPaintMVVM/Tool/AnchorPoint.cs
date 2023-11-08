@@ -14,6 +14,7 @@ namespace VSPaintMVVM.Tool
     public class AnchorPoint:ITool
     {
         public bool rotable { get; set; }
+        public double angle { get; set; }
         public double x { get; set; }
         public double y { get; set; }
         public string type { get; set; }
@@ -55,6 +56,8 @@ namespace VSPaintMVVM.Tool
             AnchorPoint temp = new AnchorPoint();
             temp.x = x;
             temp.y = y;
+            temp.rotable = rotable;
+            temp.type = type;
             return temp;
         }
 
@@ -91,6 +94,13 @@ namespace VSPaintMVVM.Tool
 
             Canvas.SetLeft(rect, left);
             Canvas.SetTop(rect, top);
+
+            Canvas.SetLeft(rect, left);
+            Canvas.SetTop(rect, top);
+
+            RotateTransform transform = new RotateTransform(angle);
+
+            rect.RenderTransform = transform;
 
             return rect;
         }

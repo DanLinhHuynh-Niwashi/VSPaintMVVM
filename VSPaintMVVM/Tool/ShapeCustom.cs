@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +18,11 @@ namespace VSPaintMVVM.Tool
         
         protected PointCustom boxStart = new PointCustom();
         protected PointCustom boxEnd = new PointCustom();
+        protected double angle = 0;
         protected bool isChosen;
-
+        
         protected List<AnchorPoint> apoints;
-
+        protected List<AnchorPoint> showingApoints;
         public void CreateAnchorPoints()
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
@@ -35,12 +37,15 @@ namespace VSPaintMVVM.Tool
                 new AnchorPoint(right, top, true, "tr"),
                 new AnchorPoint(left, bottom , true, "bl"),
                 new AnchorPoint(right, bottom, true, "br"),
+                new AnchorPoint(BoxCenter().x, BoxCenter().y, false, ""),
                 new AnchorPoint(BoxCenter().x, top, false, "tc"),
-                new AnchorPoint(BoxCenter().x, bottom, false, "bc"),
-                new AnchorPoint(right, BoxCenter().y, false, "rc"),
+                new AnchorPoint(BoxCenter().x, bottom, false, "bc"),   
                 new AnchorPoint(left, BoxCenter().y, false, "lc"),
+                new AnchorPoint(right, BoxCenter().y, false, "rc"),
             };
-         }
+
+            showingApoints = new List<AnchorPoint>();
+        }
 
         public PointCustom BoxStart
         {
@@ -50,6 +55,11 @@ namespace VSPaintMVVM.Tool
         public List<AnchorPoint> APoints
         {
             get { return apoints; }
+        }
+
+        public List<AnchorPoint> ShowingAPoints
+        {
+            get { return showingApoints; }
         }
 
         public PointCustom BoxEnd
@@ -62,7 +72,13 @@ namespace VSPaintMVVM.Tool
         {
             get => isChosen;
             set => isChosen = value;
-        }    
+        }
+
+        public double Angle
+        {
+            get => angle;
+            set => angle = value;
+        }
 
         virtual public PointCustom BoxCenter()
         {
@@ -73,7 +89,7 @@ namespace VSPaintMVVM.Tool
             return boxCenter;
         }
 
-        virtual public bool isHovering (Point pos)
+        virtual public bool isHovering (Avalonia.Point pos)
         {
             double x1, x2, y1, y2;
             x1 = BoxStart.x;
@@ -93,18 +109,32 @@ namespace VSPaintMVVM.Tool
             return pos.X >= x2 && pos.X <= x1 && pos.Y >= y2 && pos.Y <= y1; 
         }
 
-        virtual public List<Control> drawAnchorPoint()
+        public List<Control> drawAnchorPoint()
         {
             CreateAnchorPoints();
             List<Control> anchor = new List<Control>();
+            showingApoints.Clear();
 
             foreach (AnchorPoint aPoint in apoints)
             {
-                anchor.Add(aPoint.Draw(new SolidColorBrush(Colors.Black), 1));
+                var a = angle * Math.PI / 180.0;
+                float cosa = (float)Math.Cos(a);
+                float sina = (float)Math.Sin(a);
+
+                double centerX = BoxCenter().x;
+                double centerY = BoxCenter().y;
+
+                AnchorPoint newPoint = aPoint.Copy();
+                newPoint.x = (aPoint.x - centerX) * cosa - (aPoint.y - centerY) * sina + centerX;
+                newPoint.y = (aPoint.x - centerX) * sina + (aPoint.y - centerY) * cosa + centerY;
+                newPoint.angle = angle;
+                showingApoints.Add(newPoint);
+                anchor.Add(newPoint.Draw(new SolidColorBrush(Colors.Black), 1));
             }    
             
             return anchor;
         }
+
         virtual public Control drawChosenLine()
         {
             var left = Math.Min(boxStart.x, boxEnd.x) - 2;
@@ -116,7 +146,7 @@ namespace VSPaintMVVM.Tool
             var width = right - left;
             var height = bottom - top;
 
-            var rect = new Rectangle()
+            var rect = new Avalonia.Controls.Shapes.Rectangle()
             {
                 Width = width+1,
                 Height = height+1,
@@ -128,6 +158,10 @@ namespace VSPaintMVVM.Tool
 
             Canvas.SetLeft(rect, left);
             Canvas.SetTop(rect, top);
+
+            RotateTransform transform = new RotateTransform(angle);
+
+            rect.RenderTransform = transform;
 
             return rect;
         }

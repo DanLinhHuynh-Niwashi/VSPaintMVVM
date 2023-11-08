@@ -223,7 +223,8 @@ public partial class MainView : UserControl
     }
 
     Tuple<AnchorPoint, int, AnchorPoint> chosenAPoint;
-    Point startingPos = new Point();
+    Point startingPos;
+    bool isMoving = false;
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         Point pos = e.GetPosition(canvas);
@@ -243,12 +244,24 @@ public partial class MainView : UserControl
                         if (apoint.isHovering(pos) != 0)
                         {
                             int i = shape.ShowingAPoints.IndexOf(apoint);
-                            startingPos = pos;
+                            isMoving = false;
                             chosenAPoint = new Tuple<AnchorPoint, int, AnchorPoint>(shape.APoints[i], apoint.isHovering(pos), shape.APoints[i].Copy());
+                            break;
                         }
+                        else
+                        {
+                            isMoving = true;
+                        }
+                            
                     }
                 }
             }
+            else
+            {
+                isMoving = true;
+            }
+
+            startingPos = pos;
         }    
         
     }
@@ -261,6 +274,10 @@ public partial class MainView : UserControl
         var right = Math.Max(shape.BoxStart.x, shape.BoxEnd.x);
         var bottom = Math.Max(shape.BoxStart.y, shape.BoxEnd.y);
 
+        var width = right - left;
+        var height = bottom - top;
+
+        
 
         var angle = shape.Angle;
         var a = angle * Math.PI / 180.0;
@@ -545,6 +562,7 @@ public partial class MainView : UserControl
         shape.BoxStart.x -= offsetX;
         shape.BoxEnd.y -= offsetY;
         shape.BoxStart.y -= offsetY;
+
         Redraw();
     }
 
@@ -594,7 +612,20 @@ public partial class MainView : UserControl
                         Rotating(chosenAPoint.Item1, shape, pos, chosenAPoint.Item3);
                     }
                 }
-            }    
+            }
+            else
+            {
+                foreach (var shape in chosenList)
+                {
+                    if (isMoving)
+                    {
+                        Moving(shape, startingPos, pos);
+                        startingPos = pos;
+                    }    
+                        
+
+                }
+            }
                
         }    
         else if (isDrawing)
@@ -648,6 +679,7 @@ public partial class MainView : UserControl
         else if (isTransforming)
         {
             chosenAPoint = null;
+            isMoving = false;
         }    
         else
         {

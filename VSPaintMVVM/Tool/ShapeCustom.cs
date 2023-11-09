@@ -178,9 +178,6 @@ namespace VSPaintMVVM.Tool
                 BoxStart = boxStart,
                 BoxEnd = boxEnd,
                 Angle = angle,
-                ID = next_Possible_ID(),
-                showingApoints = this.showingApoints,
-                apoints = this.apoints,
             };
 
             return temp;

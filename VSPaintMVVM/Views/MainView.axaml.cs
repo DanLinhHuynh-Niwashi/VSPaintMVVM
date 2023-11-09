@@ -11,6 +11,8 @@ using Avalonia.Media;
 using System;
 using Avalonia.Interactivity;
 using System.Linq;
+using System.Threading;
+using System.Timers;
 
 namespace VSPaintMVVM.Views;
 
@@ -29,18 +31,19 @@ public partial class MainView : UserControl
     private Stack<ActionCustom> shapeUndoStack = new Stack<ActionCustom>();
     private Stack<ActionCustom> shapeRedoStack = new Stack<ActionCustom>();
 
-    private static int currentThickness = 3;
+    private static int currentThickness;
     private ITool drawingShape = null;
     private string selectedShapeName = "Rectangle";
 
-    private static SolidColorBrush currentColor = new SolidColorBrush(Colors.Black);
+    private static SolidColorBrush currentColor = new SolidColorBrush();
     ShapeCollection shapeCollection = new ShapeCollection();
     public MainView()
     {
         InitializeComponent();
-        canvas.Height = 700; canvas.Width = 700;
+        canvas.Height = 600; canvas.Width = 600;
         canvasContainer.Height = canvas.Height + 2000; canvasContainer.Width = canvas.Width + 2000;
         drawingShape = shapeCollection.Create(selectedShapeName);
+
     }
     
     
@@ -102,12 +105,21 @@ public partial class MainView : UserControl
         }
     }
 
+    //Brush size slider
+    bool isChanging = false;
+    System.Timers.Timer timer;
+    int timeCounting = 0;
+
     private void ColorChange()
     {
+        
         byte r = (byte)RSlider.Value;
         byte g = (byte)GSlider.Value;
         byte b = (byte)BSlider.Value;
         Color tempC = new Color(255, r, g, b);
+        if (currentColor.Color == tempC) return;
+
+        ChangedStart();
         strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         currentColor = new SolidColorBrush(tempC);
 
@@ -121,23 +133,63 @@ public partial class MainView : UserControl
 
     }
 
-    //Brush size slider
-    private void BrushSizeSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+   
+    private void BrushSizeSlider_Changed(object sender, AvaloniaPropertyChangedEventArgs e)
     {
+
+        if (currentThickness == (int)BrushSlider.Value) return;
+        ChangedStart();
         currentThickness = (int)BrushSlider.Value;
-
-
-            foreach (var shape in chosenList)
+        foreach (var shape in chosenList)
             {
                 var element = shape as ITool;
                 element.Thickness = currentThickness;
             }
             Redraw();
 
-
+        
     }
 
-    bool preIsDrawing, preIsSelecting, preIsErasing;
+         private void ChangedStart()
+         {
+             if (isChanging == false)
+             {
+                 currentAction = new ActionCustom();
+                 timer = new System.Timers.Timer();
+                 timeCounting = 0;
+                 timer.Interval = 1000;
+                 timer.Start();
+                 timer.Elapsed += new ElapsedEventHandler(TimerTick);
+                 timer.Enabled = true;
+                 isChanging = true;
+                 
+                 foreach (var shape in chosenList)
+                 {
+                     int i = shapeList.IndexOf((ITool)shape);
+                    currentAction.addStarter((ITool)shape.Copy(), i, shape.ID);
+                 }
+             }
+
+         }    
+         private void TimerTick(object source, ElapsedEventArgs e)
+         {
+            timeCounting++;
+             if (timeCounting == 3 && isChanging == true)
+             {
+                 isChanging = false;
+                 foreach (var shape in chosenList)
+                 {
+                int i = shapeList.IndexOf((ITool)shape);
+                currentAction.addAfter((ITool)shape.Copy(), i);
+                 }
+                 shapeUndoStack.Push(currentAction);
+                shapeRedoStack.Clear();
+                 timer.Enabled = true;
+             }    
+         }
+    
+
+        bool preIsDrawing, preIsSelecting, preIsErasing;
     private void TransF_Move_Checked(object sender, RoutedEventArgs e)
     {
         
@@ -215,7 +267,12 @@ public partial class MainView : UserControl
     {
         if (shapeUndoStack.Count == 0) return;
         ActionCustom temp = shapeUndoStack.Pop();
-        double pos;
+
+        while (temp == null && shapeUndoStack.Count > 0)
+            temp = shapeUndoStack.Pop();
+
+        if (temp == null) return;
+        shapeRedoStack.Push(temp);
         if (shapeList.Count == 0) 
         {
             foreach (var deletedShape in temp.beforeShape)
@@ -225,9 +282,32 @@ public partial class MainView : UserControl
         }
         else
         {
-            pos = temp.ctrlZ(shapeList, 0);
+            temp.ctrlZ(shapeList);
         }    
           
+        Redraw();
+    }
+
+    private void Redo_Clicked(object sender, RoutedEventArgs e)
+    {
+        if (shapeRedoStack.Count == 0) return;
+        ActionCustom temp = shapeRedoStack.Pop();
+
+        while (temp == null && shapeRedoStack.Count > 0)
+            temp = shapeRedoStack.Pop();
+        shapeUndoStack.Push(temp);
+
+        if (shapeList.Count == 0)
+        {
+            foreach (var drawedShape in temp.afterShape)
+            {
+                shapeList.Add(drawedShape);
+            }
+        }
+        else
+        {
+            temp.ctrlY(shapeList);
+        }
         Redraw();
     }
 
@@ -268,7 +348,9 @@ public partial class MainView : UserControl
                         }
                             
                     }
+                    int j = shapeList.IndexOf((ITool)shape);
                     currentAction.beforeShape.Add((ITool)shape.Copy());
+                    currentAction.pos.Add(j);
                     currentAction.ids.Add(shape.ID);
                 }
             }
@@ -276,7 +358,10 @@ public partial class MainView : UserControl
             {
                 foreach (var shape in chosenList)
                 {
+
+                    int i = shapeList.IndexOf((ITool)shape);
                     currentAction.beforeShape.Add((ITool)shape.Copy());
+                    currentAction.pos.Add(i);
                     currentAction.ids.Add(shape.ID);
                 }
 
@@ -292,7 +377,9 @@ public partial class MainView : UserControl
                 ShapeCustom element = shape as ShapeCustom;
                 if (element.isHovering(pos))
                 {
+                    int i = shapeList.IndexOf(shape);
                     currentAction.beforeShape.Add(shape);
+                    currentAction.pos.Add(i);
                     currentAction.ids.Add(element.ID);
                     break;
                 }
@@ -302,6 +389,7 @@ public partial class MainView : UserControl
         
     }
 
+    
     private void Resizing(AnchorPoint chosenAPoint, ShapeCustom shape, Point pos, AnchorPoint originalPoint)
     {
         var left = Math.Min(shape.BoxStart.x, shape.BoxEnd.x);
@@ -750,10 +838,13 @@ public partial class MainView : UserControl
         {
             chosenAPoint = null;
             isMoving = false;
-                foreach (var shape in chosenList)
-                {
-                    currentAction.afterShape.Add((ITool)shape.Copy());
-                }
+            foreach (var shape in chosenList)
+            {
+                int i = shapeList.IndexOf((ITool)(shape));
+
+                currentAction.afterShape.Add((ITool)shape.Copy());
+                currentAction.posA.Add(i);
+            }
             shapeUndoStack.Push(currentAction);
         }    
         else
@@ -767,7 +858,10 @@ public partial class MainView : UserControl
             shapeList.Add(drawingShape);
 
             currentAction.ids.Add(((ShapeCustom)drawingShape).ID);
+            int i = shapeList.IndexOf(drawingShape);
             currentAction.afterShape.Add(drawingShape);
+            currentAction.posA.Add(i);
+
             shapeUndoStack.Push(currentAction);
             // new ready to draw shape
             drawingShape = shapeCollection.Create(selectedShapeName);

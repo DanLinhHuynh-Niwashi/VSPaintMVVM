@@ -200,7 +200,8 @@
 										TickPlacement="TopLeft" TickFrequency="5"
 										Theme="{StaticResource HoriSlider}"
 										Minimum="1" Maximum="100"
-										PropertyChanged="BrushSizeSlider_Change"/>
+										PropertyChanged="BrushSizeSlider_Changed"
+										/>
 								</Border>
 							</Grid>
 					</Border>
@@ -222,7 +223,8 @@
 					</Button>
 					<!--RedoB-->
 					<Button Name="RedoB"
-						Theme="{StaticResource SquareButtonN}">
+						Theme="{StaticResource SquareButtonN}"
+							Click="Redo_Clicked">
 						<Image Source="/Assets/Icons/Redo.png" Margin="0"></Image>
 					</Button>
 					<Separator Width="0.2" Height="20"></Separator>

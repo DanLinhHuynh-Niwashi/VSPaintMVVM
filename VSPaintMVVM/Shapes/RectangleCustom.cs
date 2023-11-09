@@ -36,8 +36,10 @@ namespace VSPaintMVVM.Shapes
             RectangleCustom temp = new RectangleCustom();
             temp.BoxStart = boxStart.Copy();
             temp.BoxEnd = boxEnd.Copy();
+            temp.Angle = angle;
 
             temp.Thickness = Thickness;
+            temp.ID = id;
 
             if (Brush != null)
                 temp.Brush = Brush;

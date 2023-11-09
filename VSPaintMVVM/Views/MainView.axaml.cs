@@ -166,8 +166,10 @@ public partial class MainView : UserControl
                  foreach (var shape in chosenList)
                  {
                      int i = shapeList.IndexOf((ITool)shape);
-                    currentAction.addStarter((ITool)shape.Copy(), i, shape.ID);
-                 }
+                    currentAction.beforeShape.Add((ITool)shape.Copy());
+                    currentAction.pos.Add(i);
+                    currentAction.ids.Add(shape.ID);
+                }
              }
 
          }    
@@ -180,7 +182,9 @@ public partial class MainView : UserControl
                  foreach (var shape in chosenList)
                  {
                 int i = shapeList.IndexOf((ITool)shape);
-                currentAction.addAfter((ITool)shape.Copy(), i);
+
+                currentAction.afterShape.Add((ITool)shape.Copy());
+                currentAction.posA.Add(i);
                  }
                  shapeUndoStack.Push(currentAction);
                 shapeRedoStack.Clear();

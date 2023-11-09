@@ -26,8 +26,8 @@ public partial class MainView : UserControl
     private List<ITool> shapeList = new List<ITool>();
     private List<ShapeCustom> chosenList = new List<ShapeCustom>();
 
-    private Stack<ITool> shapeUndoStack = new Stack<ITool>();
-    private Stack<ITool> shapeRedoStack = new Stack<ITool>();
+    private Stack<ActionCustom> shapeUndoStack = new Stack<ActionCustom>();
+    private Stack<ActionCustom> shapeRedoStack = new Stack<ActionCustom>();
 
     private static int currentThickness = 3;
     private ITool drawingShape = null;
@@ -42,27 +42,7 @@ public partial class MainView : UserControl
         canvasContainer.Height = canvas.Height + 2000; canvasContainer.Width = canvas.Width + 2000;
         drawingShape = shapeCollection.Create(selectedShapeName);
     }
-    class ShapeCollection
-    {
-        Dictionary<string, ITool> prototypes;
-        public ShapeCollection()
-        {
-            prototypes = new Dictionary<string, ITool>();
-
-            ITool rect = new RectangleCustom();
-
-            prototypes.Add(rect.Name, rect);
-        }
-
-        public ITool Create(string id)
-        {
-            if (prototypes[id] is ITool)
-            {
-                return prototypes[id].Clone();
-            }
-            return null;
-        }
-    }
+    
     
     //Color slider
     private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
@@ -231,16 +211,41 @@ public partial class MainView : UserControl
         Redraw();
     }
 
+    private void Undo_Clicked(object sender, RoutedEventArgs e)
+    {
+        if (shapeUndoStack.Count == 0) return;
+        ActionCustom temp = shapeUndoStack.Pop();
+        double pos;
+        if (shapeList.Count == 0) 
+        {
+            foreach (var deletedShape in temp.beforeShape)
+            {
+                shapeList.Add(deletedShape);
+            }
+        }
+        else
+        {
+            pos = temp.ctrlZ(shapeList, 0);
+        }    
+          
+        Redraw();
+    }
+
     Tuple<AnchorPoint, int, AnchorPoint> chosenAPoint;
+    ActionCustom currentAction;
     Point startingPos;
     bool isMoving = false;
     private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         Point pos = e.GetPosition(canvas);
+        shapeRedoStack.Clear();
+        currentAction = new ActionCustom();
+        
         if (!isSelecting && !isErasing && !isTransforming)
         {
             isDrawing = true;
             drawingShape.StartCorner(pos.X, pos.Y);
+            
         } 
         else if (isTransforming)
         {
@@ -263,14 +268,36 @@ public partial class MainView : UserControl
                         }
                             
                     }
+                    currentAction.beforeShape.Add((ITool)shape.Copy());
+                    currentAction.ids.Add(shape.ID);
                 }
             }
-            else
+            else if (chosenList.Count > 0)
             {
+                foreach (var shape in chosenList)
+                {
+                    currentAction.beforeShape.Add((ITool)shape.Copy());
+                    currentAction.ids.Add(shape.ID);
+                }
+
                 isMoving = true;
             }
 
             startingPos = pos;
+        }   
+        else if (isErasing)
+        {
+            foreach (var shape in Enumerable.Reverse(shapeList))
+            {
+                ShapeCustom element = shape as ShapeCustom;
+                if (element.isHovering(pos))
+                {
+                    currentAction.beforeShape.Add(shape);
+                    currentAction.ids.Add(element.ID);
+                    break;
+                }
+            }
+            
         }    
         
     }
@@ -662,11 +689,10 @@ public partial class MainView : UserControl
                     if (isMoving)
                     {
                         Moving(shape, startingPos, pos);
-                        startingPos = pos;
                     }    
-                        
-
                 }
+                if (isMoving)
+                    startingPos = pos;
             }
                
         }    
@@ -715,6 +741,8 @@ public partial class MainView : UserControl
                     break;
                 }
             }
+
+            shapeUndoStack.Push(currentAction);
             Redraw();
         }
         
@@ -722,6 +750,11 @@ public partial class MainView : UserControl
         {
             chosenAPoint = null;
             isMoving = false;
+                foreach (var shape in chosenList)
+                {
+                    currentAction.afterShape.Add((ITool)shape.Copy());
+                }
+            shapeUndoStack.Push(currentAction);
         }    
         else
         {
@@ -732,14 +765,17 @@ public partial class MainView : UserControl
             drawingShape.Brush = currentColor;
             drawingShape.Thickness = currentThickness;
             shapeList.Add(drawingShape);
-            shapeUndoStack.Push(drawingShape);
 
+            currentAction.ids.Add(((ShapeCustom)drawingShape).ID);
+            currentAction.afterShape.Add(drawingShape);
+            shapeUndoStack.Push(currentAction);
             // new ready to draw shape
             drawingShape = shapeCollection.Create(selectedShapeName);
 
             Redraw();
             isDrawing = false;
-        }    
+        } 
+        currentAction = null;
     }
 
     private void Redraw()

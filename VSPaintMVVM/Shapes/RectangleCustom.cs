@@ -27,7 +27,7 @@ namespace VSPaintMVVM.Shapes
             RectangleCustom rect = new RectangleCustom();
 
             rect.id = next_Possible_ID();
-            return new RectangleCustom();
+            return rect;
         }
 
         

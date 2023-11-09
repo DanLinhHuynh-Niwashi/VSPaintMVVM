@@ -270,6 +270,8 @@ public partial class MainView : UserControl
     private void Undo_Clicked(object sender, RoutedEventArgs e)
     {
         if (shapeUndoStack.Count == 0) return;
+        TransFB.IsChecked = false;
+        isTransforming = false;
         ActionCustom temp = shapeUndoStack.Pop();
 
         while (temp == null && shapeUndoStack.Count > 0)
@@ -288,13 +290,17 @@ public partial class MainView : UserControl
         {
             temp.ctrlZ(shapeList);
         }    
-          
+        
+
         Redraw();
     }
 
     private void Redo_Clicked(object sender, RoutedEventArgs e)
     {
+
         if (shapeRedoStack.Count == 0) return;
+        TransFB.IsChecked = false;
+        isTransforming = false;
         ActionCustom temp = shapeRedoStack.Pop();
 
         while (temp == null && shapeRedoStack.Count > 0)

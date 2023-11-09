@@ -13,6 +13,7 @@ namespace VSPaintMVVM.Shapes
 {
     public class RectangleCustom:ShapeCustom, ITool
     {
+        static int idIndex = 0;
         public string Icon => "Assets/Icons/RectTIcon.png";
         public string Name => "Rectangle";
 
@@ -21,9 +22,15 @@ namespace VSPaintMVVM.Shapes
 
         public ITool Clone()
         {
+            idIndex = idIndex + 1;
+            posible_id_list.Enqueue(Name + idIndex.ToString(), idIndex);
+            RectangleCustom rect = new RectangleCustom();
+
+            rect.id = next_Possible_ID();
             return new RectangleCustom();
         }
 
+        
         public override RectangleCustom Copy()
         {
             RectangleCustom temp = new RectangleCustom();

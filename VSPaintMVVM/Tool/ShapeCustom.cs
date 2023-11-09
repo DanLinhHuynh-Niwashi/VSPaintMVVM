@@ -19,8 +19,9 @@ namespace VSPaintMVVM.Tool
         protected PointCustom boxStart = new PointCustom();
         protected PointCustom boxEnd = new PointCustom();
         protected double angle = 0;
-        protected bool isChosen;
-        
+        protected string id;
+        protected PriorityQueue<string, int> posible_id_list = new PriorityQueue<string, int>();
+
         protected List<AnchorPoint> apoints;
         protected List<AnchorPoint> showingApoints;
         public void CreateAnchorPoints()
@@ -47,6 +48,11 @@ namespace VSPaintMVVM.Tool
             showingApoints = new List<AnchorPoint>();
         }
 
+        public string next_Possible_ID()
+        {
+            return posible_id_list.Dequeue();
+        }
+
         public PointCustom BoxStart
         {
             get { return boxStart; }
@@ -68,10 +74,10 @@ namespace VSPaintMVVM.Tool
             set { boxEnd = value; }
         }
 
-        public bool IsChosen
+        public string ID
         {
-            get => isChosen;
-            set => isChosen = value;
+            get => id;
+            set => id = value;
         }
 
         public double Angle
@@ -171,6 +177,7 @@ namespace VSPaintMVVM.Tool
             {
                 BoxStart = boxStart,
                 BoxEnd = boxEnd,
+                ID = next_Possible_ID(),
             };
 
             return temp;

@@ -131,21 +131,30 @@ public partial class MainView : UserControl
         strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         currentColor = new SolidColorBrush(tempC);
 
-        if (isSelecting)
-        {
+
             foreach (var shape in chosenList)
             {
                 var element = shape as ITool;
                 element.Brush = currentColor;
             }
             Redraw();
-        }
+
     }
 
     //Brush size slider
     private void BrushSizeSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         currentThickness = (int)BrushSlider.Value;
+
+
+            foreach (var shape in chosenList)
+            {
+                var element = shape as ITool;
+                element.Thickness = currentThickness;
+            }
+            Redraw();
+
+
     }
 
     bool preIsDrawing, preIsSelecting, preIsErasing;
@@ -387,6 +396,10 @@ public partial class MainView : UserControl
         switch (chosenAPoint.type)
         {
             case "tl":
+                if (finPos.x >= right - currentThickness|| finPos.y >= bottom - currentThickness)
+                {
+                    break;
+                }
                 if (shape.BoxStart.x == left)
                     shape.BoxStart.x = finPos.x;
                 else shape.BoxEnd.x = finPos.x;
@@ -410,6 +423,10 @@ public partial class MainView : UserControl
                 break;
 
             case "tr":
+                if (finPos.x <= left + currentThickness || finPos.y >= bottom - currentThickness)
+                {
+                    break;
+                }
                 if (shape.BoxStart.x == right)
                     shape.BoxStart.x = finPos.x;
                 else shape.BoxEnd.x = finPos.x;
@@ -432,6 +449,10 @@ public partial class MainView : UserControl
                 break;
 
             case "bl":
+                if (finPos.x >= right - currentThickness || finPos.y <= top + currentThickness)
+                {
+                    break;
+                }
                 if (shape.BoxStart.x == left)
                     shape.BoxStart.x = finPos.x;
                 else shape.BoxEnd.x = finPos.x;
@@ -456,6 +477,10 @@ public partial class MainView : UserControl
      
 
             case "br":
+                if(finPos.x <= left + currentThickness || finPos.y <= top + currentThickness)
+                {
+                    break;
+                }
                 if (shape.BoxStart.x == right)
                     shape.BoxStart.x = finPos.x;
                 else shape.BoxEnd.x = finPos.x;
@@ -480,6 +505,11 @@ public partial class MainView : UserControl
 
 
             case "tc":
+                if (finPos.y >= bottom - currentThickness)
+                {
+                    break;
+                }
+
                 if (shape.BoxStart.y == top)
                     shape.BoxStart.y = finPos.y;
                 else shape.BoxEnd.y = finPos.y;
@@ -497,6 +527,10 @@ public partial class MainView : UserControl
                 break;
 
             case "bc":
+                if (finPos.y <= top + currentThickness)
+                {
+                    break;
+                }
                 if (shape.BoxStart.y == bottom)
                     shape.BoxStart.y = finPos.y;
                 else shape.BoxEnd.y = finPos.y;
@@ -515,6 +549,10 @@ public partial class MainView : UserControl
                 break;
 
             case "lc":
+                if (finPos.x >= right - currentThickness)
+                {
+                    break;
+                }
                 if (shape.BoxStart.x == left)
                     shape.BoxStart.x = finPos.x;
                 else shape.BoxEnd.x = finPos.x;
@@ -532,6 +570,10 @@ public partial class MainView : UserControl
                 Moving(shape, new Point(newPoint.x, newPoint.y), new Point(stopPoint.x, stopPoint.y));
                 break;
             case "rc":
+                if (finPos.x <= left + currentThickness)
+                {
+                    break;
+                }
                 if (shape.BoxStart.x == right)
                     shape.BoxStart.x = finPos.x;
                 else shape.BoxEnd.x = finPos.x;

@@ -216,7 +216,8 @@
 
 					<!--UndoB-->
 					<Button Name="UndoB"
-						Theme="{StaticResource SquareButtonN}">
+						Theme="{StaticResource SquareButtonN}"
+							Click="Undo_Clicked">
 						<Image Source="/Assets/Icons/Undo.png" Margin="0"></Image>
 					</Button>
 					<!--RedoB-->

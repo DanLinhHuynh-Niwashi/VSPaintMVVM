@@ -8,11 +8,17 @@ using VSPaintMVVM.Shapes;
 using OpenTK.Input;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Visuals;
 using System;
 using Avalonia.Interactivity;
 using System.Linq;
 using System.Threading;
 using System.Timers;
+using Tmds.DBus.Protocol;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Avalonia.Media.Imaging;
+using System.IO;
+using SkiaSharp;
 
 namespace VSPaintMVVM.Views;
 
@@ -105,7 +111,7 @@ public partial class MainView : UserControl
         }
     }
 
-    //Brush size slider
+
     bool isChanging = false;
     System.Timers.Timer timer;
     int timeCounting = 0;
@@ -133,13 +139,14 @@ public partial class MainView : UserControl
 
     }
 
-   
+    //Brush size slider
     private void BrushSizeSlider_Changed(object sender, AvaloniaPropertyChangedEventArgs e)
     {
 
         if (currentThickness == (int)BrushSlider.Value) return;
         ChangedStart();
         currentThickness = (int)BrushSlider.Value;
+        BrushTextBox.Text = ((int)BrushSlider.Value).ToString();
         foreach (var shape in chosenList)
             {
                 var element = shape as ITool;
@@ -149,8 +156,28 @@ public partial class MainView : UserControl
 
         
     }
+    //Brush size textbox
+    private void BrushSizeTextBox_Changed(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        int newThickness;
+        if (Int32.TryParse(BrushTextBox.Text, out newThickness))
+        {
+            if (currentThickness == newThickness) return;
+            ChangedStart();
+            if (newThickness >= 1 && newThickness <= 100)
+                BrushSlider.Value = newThickness;
+        }
+       
+        foreach (var shape in chosenList)
+        {
+            var element = shape as ITool;
+            element.Thickness = currentThickness;
+        }
+        Redraw();
 
-         private void ChangedStart()
+
+    }
+    private void ChangedStart()
          {
              if (isChanging == false)
              {

@@ -186,22 +186,29 @@
 					<GridSplitter Grid.Row="1" Background="Transparent" ResizeDirection="Rows"/>
 					<!--Brush setting-->
 					<Border Grid.Row="2" Background="LightGray">
-							<Grid RowDefinitions="Auto, Auto">
-								<Border Grid.Row="0" VerticalAlignment="Center">
+							<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto">
+								<Border Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="2">
 									<Label Name="BrushSizeLabel" Grid.Row="0" 
 										   Height="20" Width="100" Foreground="Black" 
 										   FontSize="15" Margin="7"
 										   FontWeight="Bold">Brush Size</Label>
 								</Border>
-								<Border Grid.Row="1" VerticalAlignment="Center">
+								<Border Grid.Row="1" VerticalAlignment="Center" Grid.Column="0">
 									<Slider
 										Name="BrushSlider"
-										Width="200"
+										Width="190" Margin="10"
 										TickPlacement="TopLeft" TickFrequency="5"
 										Theme="{StaticResource HoriSlider}"
 										Minimum="1" Maximum="100"
 										PropertyChanged="BrushSizeSlider_Changed"
 										/>
+								</Border>
+								<Border Grid.Row="1" VerticalAlignment="Center" Grid.Column="1">
+									<TextBox 
+										Name="BrushTextBox"
+										FontSize="10"
+										Margin="10" MinHeight="5" MinWidth="40"
+										Text="1" PropertyChanged="BrushSizeTextBox_Changed"/>
 								</Border>
 							</Grid>
 					</Border>

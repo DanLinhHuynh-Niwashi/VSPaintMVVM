@@ -38,6 +38,25 @@ namespace VSPaintMVVM.Tool
         public virtual void ctrlZ(List<ITool> shapeList)
         {
             bool found = false;
+            //drawAction
+            if (beforeShape.Count == 0)
+            {
+                foreach (var drawedShape in afterShape)
+                {
+                    shapeList.Remove(drawedShape);
+                }
+                return;
+            }
+
+            //deleteAction
+            if (afterShape.Count == 0)
+            {
+                foreach (var deletedShape in beforeShape)
+                {
+                    shapeList.Insert(pos[beforeShape.IndexOf(deletedShape)], deletedShape);
+                }
+            }
+
             for (int j = 0; j < shapeList.Count; j++)
             {
                 var shape = shapeList[j];
@@ -45,13 +64,6 @@ namespace VSPaintMVVM.Tool
                 {
                     if (((ShapeCustom)shape).ID == i)
                     {
-                        //drawAction
-                        if (beforeShape.Count == 0)
-                        {
-                            shapeList.Remove(shape);
-                            return;
-                        }
-
                         int a = ids.IndexOf(i);
                         found = true;
                         ShapeCustom temp = shape as ShapeCustom;
@@ -63,19 +75,30 @@ namespace VSPaintMVVM.Tool
                     }
                 }
             }
-            //deleteAction
-            if (found==false)
-            {
-                foreach (var deletedShape in beforeShape)
-                {
-                    shapeList.Insert(pos[beforeShape.IndexOf(deletedShape)], deletedShape);
-                }
-            }    
+           
             return;
         }
         public virtual void ctrlY(List<ITool> shapeList) 
         {
-            bool found = false;
+            //deleteAction
+            if (afterShape.Count == 0)
+            {
+                foreach (var deletedShape in beforeShape)
+                {
+                    shapeList.Remove(deletedShape);
+                }
+                return;
+            }
+
+            //drawAction
+            if (beforeShape.Count == 0)
+            {
+                foreach (var drawedShape in afterShape)
+                {
+                    shapeList.Insert(posA[afterShape.IndexOf(drawedShape)], drawedShape);
+                }
+                return;
+            }
             for (int j = 0; j < shapeList.Count; j++)
             {
                 var shape = shapeList[j];
@@ -83,15 +106,9 @@ namespace VSPaintMVVM.Tool
                 {
                     if (((ShapeCustom)shape).ID == i)
                     {
-                        //deleteAction
-                        if (afterShape.Count == 0)
-                        {
-                            shapeList.Remove(shape);                            
-                            return;
-                        }
+                        
 
                         int a = ids.IndexOf(i);
-                        found = true;
                         ShapeCustom temp = shape as ShapeCustom;
                         temp.BoxStart = ((ShapeCustom)afterShape[a]).BoxStart;
                         temp.BoxEnd = ((ShapeCustom)afterShape[a]).BoxEnd;
@@ -103,14 +120,7 @@ namespace VSPaintMVVM.Tool
             }
 
 
-            //drawAction
-            if (found == false)
-            {
-                foreach (var drawedShape in afterShape)
-                {
-                    shapeList.Insert(posA[afterShape.IndexOf(drawedShape)], drawedShape);
-                }
-            }
+            
             return;
         }
     }

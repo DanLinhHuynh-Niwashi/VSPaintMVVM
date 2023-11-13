@@ -24,7 +24,7 @@ namespace VSPaintMVVM.Tool
 
         protected List<AnchorPoint> apoints;
         protected List<AnchorPoint> showingApoints;
-        public void CreateAnchorPoints()
+        virtual public void CreateAnchorPoints()
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
             var top = Math.Min(boxStart.y, boxEnd.y);
@@ -181,6 +181,13 @@ namespace VSPaintMVVM.Tool
             };
 
             return temp;
+        }
+
+        virtual public void CopyFrom(ShapeCustom shape)
+        {
+            BoxStart = shape.boxStart.Copy();
+            BoxEnd = shape.boxEnd.Copy();
+            Angle = shape.angle;
         }
     }
 }

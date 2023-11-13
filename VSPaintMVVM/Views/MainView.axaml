@@ -100,7 +100,7 @@
 					<!--Color Setting-->
 					<Border Grid.Row="0" Background="WhiteSmoke">
 						<Viewbox>
-							<Grid RowDefinitions="Auto, *, 10, 3*, 3*, 3*">
+							<Grid RowDefinitions="Auto, *, 10, 2.5*, 2.5*, 2.5*, 2.5*">
 								
 								<WrapPanel Grid.Row="1" Background="WhiteSmoke"
 										   HorizontalAlignment="Center"
@@ -184,6 +184,26 @@
 										<TextBox Name="BText" FontSize="10"
 											 Margin="10" MinHeight="5" MinWidth="40"
 											 Text="0" PropertyChanged="BlueTextBox_Change"/>
+									</Border>
+								</Grid>
+								<Grid Grid.Row="6" ColumnDefinitions="0.5*, 9*, 0.5*">
+									<Border Grid.Column="0" VerticalAlignment="Center">
+										<Label FontSize="15" Margin="10"
+											    FontWeight="Bold"
+											   Foreground="Black">A</Label>
+									</Border>
+									<Border Grid.Column="1" VerticalAlignment="Center">
+										<Slider
+										Name="ASlider" Width="150"
+										TickPlacement="TopLeft"
+										Theme="{StaticResource HoriSlider}"
+										Minimum="0" Maximum="255"
+										PropertyChanged="OpacitySlider_Change"/>
+									</Border>
+									<Border Grid.Column="2" VerticalAlignment="Center">
+										<TextBox Name="AText" FontSize="10"
+											 Margin="10" MinHeight="5" MinWidth="40"
+											 PropertyChanged="OpacityTextBox_Change"/>
 									</Border>
 								</Grid>
 

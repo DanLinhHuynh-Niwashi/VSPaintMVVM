@@ -56,6 +56,7 @@ public partial class MainView : UserControl
         CreateTools();
 
         strokeCB.IsChecked = true;
+        ASlider.Value = 255;
         bool found = false;
         foreach (var tool in toolCollection)
         {
@@ -138,6 +139,7 @@ public partial class MainView : UserControl
             BText.Text = fill.Color.B.ToString();
             RText.Text =fill.Color.R.ToString();
             GText.Text = fill.Color.G.ToString();
+            AText.Text = fill.Color.A.ToString();
         }
         else if ((bool)strokeCB.IsChecked && strokeColor.Fill != null)
         {
@@ -145,17 +147,31 @@ public partial class MainView : UserControl
             BText.Text = stroke.Color.B.ToString();
             RText.Text = stroke.Color.R.ToString();
             GText.Text = stroke.Color.G.ToString();
+            AText.Text = stroke.Color.A.ToString();
         }
     }
     private void Transparent_Click(object sender, RoutedEventArgs e)
     {
         if ((bool)fillCB.IsChecked)
         {
-            ColorChange(fillCB, 0);
+            AText.Text = "0";
         }
         else
         {
-            ColorChange(strokeCB, 0);
+            AText.Text = "0";
+        }
+    }
+
+    private void OpacitySlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        AText.Text = ((int)ASlider.Value).ToString();
+        if ((bool)fillCB.IsChecked)
+        {
+            ColorChange(fillCB);
+        }
+        else
+        {
+            ColorChange(strokeCB);
         }
     }
     private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
@@ -163,11 +179,11 @@ public partial class MainView : UserControl
         BText.Text = ((int)BSlider.Value).ToString();
         if ((bool)fillCB.IsChecked)
         {
-            ColorChange(fillCB, 255);
+            ColorChange(fillCB);
         }
         else
         {
-            ColorChange(strokeCB, 255);
+            ColorChange(strokeCB);
         }    
     }
     private void RedSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
@@ -175,11 +191,11 @@ public partial class MainView : UserControl
         RText.Text = ((int)RSlider.Value).ToString();
         if ((bool)fillCB.IsChecked)
         {
-            ColorChange(fillCB, 255);
+            ColorChange(fillCB);
         }
         else
         {
-            ColorChange(strokeCB, 255);
+            ColorChange(strokeCB);
         }
     }
     private void GreenSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
@@ -187,15 +203,26 @@ public partial class MainView : UserControl
         GText.Text = ((int)GSlider.Value).ToString();
         if ((bool)fillCB.IsChecked)
         {
-            ColorChange(fillCB, 255);
+            ColorChange(fillCB);
         }
         else
         {
-            ColorChange(strokeCB, 255);
+            ColorChange(strokeCB);
         }
     }
 
     //Color textbox
+    private void OpacityTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        double opacityValue;
+        if (double.TryParse(AText.Text, out opacityValue))
+        {
+            if (opacityValue < 0) opacityValue = 0;
+            if (opacityValue > 255) opacityValue = 255;
+            ASlider.Value = opacityValue;
+        }
+    }
+
     private void BlueTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         double blueValue;
@@ -232,12 +259,13 @@ public partial class MainView : UserControl
     System.Timers.Timer timer;
     int timeCounting = 0;
 
-    private void ColorChange(object sender, byte a)
+    private void ColorChange(object sender)
     {
 
         byte r = (byte)RSlider.Value;
         byte g = (byte)GSlider.Value;
         byte b = (byte)BSlider.Value;
+        byte a = (byte)ASlider.Value;
         Color tempC = new Color(a, r, g, b);
         SolidColorBrush prevColor = new SolidColorBrush();
         if (sender == fillCB)

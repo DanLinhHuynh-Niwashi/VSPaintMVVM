@@ -20,6 +20,11 @@ namespace VSPaintMVVM.Tool
         public string Name => "Point";
         public int Thickness { get; set; }
 
+        public PointCustom(double x = 0, double y = 0)
+        {
+            this.x = x;
+            this.y = y;
+        }
         public ITool Clone()
         {
             return new PointCustom();

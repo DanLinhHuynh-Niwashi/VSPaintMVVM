@@ -15,8 +15,16 @@ namespace VSPaintMVVM.Tool
             prototypes = new Dictionary<string, ITool>();
 
             ITool rect = new RectangleCustom();
-
+            ITool ellipse = new EllipseCustom();
+            ITool triangle = new TriangleCustom();
+            ITool pentagon = new PentagonCustom();
+            ITool line = new LineCustom();
+            prototypes.Add(line.Name, line);
             prototypes.Add(rect.Name, rect);
+            prototypes.Add(ellipse.Name, ellipse);
+            prototypes.Add(triangle.Name, triangle);
+            prototypes.Add(pentagon.Name, pentagon);
+            
         }
 
         public ITool Create(string id)

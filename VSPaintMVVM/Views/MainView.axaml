@@ -66,6 +66,7 @@
 								 Name="PenB"
 								 Theme="{StaticResource SquareButton}"
 								 Click="Tool_Checked"
+								 IsChecked="true"
 								 >
 						<Image Source="/Assets/Icons/PenIcon.png" Margin="3"></Image>
 					</RadioButton>
@@ -93,24 +94,35 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto" MinHeight="200"></RowDefinition>
 						<RowDefinition Height="0.2"></RowDefinition>
+						<RowDefinition Height="Auto" MinHeight="100"></RowDefinition>
 						<RowDefinition Height="*" MinHeight="200"></RowDefinition>
 					</Grid.RowDefinitions>
 					<!--Color Setting-->
 					<Border Grid.Row="0" Background="WhiteSmoke">
 						<Viewbox>
 							<Grid RowDefinitions="Auto, *, 10, 3*, 3*, 3*">
-								<Panel Name="colorPanel" Grid.Row="0" Background="White"
-									   MinHeight="200" Width="200" Margin="20"></Panel>
+								
 								<WrapPanel Grid.Row="1" Background="WhiteSmoke"
 										   HorizontalAlignment="Center"
-										   MaxHeight="35">
+										   MaxHeight="35" Margin="0 60 0 0">
 									<!--stroke-->
-									<Rectangle Name="strokeColor" Fill="Black"
+									<RadioButton GroupName="CGroup" Theme="{StaticResource SquareButton}" Name="strokeCB">
+										<Rectangle Name="strokeColor" Fill="Black"
 										   Height="35"
 										   Width="35"/>
+									</RadioButton>
+									
 									<!--fill-->
-									<Rectangle Name="fillColor" Fill="White" Width="35"/>
+									<RadioButton GroupName="CGroup" Theme="{StaticResource SquareButton}" Name="fillCB">
+										<Rectangle Name="fillColor" Fill="White" Width="35" Height="35"/>
+									</RadioButton>
+									<Button Name="CTransparent" Theme="{StaticResource SquareButtonN}"
+												  Foreground="Black" Padding="0">
+
+										<Image Source="/Assets/Icons/Transparent.png" Margin="2"></Image>
+									</Button>
 								</WrapPanel>
+
 								<!--Red label & slider-->
 								<Grid Grid.Row="3" ColumnDefinitions="0.5*, 9*, 0.5*">
 									<Border Grid.Column="0" VerticalAlignment="Center">
@@ -185,10 +197,11 @@
 					<GridSplitter Grid.Row="1" Background="Transparent" ResizeDirection="Rows"/>
 					<!--Brush setting-->
 					<Border Grid.Row="2" Background="LightGray">
+						<Viewbox>
 							<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto">
-								<Border Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="2">
-									<Label Name="BrushSizeLabel" Grid.Row="0" 
-										   Height="20" Width="100" Foreground="Black" 
+								<Border Grid.Row="0" Grid.ColumnSpan="2">
+									<Label  
+										   Height="25" Width="100" Foreground="Black" 
 										   FontSize="15" Margin="7"
 										   FontWeight="Bold">Brush Size</Label>
 								</Border>
@@ -210,8 +223,24 @@
 										Text="1" PropertyChanged="BrushSizeTextBox_Changed"/>
 								</Border>
 							</Grid>
+						</Viewbox>
+					</Border>
+					<!--Shape setting-->
+					<Border Background="LightGray" Grid.Row="3">
+						
+						<ScrollViewer HorizontalScrollBarVisibility="Visible"
+							VerticalScrollBarVisibility="Visible"
+							HorizontalAlignment="Center" 
+							Background="White"
+							MaxHeight="250" Margin="20" >
+							<WrapPanel Name="shapeListContainer" Background="White"
+									   MinWidth="100"
+										   Width="250"></WrapPanel>
+						</ScrollViewer>
 					</Border>
 				</Grid>
+				
+				
 			</Grid>
 			<GridSplitter Grid.Column="1" Background="Transparent" ResizeDirection="Columns"/>
 			

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
 		WindowState="Maximized"
-		MinHeight="400"
+		MinHeight="500"
 		MinWidth="830"
         x:Class="VSPaintMVVM.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"

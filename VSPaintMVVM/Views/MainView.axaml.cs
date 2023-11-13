@@ -12,13 +12,14 @@ using Avalonia.Visuals;
 using System;
 using Avalonia.Interactivity;
 using System.Linq;
-using System.Threading;
+
 using System.Timers;
-using Tmds.DBus.Protocol;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using Avalonia.Media.Imaging;
-using System.IO;
-using SkiaSharp;
+
+using Avalonia.Platform;
+
+using System.Reflection;
 
 namespace VSPaintMVVM.Views;
 
@@ -39,18 +40,90 @@ public partial class MainView : UserControl
 
     private static int currentThickness;
     private ITool drawingShape = null;
-    private string selectedShapeName = "Rectangle";
+    private string selectedShapeName;
 
     private static SolidColorBrush currentColor = new SolidColorBrush();
     ShapeCollection shapeCollection = new ShapeCollection();
+    List<Button> toolCollection = new List<Button>();
     public MainView()
     {
         InitializeComponent();
         canvas.Height = 600; canvas.Width = 600;
         canvasContainer.Height = canvas.Height + 2000; canvasContainer.Width = canvas.Width + 2000;
+        CreateTools();
+
+        bool found = false;
+        foreach (var tool in toolCollection)
+        {
+            if (tool.Background != null)
+            {
+                SolidColorBrush buttonColor = tool.Background as SolidColorBrush;
+                if (buttonColor.Color == Colors.Violet)
+                {
+                    selectedShapeName = tool.Name;
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if (found==false && toolCollection.Count>0)
+        {
+            toolCollection[0].Background = new SolidColorBrush(Colors.Violet);
+            selectedShapeName = toolCollection[0].Name;
+        }
 
     }
+    private void CreateTools()
+    {
+        foreach (var shape in shapeCollection.prototypes)
+        {
+            var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            Bitmap btm = new Bitmap(AssetLoader.Open(new Uri($"avares://{assemblyName}/" + shape.Value.Icon)));
+            Image shapeImage = new Image()
+            {
+                Source = btm
+            };
 
+            Button shapeButton = new Button()
+            {
+                Name = shape.Value.Name,
+                Width = 40,
+                Height = 40,
+                Content = shapeImage,
+                Background = new SolidColorBrush(Colors.White),
+
+            };
+            shapeButton.Click += itemChoose;
+            toolCollection.Add(shapeButton);
+            shapeListContainer.Children.Add(shapeButton);
+        }
+    }
+    private void DisableDrawing()
+    {
+        foreach (var tool in toolCollection)
+        {
+            tool.IsEnabled = false;
+        }
+    }
+    private void EnableDrawing()
+    {
+        foreach (var tool in toolCollection)
+        {
+            tool.IsEnabled = true;
+        }
+    }
+    private void itemChoose(object sender, RoutedEventArgs e)
+    {
+        foreach (var tool in toolCollection)
+        {
+            tool.Background = new SolidColorBrush(Colors.White);
+            if (sender as Button == tool)
+            {
+                tool.Background = new SolidColorBrush(Colors.Violet);
+                selectedShapeName = tool.Name.ToString();
+            }
+        }
+    }
 
     //Color slider
     private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
@@ -223,7 +296,11 @@ public partial class MainView : UserControl
             isSelecting = preIsSelecting;
             isErasing = preIsErasing;
             isTransforming = false;
+            
         }
+
+        if (isDrawing == false)
+            DisableDrawing();
         Redraw();
     }
 
@@ -231,28 +308,32 @@ public partial class MainView : UserControl
     //selection + deletion tool
     private void Tool_Checked(object sender, RoutedEventArgs e)
     {
-        
-         if ((bool)SelB.IsChecked)
-            {
-                isDrawing = false;
-                isSelecting = true;
-                isErasing = false;
-                isTransforming = false;
-            }
-            else if ((bool)EraserB.IsChecked)
-            {
-                isDrawing = false;
-                isSelecting = false;
-                isErasing = true;
-                isTransforming = false;
-            }
-            else if ((bool)PenB.IsChecked)
-            {
-                isErasing = false;
-                isSelecting = false;
-                isTransforming = false;
-                
-            }
+
+        if ((bool)SelB.IsChecked)
+        {
+            isDrawing = false;
+            isSelecting = true;
+            isErasing = false;
+            isTransforming = false;
+            DisableDrawing();
+        }
+        else if ((bool)EraserB.IsChecked)
+        {
+            isDrawing = false;
+            isSelecting = false;
+            isErasing = true;
+            isTransforming = false;
+            DisableDrawing();
+        }
+        else if ((bool)PenB.IsChecked)
+        {
+            isErasing = false;
+            isSelecting = false;
+            isTransforming = false;
+            EnableDrawing();
+            
+
+        }
         TransFB.IsChecked = false;
     }
 

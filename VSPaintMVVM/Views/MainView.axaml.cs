@@ -48,34 +48,24 @@ public partial class MainView : UserControl
         InitializeComponent();
         canvas.Height = 600; canvas.Width = 600;
         canvasContainer.Height = canvas.Height + 2000; canvasContainer.Width = canvas.Width + 2000;
-        drawingShape = shapeCollection.Create(selectedShapeName);
 
     }
-    
-    
+
+
     //Color slider
     private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if (isChangingFromText)
-            isChangingFromText = false;
-        else
-            BText.Text = ((int)BSlider.Value).ToString();
+        BText.Text = ((int)BSlider.Value).ToString();
         ColorChange();
     }
     private void RedSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if (isChangingFromText)
-            isChangingFromText = false;
-        else
-            RText.Text = ((int)RSlider.Value).ToString();
+        RText.Text = ((int)RSlider.Value).ToString();
         ColorChange();
     }
     private void GreenSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if (isChangingFromText)
-            isChangingFromText = false;
-        else
-            GText.Text = ((int)GSlider.Value).ToString();
+        GText.Text = ((int)GSlider.Value).ToString();
         ColorChange();
     }
 
@@ -85,9 +75,9 @@ public partial class MainView : UserControl
         double blueValue;
         if (double.TryParse(BText.Text, out blueValue))
         {
-            isChangingFromText = true;
+            if (blueValue < 0) blueValue = 0;
+            if (blueValue > 255) blueValue = 255;
             BSlider.Value = blueValue;
-            ColorChange();
         }
     }
     private void RedTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
@@ -95,9 +85,9 @@ public partial class MainView : UserControl
         double redValue;
         if (double.TryParse(RText.Text, out redValue))
         {
-            isChangingFromText = true;
+            if (redValue < 0) redValue = 0;
+            if (redValue > 255) redValue = 255;
             RSlider.Value = redValue;
-            ColorChange();
         }
     }
     private void GreenTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
@@ -105,9 +95,9 @@ public partial class MainView : UserControl
         double greenValue;
         if (double.TryParse(GText.Text, out greenValue))
         {
-            isChangingFromText = true;
+            if (greenValue < 0) greenValue = 0;
+            if (greenValue > 255) greenValue = 255;
             GSlider.Value = greenValue;
-            ColorChange();
         }
     }
 
@@ -118,7 +108,7 @@ public partial class MainView : UserControl
 
     private void ColorChange()
     {
-        
+
         byte r = (byte)RSlider.Value;
         byte g = (byte)GSlider.Value;
         byte b = (byte)BSlider.Value;
@@ -130,12 +120,12 @@ public partial class MainView : UserControl
         currentColor = new SolidColorBrush(tempC);
 
 
-            foreach (var shape in chosenList)
-            {
-                var element = shape as ITool;
-                element.Brush = currentColor;
-            }
-            Redraw();
+        foreach (var shape in chosenList)
+        {
+            var element = shape as ITool;
+            element.Brush = currentColor;
+        }
+        Redraw();
 
     }
 
@@ -148,27 +138,6 @@ public partial class MainView : UserControl
         currentThickness = (int)BrushSlider.Value;
         BrushTextBox.Text = ((int)BrushSlider.Value).ToString();
         foreach (var shape in chosenList)
-            {
-                var element = shape as ITool;
-                element.Thickness = currentThickness;
-            }
-            Redraw();
-
-        
-    }
-    //Brush size textbox
-    private void BrushSizeTextBox_Changed(object sender, AvaloniaPropertyChangedEventArgs e)
-    {
-        int newThickness;
-        if (Int32.TryParse(BrushTextBox.Text, out newThickness))
-        {
-            if (currentThickness == newThickness) return;
-            ChangedStart();
-            if (newThickness >= 1 && newThickness <= 100)
-                BrushSlider.Value = newThickness;
-        }
-       
-        foreach (var shape in chosenList)
         {
             var element = shape as ITool;
             element.Thickness = currentThickness;
@@ -177,50 +146,66 @@ public partial class MainView : UserControl
 
 
     }
-    private void ChangedStart()
-         {
-             if (isChanging == false)
-             {
-                 currentAction = new ActionCustom();
-                 timer = new System.Timers.Timer();
-                 timeCounting = 0;
-                 timer.Interval = 1000;
-                 timer.Start();
-                 timer.Elapsed += new ElapsedEventHandler(TimerTick);
-                 timer.Enabled = true;
-                 isChanging = true;
-                 
-                 foreach (var shape in chosenList)
-                 {
-                     int i = shapeList.IndexOf((ITool)shape);
-                    currentAction.beforeShape.Add((ITool)shape.Copy());
-                    currentAction.pos.Add(i);
-                    currentAction.ids.Add(shape.ID);
-                }
-             }
+    //Brush size textbox
+    private void BrushSizeTextBox_Changed(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        int newThickness;
+        if (Int32.TryParse(BrushTextBox.Text, out newThickness))
+        {
+            if (newThickness < 1) newThickness = 1;
+            if (newThickness > 100) newThickness = 100;
+            BrushSlider.Value = newThickness;
 
-         }    
-         private void TimerTick(object source, ElapsedEventArgs e)
-         {
-            timeCounting++;
-             if (timeCounting == 3 && isChanging == true)
-             {
-                 isChanging = false;
-                 foreach (var shape in chosenList)
-                 {
+        }
+
+    }
+    private void ChangedStart()
+    {
+        if (isChanging == false)
+        {
+            currentAction = new ActionCustom();
+            timer = new System.Timers.Timer();
+            timeCounting = 0;
+            timer.Interval = 1000;
+            timer.Start();
+            timer.Elapsed += new ElapsedEventHandler(TimerTick);
+            timer.Enabled = true;
+            isChanging = true;
+
+            foreach (var shape in chosenList)
+            {
+                int i = shapeList.IndexOf((ITool)shape);
+                currentAction.beforeShape.Add((ITool)shape.Copy());
+                currentAction.pos.Add(i);
+                currentAction.ids.Add(shape.ID);
+            }
+        }
+
+    }
+    private void TimerTick(object source, ElapsedEventArgs e)
+    {
+        timeCounting++;
+        if (timeCounting == 3 && isChanging == true)
+        {
+            isChanging = false;
+            foreach (var shape in chosenList)
+            {
                 int i = shapeList.IndexOf((ITool)shape);
 
                 currentAction.afterShape.Add((ITool)shape.Copy());
                 currentAction.posA.Add(i);
-                 }
-                 shapeUndoStack.Push(currentAction);
+            }
+            if (currentAction!=null && (currentAction.afterShape.Count > 0 || currentAction.beforeShape.Count > 0))
+            {
+                shapeUndoStack.Push(currentAction);
                 shapeRedoStack.Clear();
-                 timer.Enabled = true;
-             }    
-         }
+            }
+            timer.Enabled = true;
+        }
+    } 
     
 
-        bool preIsDrawing, preIsSelecting, preIsErasing;
+    bool preIsDrawing, preIsSelecting, preIsErasing;
     private void TransF_Move_Checked(object sender, RoutedEventArgs e)
     {
         
@@ -294,6 +279,39 @@ public partial class MainView : UserControl
         Redraw();
     }
 
+    List<ShapeCustom> copyShapeList = new List<ShapeCustom>();
+    private void Copy_Clicked(object sender, RoutedEventArgs e)
+    {
+        copyShapeList.Clear();
+        foreach (var shape in chosenList)
+        {
+            copyShapeList.Add(shape);
+        }
+    }
+
+    private void Paste_Clicked(object sender, RoutedEventArgs e)
+    {
+        ITool newShape;
+        currentAction = new ActionCustom();
+        chosenList.Clear();
+        foreach(var shape in copyShapeList)
+        {
+            newShape = shapeCollection.Create(((ITool)shape).Name);
+            ((ShapeCustom)newShape).CopyFrom(shape);
+            Moving((ShapeCustom)newShape, new Point(0, 0), new Point(30, 30));
+            shapeList.Add(newShape);
+            chosenList.Add((ShapeCustom)newShape);
+
+            int j = shapeList.IndexOf(newShape);
+            currentAction.afterShape.Add(newShape);
+            currentAction.posA.Add(j);
+            currentAction.ids.Add(shape.ID);
+        }
+
+        if (currentAction.afterShape.Count > 0)
+            shapeUndoStack.Push(currentAction);
+        Redraw();
+    }
     private void Undo_Clicked(object sender, RoutedEventArgs e)
     {
         if (shapeUndoStack.Count == 0) return;
@@ -306,19 +324,9 @@ public partial class MainView : UserControl
 
         if (temp == null) return;
         shapeRedoStack.Push(temp);
-        if (shapeList.Count == 0) 
-        {
-            foreach (var deletedShape in temp.beforeShape)
-            {
-                shapeList.Add(deletedShape);
-            }
-        }
-        else
-        {
-            temp.ctrlZ(shapeList);
-        }    
-        
 
+        temp.ctrlZ(shapeList);
+        
         Redraw();
     }
 
@@ -334,17 +342,9 @@ public partial class MainView : UserControl
             temp = shapeRedoStack.Pop();
         shapeUndoStack.Push(temp);
 
-        if (shapeList.Count == 0)
-        {
-            foreach (var drawedShape in temp.afterShape)
-            {
-                shapeList.Add(drawedShape);
-            }
-        }
-        else
-        {
-            temp.ctrlY(shapeList);
-        }
+        
+        temp.ctrlY(shapeList);
+        
         Redraw();
     }
 
@@ -361,6 +361,8 @@ public partial class MainView : UserControl
         if (!isSelecting && !isErasing && !isTransforming)
         {
             isDrawing = true;
+            // new ready to draw shape
+            drawingShape = shapeCollection.Create(selectedShapeName);
             drawingShape.StartCorner(pos.X, pos.Y);
             
         } 
@@ -900,8 +902,7 @@ public partial class MainView : UserControl
             currentAction.posA.Add(i);
 
             shapeUndoStack.Push(currentAction);
-            // new ready to draw shape
-            drawingShape = shapeCollection.Create(selectedShapeName);
+            
 
             Redraw();
             isDrawing = false;

@@ -31,7 +31,6 @@
 			<MenuItem Width="50"
 					Theme="{StaticResource TitleBarButton}" Header="Edit">
 				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Cut" Width="200"/>
 				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
 				<Separator Background="White" Height="0.2"/>
 				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Transform..." Width="200">
@@ -258,19 +257,17 @@
 
 					<Separator Width="0.2" Height="20"></Separator>
 
-					<!--Cut-->
-					<Button Name="CutB"
-						Theme="{StaticResource SquareButtonN}">
-						<Image Source="/Assets/Icons/Cut.png" Margin="2"></Image>
-					</Button>
+
 					<!--Copy-->
 					<Button Name="CopyB"
-						Theme="{StaticResource SquareButtonN}">
+						Theme="{StaticResource SquareButtonN}"
+							Click="Copy_Clicked">
 						<Image Source="/Assets/Icons/Copy.png" Margin="2"></Image>
 					</Button>
 					<!--Paste-->
 					<Button Name="PasteB"
-						Theme="{StaticResource SquareButtonN}">
+						Theme="{StaticResource SquareButtonN}"
+							Click="Paste_Clicked">
 						<Image Source="/Assets/Icons/Paste.png" Margin="2"></Image>
 					</Button>
 

@@ -2,16 +2,17 @@
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using System;
+using Avalonia;
 using VSPaintMVVM.Tool;
 
 
 namespace VSPaintMVVM.Shapes
 {
-    public class RectangleCustom:ShapeCustom, ITool
+    public class LineCustom : ShapeCustom, ITool
     {
         static int idIndex = 0;
-        public string Icon => "Assets/Icons/ToolIcon/rectangle.png";
-        public string Name => "Rectangle";
+        public string Icon => "Assets/Icons/ToolIcon/line.png";
+        public string Name => "Line";
 
         public SolidColorBrush Brush { get; set; }
         public int Thickness { get; set; }
@@ -20,16 +21,16 @@ namespace VSPaintMVVM.Shapes
         {
             idIndex = idIndex + 1;
             posible_id_list.Enqueue(Name + idIndex.ToString(), idIndex);
-            RectangleCustom rect = new RectangleCustom();
+            LineCustom line = new LineCustom();
 
-            rect.id = next_Possible_ID();
-            return rect;
+            line.id = next_Possible_ID();
+            return line;
         }
 
-        
-        public override RectangleCustom Copy()
+
+        public override LineCustom Copy()
         {
-            RectangleCustom temp = new RectangleCustom();
+            LineCustom temp = new LineCustom();
             temp.BoxStart = boxStart.Copy();
             temp.BoxEnd = boxEnd.Copy();
             temp.Angle = angle;
@@ -50,7 +51,7 @@ namespace VSPaintMVVM.Shapes
                 Brush = ((ITool)shape).Brush;
         }
 
-        public Control Draw (SolidColorBrush brush, int thickness)
+        public Control Draw(SolidColorBrush brush, int thickness)
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
             var top = Math.Min(boxStart.y, boxEnd.y);
@@ -61,23 +62,25 @@ namespace VSPaintMVVM.Shapes
             var width = right - left;
             var height = bottom - top;
 
-            var rect = new Rectangle()
+            var line = new Line()
             {
-                Width = width,
-                Height = height,
+
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(boxEnd.x - boxStart.x, boxEnd.y - boxStart.y),
                 StrokeThickness = thickness,
                 Stroke = brush,
             };
 
-            Canvas.SetLeft(rect, left);
-            Canvas.SetTop(rect, top);
+            Canvas.SetLeft(line, boxStart.x);
+            Canvas.SetTop(line, boxStart.y);
 
             RotateTransform transform = new RotateTransform(angle);
 
-            rect.RenderTransform = transform;
+            line.RenderTransform = transform;
 
-            return rect;
+            return line;
         }
+
         public void StartCorner(double x, double y)
         {
             boxStart = new PointCustom();

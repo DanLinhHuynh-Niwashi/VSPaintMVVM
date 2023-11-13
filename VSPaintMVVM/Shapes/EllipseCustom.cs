@@ -7,11 +7,11 @@ using VSPaintMVVM.Tool;
 
 namespace VSPaintMVVM.Shapes
 {
-    public class RectangleCustom:ShapeCustom, ITool
+    public class EllipseCustom : ShapeCustom, ITool
     {
         static int idIndex = 0;
-        public string Icon => "Assets/Icons/ToolIcon/rectangle.png";
-        public string Name => "Rectangle";
+        public string Icon => "Assets/Icons/ToolIcon/ellipse.png";
+        public string Name => "Ellipse";
 
         public SolidColorBrush Brush { get; set; }
         public int Thickness { get; set; }
@@ -20,16 +20,16 @@ namespace VSPaintMVVM.Shapes
         {
             idIndex = idIndex + 1;
             posible_id_list.Enqueue(Name + idIndex.ToString(), idIndex);
-            RectangleCustom rect = new RectangleCustom();
+            EllipseCustom ellipse = new EllipseCustom();
 
-            rect.id = next_Possible_ID();
-            return rect;
+            ellipse.id = next_Possible_ID();
+            return ellipse;
         }
 
-        
-        public override RectangleCustom Copy()
+
+        public override EllipseCustom Copy()
         {
-            RectangleCustom temp = new RectangleCustom();
+            EllipseCustom temp = new EllipseCustom();
             temp.BoxStart = boxStart.Copy();
             temp.BoxEnd = boxEnd.Copy();
             temp.Angle = angle;
@@ -50,7 +50,7 @@ namespace VSPaintMVVM.Shapes
                 Brush = ((ITool)shape).Brush;
         }
 
-        public Control Draw (SolidColorBrush brush, int thickness)
+        public Control Draw(SolidColorBrush brush, int thickness)
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
             var top = Math.Min(boxStart.y, boxEnd.y);
@@ -61,7 +61,7 @@ namespace VSPaintMVVM.Shapes
             var width = right - left;
             var height = bottom - top;
 
-            var rect = new Rectangle()
+            var ellipse = new Ellipse()
             {
                 Width = width,
                 Height = height,
@@ -69,14 +69,14 @@ namespace VSPaintMVVM.Shapes
                 Stroke = brush,
             };
 
-            Canvas.SetLeft(rect, left);
-            Canvas.SetTop(rect, top);
+            Canvas.SetLeft(ellipse, left);
+            Canvas.SetTop(ellipse, top);
 
             RotateTransform transform = new RotateTransform(angle);
 
-            rect.RenderTransform = transform;
+            ellipse.RenderTransform = transform;
 
-            return rect;
+            return ellipse;
         }
         public void StartCorner(double x, double y)
         {

@@ -25,29 +25,21 @@
 				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Open" Width="200"/>
 				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Save As..." Width="200"/>
 				<Separator Background="White" Height="0.2"/>
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Exit" Width="200"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Export" Width="200"/>
 			</MenuItem>
 			<!--Edit menu item-->
 			<MenuItem Width="50"
 					Theme="{StaticResource TitleBarButton}" Header="Edit">
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
+				<MenuItem Click="Copy_Clicked" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
+				<MenuItem Click="Paste_Clicked" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
 				<Separator Background="White" Height="0.2"/>
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Transform..." Width="200">
-					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Free Transform..." Width="200"/>
-					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Deform..." Width="200"/>
-					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Scale/ Rotate..." Width="200"/>
-					<Separator Background="White" Height="0.2"/>
-					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Flip Horizontal" Width="200"/>
-					<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Flip Vertical" Width="200"/>
-				</MenuItem>
-
+				<MenuItem Click="TransF_Move_Checked" Theme="{StaticResource TitleBarButtonChild}" Header="Transform" Width="200"/>
 			</MenuItem>
 
 			<!--Help menu item-->
 			<MenuItem Width="50"
 					Theme="{StaticResource TitleBarButton}" Header="Help">
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Go to Main Page..." Width="200"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Go to Intro Page..." Width="200"/>
 			</MenuItem>
 		</Menu>
 

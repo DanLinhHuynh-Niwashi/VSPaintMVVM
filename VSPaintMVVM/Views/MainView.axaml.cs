@@ -309,7 +309,11 @@ public partial class MainView : UserControl
         }
 
         if (currentAction.afterShape.Count > 0)
+        {
+            shapeRedoStack.Clear();
             shapeUndoStack.Push(currentAction);
+        }
+            
         Redraw();
     }
     private void Undo_Clicked(object sender, RoutedEventArgs e)

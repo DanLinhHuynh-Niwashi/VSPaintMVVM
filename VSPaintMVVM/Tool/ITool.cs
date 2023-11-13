@@ -19,7 +19,7 @@ namespace VSPaintMVVM.Tool
         int Thickness { get; set; }
 
         ITool Clone();
-        Control Draw(SolidColorBrush brush, int thickness);
+        Control Draw(SolidColorBrush brush, SolidColorBrush fillBrush, int thickness);
         void StartCorner(double x, double y);
         void EndCorner(double x, double y);
     }

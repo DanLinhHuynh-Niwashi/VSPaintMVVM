@@ -20,6 +20,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
 using System.Reflection;
+using Avalonia.Media.Immutable;
 
 namespace VSPaintMVVM.Views;
 
@@ -43,6 +44,8 @@ public partial class MainView : UserControl
     private string selectedShapeName;
 
     private static SolidColorBrush currentColor = new SolidColorBrush();
+    private static SolidColorBrush currentFill = new SolidColorBrush();
+
     ShapeCollection shapeCollection = new ShapeCollection();
     List<Button> toolCollection = new List<Button>();
     public MainView()
@@ -52,6 +55,7 @@ public partial class MainView : UserControl
         canvasContainer.Height = canvas.Height + 2000; canvasContainer.Width = canvas.Width + 2000;
         CreateTools();
 
+        strokeCB.IsChecked = true;
         bool found = false;
         foreach (var tool in toolCollection)
         {
@@ -126,20 +130,69 @@ public partial class MainView : UserControl
     }
 
     //Color slider
+    private void CB_Clicked(object sender, RoutedEventArgs e)
+    {
+        if ((bool)fillCB.IsChecked && fillColor.Fill != null)
+        {
+            ImmutableSolidColorBrush fill = (ImmutableSolidColorBrush)fillColor.Fill;
+            BText.Text = fill.Color.B.ToString();
+            RText.Text =fill.Color.R.ToString();
+            GText.Text = fill.Color.G.ToString();
+        }
+        else if ((bool)strokeCB.IsChecked && strokeColor.Fill != null)
+        {
+            ImmutableSolidColorBrush stroke = (ImmutableSolidColorBrush)strokeColor.Fill;
+            BText.Text = stroke.Color.B.ToString();
+            RText.Text = stroke.Color.R.ToString();
+            GText.Text = stroke.Color.G.ToString();
+        }
+    }
+    private void Transparent_Click(object sender, RoutedEventArgs e)
+    {
+        if ((bool)fillCB.IsChecked)
+        {
+            ColorChange(fillCB, 0);
+        }
+        else
+        {
+            ColorChange(strokeCB, 0);
+        }
+    }
     private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         BText.Text = ((int)BSlider.Value).ToString();
-        ColorChange();
+        if ((bool)fillCB.IsChecked)
+        {
+            ColorChange(fillCB, 255);
+        }
+        else
+        {
+            ColorChange(strokeCB, 255);
+        }    
     }
     private void RedSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         RText.Text = ((int)RSlider.Value).ToString();
-        ColorChange();
+        if ((bool)fillCB.IsChecked)
+        {
+            ColorChange(fillCB, 255);
+        }
+        else
+        {
+            ColorChange(strokeCB, 255);
+        }
     }
     private void GreenSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         GText.Text = ((int)GSlider.Value).ToString();
-        ColorChange();
+        if ((bool)fillCB.IsChecked)
+        {
+            ColorChange(fillCB, 255);
+        }
+        else
+        {
+            ColorChange(strokeCB, 255);
+        }
     }
 
     //Color textbox
@@ -179,23 +232,44 @@ public partial class MainView : UserControl
     System.Timers.Timer timer;
     int timeCounting = 0;
 
-    private void ColorChange()
+    private void ColorChange(object sender, byte a)
     {
 
         byte r = (byte)RSlider.Value;
         byte g = (byte)GSlider.Value;
         byte b = (byte)BSlider.Value;
-        Color tempC = new Color(255, r, g, b);
-        if (currentColor.Color == tempC) return;
+        Color tempC = new Color(a, r, g, b);
+        SolidColorBrush prevColor = new SolidColorBrush();
+        if (sender == fillCB)
+        {
+            prevColor = currentFill;
+            fillColor.Fill = new SolidColorBrush(tempC).ToImmutable();
+        }
+        else
+        {
+            prevColor = currentColor;
+            strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
+        }
+        
+        if (prevColor.Color == tempC) return;
 
         ChangedStart();
-        strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
-        currentColor = new SolidColorBrush(tempC);
 
+        if (sender == fillCB)
+        {
+            currentFill = new SolidColorBrush(tempC);
+            fillColor.Fill = new SolidColorBrush(tempC).ToImmutable();
+        }
+        else
+        {
+            currentColor = new SolidColorBrush(tempC);
+            strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
+        }
 
         foreach (var shape in chosenList)
         {
             var element = shape as ITool;
+            element.FillBrush = currentFill;
             element.Brush = currentColor;
         }
         Redraw();
@@ -917,7 +991,7 @@ public partial class MainView : UserControl
 
             Redraw();
 
-            canvas.Children.Add(drawingShape.Draw(currentColor, currentThickness));
+            canvas.Children.Add(drawingShape.Draw(currentColor, currentFill, currentThickness));
         }
     }
 
@@ -979,6 +1053,7 @@ public partial class MainView : UserControl
             // add to list
             drawingShape.Brush = currentColor;
             drawingShape.Thickness = currentThickness;
+            drawingShape.FillBrush = currentFill;
             shapeList.Add(drawingShape);
 
             currentAction.ids.Add(((ShapeCustom)drawingShape).ID);
@@ -1001,7 +1076,7 @@ public partial class MainView : UserControl
 
         foreach (var shape in shapeList)
         {
-            var element = shape.Draw(shape.Brush, shape.Thickness);
+            var element = shape.Draw(shape.Brush, shape.FillBrush, shape.Thickness);
             canvas.Children.Add(element);
             if (chosenList.Contains(((ShapeCustom)shape)))
             {

@@ -135,7 +135,7 @@ namespace VSPaintMVVM.Tool
                 newPoint.y = (aPoint.x - centerX) * sina + (aPoint.y - centerY) * cosa + centerY;
                 newPoint.angle = angle;
                 showingApoints.Add(newPoint);
-                anchor.Add(newPoint.Draw(new SolidColorBrush(Colors.Black), 1));
+                anchor.Add(newPoint.Draw(new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.White), 1));
             }    
             
             return anchor;

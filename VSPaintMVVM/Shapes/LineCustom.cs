@@ -14,6 +14,7 @@ namespace VSPaintMVVM.Shapes
         public string Icon => "Assets/Icons/ToolIcon/line.png";
         public string Name => "Line";
 
+        public SolidColorBrush FillBrush { get; set; }
         public SolidColorBrush Brush { get; set; }
         public int Thickness { get; set; }
 
@@ -39,7 +40,8 @@ namespace VSPaintMVVM.Shapes
 
             if (Brush != null)
                 temp.Brush = Brush;
-
+            if (FillBrush != null)
+                temp.FillBrush = FillBrush;
             return temp;
         }
 
@@ -49,9 +51,10 @@ namespace VSPaintMVVM.Shapes
             Thickness = ((ITool)shape).Thickness;
             if (((ITool)shape).Brush != null)
                 Brush = ((ITool)shape).Brush;
+            if (((ITool)shape).FillBrush != null)
+                FillBrush = ((ITool)shape).FillBrush;
         }
-
-        public Control Draw(SolidColorBrush brush, int thickness)
+        public Control Draw(SolidColorBrush brush, SolidColorBrush fillBrush, int thickness)
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
             var top = Math.Min(boxStart.y, boxEnd.y);

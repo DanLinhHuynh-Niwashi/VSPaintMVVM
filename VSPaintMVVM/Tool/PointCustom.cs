@@ -17,6 +17,7 @@ namespace VSPaintMVVM.Tool
         public string Icon { get; }
 
         public SolidColorBrush Brush { get; set; }
+        public SolidColorBrush FillBrush { get; set; }
         public string Name => "Point";
         public int Thickness { get; set; }
 
@@ -51,7 +52,7 @@ namespace VSPaintMVVM.Tool
         }
 
 
-        public Control Draw(SolidColorBrush brush, int thickness)
+        public Control Draw(SolidColorBrush brush, SolidColorBrush fillbrush, int thickness)
         {
             Line line = new Line()
             {

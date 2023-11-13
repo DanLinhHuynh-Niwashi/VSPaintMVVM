@@ -106,17 +106,17 @@
 										   HorizontalAlignment="Center"
 										   MaxHeight="35" Margin="0 60 0 0">
 									<!--stroke-->
-									<RadioButton GroupName="CGroup" Theme="{StaticResource SquareButton}" Name="strokeCB">
+									<RadioButton Click="CB_Clicked" GroupName="CGroup" Theme="{StaticResource SquareButton}" Name="strokeCB">
 										<Rectangle Name="strokeColor" Fill="Black"
 										   Height="35"
 										   Width="35"/>
 									</RadioButton>
 									
 									<!--fill-->
-									<RadioButton GroupName="CGroup" Theme="{StaticResource SquareButton}" Name="fillCB">
+									<RadioButton Click="CB_Clicked" GroupName="CGroup" Theme="{StaticResource SquareButton}" Name="fillCB">
 										<Rectangle Name="fillColor" Fill="White" Width="35" Height="35"/>
 									</RadioButton>
-									<Button Name="CTransparent" Theme="{StaticResource SquareButtonN}"
+									<Button Click="Transparent_Click" Name="CTransparent" Theme="{StaticResource SquareButtonN}"
 												  Foreground="Black" Padding="0">
 
 										<Image Source="/Assets/Icons/Transparent.png" Margin="2"></Image>

@@ -67,11 +67,7 @@ namespace VSPaintMVVM.Tool
                         int a = ids.IndexOf(i);
                         found = true;
                         ShapeCustom temp = shape as ShapeCustom;
-                        temp.BoxStart = ((ShapeCustom)beforeShape[a]).BoxStart;
-                        temp.BoxEnd = ((ShapeCustom)beforeShape[a]).BoxEnd;
-                        temp.Angle = ((ShapeCustom)beforeShape[a]).Angle;
-                        shape.Thickness = (beforeShape[a]).Thickness;
-                        shape.Brush = (beforeShape[a]).Brush;
+                        temp.CopyFrom((ShapeCustom)beforeShape[a]);
                     }
                 }
             }
@@ -110,11 +106,7 @@ namespace VSPaintMVVM.Tool
 
                         int a = ids.IndexOf(i);
                         ShapeCustom temp = shape as ShapeCustom;
-                        temp.BoxStart = ((ShapeCustom)afterShape[a]).BoxStart;
-                        temp.BoxEnd = ((ShapeCustom)afterShape[a]).BoxEnd;
-                        temp.Angle = ((ShapeCustom)afterShape[a]).Angle;
-                        shape.Thickness = (afterShape[a]).Thickness;
-                        shape.Brush = (afterShape[a]).Brush;
+                        temp.CopyFrom((ShapeCustom)afterShape[a]);
                     }
                 }
             }

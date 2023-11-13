@@ -21,6 +21,8 @@ namespace VSPaintMVVM.Tool
         public string Icon { get; }
 
         public SolidColorBrush Brush { get; set; }
+
+        public SolidColorBrush FillBrush { get; set; }
         public string Name => "AnchorPoint";
         public int Thickness { get; set; }
 
@@ -75,7 +77,7 @@ namespace VSPaintMVVM.Tool
         }
 
 
-        public Control Draw(SolidColorBrush brush, int thickness)
+        public Control Draw(SolidColorBrush brush, SolidColorBrush fillbrush, int thickness)
         {
             var left = x - 3;
             var top = y - 3;
@@ -89,7 +91,7 @@ namespace VSPaintMVVM.Tool
                 Height = height,
                 StrokeThickness = thickness,
                 Stroke = brush,
-                Fill = new SolidColorBrush(Colors.White)
+                Fill = fillbrush
             };
 
             Canvas.SetLeft(rect, left);

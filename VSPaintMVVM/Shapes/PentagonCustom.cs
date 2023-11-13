@@ -15,6 +15,8 @@ namespace VSPaintMVVM.Shapes
         public string Name => "Pentagon";
 
         public SolidColorBrush Brush { get; set; }
+
+        public SolidColorBrush FillBrush { get; set; }
         public int Thickness { get; set; }
 
         public ITool Clone()
@@ -39,7 +41,8 @@ namespace VSPaintMVVM.Shapes
 
             if (Brush != null)
                 temp.Brush = Brush;
-
+            if (FillBrush != null)
+                temp.FillBrush = FillBrush;
             return temp;
         }
 
@@ -49,9 +52,11 @@ namespace VSPaintMVVM.Shapes
             Thickness = ((ITool)shape).Thickness;
             if (((ITool)shape).Brush != null)
                 Brush = ((ITool)shape).Brush;
+            if (((ITool)shape).FillBrush != null)
+                FillBrush = ((ITool)shape).FillBrush;
         }
 
-        public Control Draw(SolidColorBrush brush, int thickness)
+        public Control Draw(SolidColorBrush brush, SolidColorBrush fillBrush, int thickness)
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
             var top = Math.Min(boxStart.y, boxEnd.y);
@@ -78,6 +83,7 @@ namespace VSPaintMVVM.Shapes
                 Width = width,
                 Height = height,
                 StrokeThickness = thickness,
+                Fill = fillBrush,
                 Stroke = brush,
             };
 

@@ -39,13 +39,21 @@ namespace VSPaintMVVM.Shapes
             temp.Angle = angle;
 
             temp.Thickness = Thickness;
-            temp.ID = id;
 
             if (Brush != null)
                 temp.Brush = Brush;
 
             return temp;
         }
+
+        public override void CopyFrom(ShapeCustom shape)
+        {
+            base.CopyFrom(shape);
+            Thickness = ((ITool)shape).Thickness;
+            if (((ITool)shape).Brush != null)
+                Brush = ((ITool)shape).Brush;
+        }
+
         public Control Draw (SolidColorBrush brush, int thickness)
         {
             var left = Math.Min(boxStart.x, boxEnd.x);

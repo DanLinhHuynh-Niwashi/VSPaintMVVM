@@ -612,6 +612,41 @@ public partial class MainView : UserControl
         Redraw();
     }
 
+    //Push up & down layer
+    private void DownLevel_Clicked(object sender, RoutedEventArgs e)
+    {
+        for (int i = 0; i < shapeList.Count; i++)
+        {
+            if (shapeList[i] == chosenList[0] && i != 0)
+            {
+                Swap(shapeList, i, i - 1);
+                Redraw();
+                return;
+            }
+        }
+    }
+
+    private void UpLevel_Clicked(object sender, RoutedEventArgs e)
+    {
+        for (int i = 0; i < shapeList.Count; i++)
+        {
+            if (shapeList[i] == chosenList[0] && i != shapeList.Count - 1)
+            {
+                Swap(shapeList, i + 1, i);
+                Redraw() ;
+                return;
+            }
+        }
+    }
+    private void Swap(List<ITool> list, int index1, int index2)
+    {
+        ITool temp = list[index1];
+        list[index1] = list[index2];
+        list[index2] = temp;
+    }
+
+
+
     Tuple<AnchorPoint, int, AnchorPoint> chosenAPoint;
     ActionCustom currentAction;
     Point startingPos;

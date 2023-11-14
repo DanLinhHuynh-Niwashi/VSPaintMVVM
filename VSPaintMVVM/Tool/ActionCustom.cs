@@ -51,9 +51,22 @@ namespace VSPaintMVVM.Tool
             //deleteAction
             if (afterShape.Count == 0)
             {
+                int postPosition = 0;
                 foreach (var deletedShape in beforeShape)
                 {
-                    shapeList.Insert(pos[beforeShape.IndexOf(deletedShape)], deletedShape);
+                    shapeList.Add(null);
+                }
+
+                foreach (var deletedShape in beforeShape)
+                {
+                    int position = pos[beforeShape.IndexOf(deletedShape)];
+                    shapeList.Insert(position, deletedShape);
+                }
+
+                foreach (var shape in shapeList.ToList())
+                {
+                    if (shape == null)
+                        shapeList.Remove(shape);
                 }
             }
 

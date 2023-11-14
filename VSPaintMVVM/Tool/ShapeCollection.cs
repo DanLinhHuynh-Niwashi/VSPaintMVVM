@@ -19,12 +19,13 @@ namespace VSPaintMVVM.Tool
             ITool triangle = new TriangleCustom();
             ITool pentagon = new PentagonCustom();
             ITool line = new LineCustom();
+            ITool star = new StarCustom();
             prototypes.Add(line.Name, line);
             prototypes.Add(rect.Name, rect);
             prototypes.Add(ellipse.Name, ellipse);
             prototypes.Add(triangle.Name, triangle);
             prototypes.Add(pentagon.Name, pentagon);
-            
+            prototypes.Add(star.Name, star);
         }
 
         public ITool Create(string id)
@@ -32,6 +33,15 @@ namespace VSPaintMVVM.Tool
             if (prototypes[id] is ITool)
             {
                 return prototypes[id].Clone();
+            }
+            return null;
+        }
+
+        public ITool getShape(string id)
+        {
+            if (prototypes[id] is ITool)
+            {
+                return prototypes[id];
             }
             return null;
         }

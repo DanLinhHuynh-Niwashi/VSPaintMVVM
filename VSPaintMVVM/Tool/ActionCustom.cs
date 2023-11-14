@@ -51,7 +51,6 @@ namespace VSPaintMVVM.Tool
             //deleteAction
             if (afterShape.Count == 0)
             {
-                int postPosition = 0;
                 foreach (var deletedShape in beforeShape)
                 {
                     shapeList.Add(null);
@@ -81,6 +80,12 @@ namespace VSPaintMVVM.Tool
                         found = true;
                         ShapeCustom temp = shape as ShapeCustom;
                         temp.CopyFrom((ShapeCustom)beforeShape[a]);
+                        if (pos[ids.IndexOf(i)] != posA[ids.IndexOf(i)])
+                        {
+                            Swap(shapeList, pos[ids.IndexOf(i)], posA[ids.IndexOf(i)]);
+                            j++;
+                        }    
+                        
                     }
                 }
             }
@@ -115,11 +120,15 @@ namespace VSPaintMVVM.Tool
                 {
                     if (((ShapeCustom)shape).ID == i)
                     {
-                        
-
                         int a = ids.IndexOf(i);
                         ShapeCustom temp = shape as ShapeCustom;
                         temp.CopyFrom((ShapeCustom)afterShape[a]);
+                        if (pos[ids.IndexOf(i)] != posA[ids.IndexOf(i)])
+                        {
+                            Swap(shapeList, pos[ids.IndexOf(i)], posA[ids.IndexOf(i)]);
+                            j++;
+                        }
+
                     }
                 }
             }
@@ -127,6 +136,13 @@ namespace VSPaintMVVM.Tool
 
             
             return;
+        }
+
+        private void Swap(List<ITool> list, int index1, int index2)
+        {
+            ITool temp = list[index1];
+            list[index1] = list[index2];
+            list[index2] = temp;
         }
     }
 }

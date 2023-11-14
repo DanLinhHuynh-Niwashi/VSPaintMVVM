@@ -30,12 +30,18 @@
 			<!--Edit menu item-->
 			<MenuItem Width="50"
 					Theme="{StaticResource TitleBarButton}" Header="Edit">
-				<MenuItem Click="Copy_Clicked" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
-				<MenuItem Click="Paste_Clicked" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
+				<MenuItem Name="CopyM" Click="Copy_Clicked" InputGesture="Ctrl+C" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
+				<MenuItem Name="PasteM" Click="Paste_Clicked" InputGesture="Ctrl+V" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
 				<Separator Background="White" Height="0.2"/>
-				<MenuItem Click="TransF_Move_Checked" Theme="{StaticResource TitleBarButtonChild}" Header="Transform" Width="200"/>
+				<MenuItem Name="TransFM" Click="TransF_Move_Checked" InputGesture="Ctrl+T" Theme="{StaticResource TitleBarButtonChild}" Header="Transform" Width="200"/>
 			</MenuItem>
 
+			<!--Select-->
+			<MenuItem Width="50"
+								Theme="{StaticResource TitleBarButton}" Header="Select">
+				<MenuItem Name="SelAllM" Click="SelectAll_Clicked" InputGesture="Ctrl+A" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
+				<MenuItem Name="DeSelM" Click="DeselectAll_Clicked" InputGesture="Ctrl+D" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
+			</MenuItem>
 			<!--Help menu item-->
 			<MenuItem Width="50"
 					Theme="{StaticResource TitleBarButton}" Header="Help">

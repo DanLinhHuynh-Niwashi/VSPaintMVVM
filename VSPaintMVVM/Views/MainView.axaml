@@ -55,6 +55,8 @@
 				<ColumnDefinition Width="Auto" MinWidth="180" MaxWidth="350"></ColumnDefinition>
 				<ColumnDefinition Width="0.2"></ColumnDefinition>
 				<ColumnDefinition Width="*" MinWidth="600"></ColumnDefinition>
+				<ColumnDefinition Width="0.2"></ColumnDefinition>
+				<ColumnDefinition Width="*" MinWidth="180" MaxWidth="350"></ColumnDefinition>
 			</Grid.ColumnDefinitions>
 			<!--Left setting panel-->
 			<Grid ColumnDefinitions="Auto,*" Grid.Column="0" MinWidth="100" Background="Red">
@@ -332,20 +334,7 @@
 						<Image Source="/Assets/Icons/Paste.png" Margin="2"></Image>
 					</Button>
 
-					<Separator Width="0.2" Height="20"></Separator>
-
-					<!--Push up layer level-->
-					<Button Name="UpLevelB"
-						Theme="{StaticResource SquareButtonN}"
-							Click="UpLevel_Clicked">
-						<Image Source="/Assets/Icons/UpLayer.png" Margin="2"></Image>
-					</Button>
-					<!--Push down layer level-->
-					<Button Name="DownLevelB"
-						Theme="{StaticResource SquareButtonN}"
-							Click="DownLevel_Clicked">
-						<Image Source="/Assets/Icons/DownLayer.png" Margin="2"></Image>
-					</Button>
+					
 					
 				</WrapPanel>
 				<!--Drawing Space-->
@@ -365,15 +354,28 @@
 					</paz:ZoomBorder>
 				</ScrollViewer>
 			</Grid>
-			<!--<GridSplitter Grid.Column="3" Background="Transparent" ResizeDirection="Columns"/>
-			<Border Grid.Column="4" Padding="7" 
+			<GridSplitter Grid.Column="3" Background="Transparent" ResizeDirection="Columns"/>
+			<Grid Grid.Column="4"
 					Background="WhiteSmoke"
-					BoxShadow="-3 0 20 0.5 #444444">
-					<Canvas View Setting>-->
-					<!--<Border BorderThickness="1.5" BorderBrush="Gray" CornerRadius="3">-->
-			<!--<local:ArtContainerModView Grid.Row="0"/>-->
-					<!--</Border>-->
-					<!--</Border>-->
+					RowDefinitions="Auto,*">
+				<WrapPanel Grid.Row="0" Margin="40" HorizontalAlignment="Center">
+					<!--Push up layer level-->
+					<Button Name="UpLevelB"
+						Theme="{StaticResource SquareButtonN}"
+							Click="UpLevel_Clicked">
+						<Image Source="/Assets/Icons/UpLayer.png" Margin="2"></Image>
+					</Button>
+					<!--Push down layer level-->
+					<Button Name="DownLevelB"
+						Theme="{StaticResource SquareButtonN}"
+							Click="DownLevel_Clicked">
+						<Image Source="/Assets/Icons/DownLayer.png" Margin="2"></Image>
+					</Button>
+				</WrapPanel>
+				<ListBox Grid.Row="1" Name="shapeListBox" Margin="20" SelectionMode="Multiple" IsEnabled="False">
+					
+				</ListBox>
+			</Grid>
 		</Grid>
 
 		<!--Footer-->

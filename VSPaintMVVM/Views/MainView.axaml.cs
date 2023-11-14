@@ -643,11 +643,23 @@ public partial class MainView : UserControl
     {
         if (chosenList.Count == 0) return;
         if (chosenList.Count > 1) return;
+        currentAction = new ActionCustom();
+        
         for (int i = 0; i < shapeList.Count; i++)
         {
             if (shapeList[i] == chosenList[0] && i != 0)
             {
+                shapeRedoStack.Clear();
+                currentAction.beforeShape.Add((ITool)((ShapeCustom)shapeList[i]).Copy());
+                currentAction.afterShape.Add((ITool)((ShapeCustom)shapeList[i]).Copy());
+                currentAction.pos.Add(i);
+                currentAction.ids.Add(((ShapeCustom)shapeList[i]).ID);
+
                 Swap(shapeList, i, i - 1);
+                
+                currentAction.posA.Add(i - 1);
+
+                shapeUndoStack.Push(currentAction);
                 Redraw();
                 return;
             }
@@ -658,11 +670,21 @@ public partial class MainView : UserControl
     {
         if (chosenList.Count == 0) return;
         if (chosenList.Count > 1) return;
+        currentAction = new ActionCustom();
         for (int i = 0; i < shapeList.Count; i++)
         {
             if (shapeList[i] == chosenList[0] && i != shapeList.Count - 1)
             {
+                shapeRedoStack.Clear();
+                currentAction.beforeShape.Add((ITool)((ShapeCustom)shapeList[i]).Copy());
+                currentAction.afterShape.Add((ITool)((ShapeCustom)shapeList[i]).Copy());
+                currentAction.pos.Add(i);
+                currentAction.ids.Add(((ShapeCustom)shapeList[i]).ID);
+
                 Swap(shapeList, i + 1, i);
+                currentAction.posA.Add(i + 1);
+
+                shapeUndoStack.Push(currentAction);
                 Redraw() ;
                 return;
             }
@@ -1264,11 +1286,25 @@ public partial class MainView : UserControl
             previewPanel.Children.Add(previewShape.Draw(currentColor, currentFill, currentThickness));
         }
     }
-    private void Redraw()
+
+    private void ShapeListBoxRedraw()
+    {
+        shapeListBox.Items.Clear();
+        foreach (var shape in Enumerable.Reverse(shapeList))
+        {
+            ListBoxItem item = new ListBoxItem();
+            item.Content = ((ShapeCustom)shape).ID;
+            if (chosenList.Contains(((ShapeCustom)shape)))
+            {
+                item.IsSelected = true;
+            }
+            shapeListBox.Items.Add(item);
+        }
+    }
+
+    private void CanvasRedraw()
     {
         canvas.Children.Clear();
-        PreviewRedraw();
-
         foreach (var shape in shapeList)
         {
             var element = shape.Draw(shape.Brush, shape.FillBrush, shape.Thickness);
@@ -1291,6 +1327,14 @@ public partial class MainView : UserControl
                     }
                 }
             }
+
         }
+    }
+    private void Redraw()
+    {
+        
+        PreviewRedraw();
+        CanvasRedraw();
+        ShapeListBoxRedraw();
     }
 }

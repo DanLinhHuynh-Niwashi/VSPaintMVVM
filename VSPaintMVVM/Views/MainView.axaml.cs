@@ -21,6 +21,7 @@ using Avalonia.Platform;
 
 using System.Reflection;
 using Avalonia.Media.Immutable;
+using System.Diagnostics;
 
 namespace VSPaintMVVM.Views;
 
@@ -77,6 +78,81 @@ public partial class MainView : UserControl
             selectedShapeName = toolCollection[0].Name;
         }
 
+    }
+
+    KeyGesture Undogesture = new KeyGesture(Avalonia.Input.Key.Z, Avalonia.Input.KeyModifiers.Control);
+    KeyGesture Redogesture = new KeyGesture(Avalonia.Input.Key.Y, Avalonia.Input.KeyModifiers.Control);
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        KeyGesture gesture = new KeyGesture(e.Key, e.KeyModifiers);
+        if (CopyM.InputGesture == gesture)
+        {
+            Copy_Clicked(new object(), new RoutedEventArgs());
+        }
+        else if (PasteM.InputGesture == gesture)
+        {
+            Paste_Clicked(new object(), new RoutedEventArgs());
+        }
+        else if (TransFM.InputGesture == gesture)
+        {
+            TransFB.IsChecked = !TransFB.IsChecked;
+            TransF_Move_Checked(new object(), new RoutedEventArgs());
+        }
+        else if (SelAllM.InputGesture == gesture)
+        {
+            SelectAll_Clicked(new object(), new RoutedEventArgs());
+        }
+        else if (DeSelM.InputGesture == gesture)
+        {
+            DeselectAll_Clicked(new object(), new RoutedEventArgs());
+        }
+        else if (Undogesture == gesture)
+        {
+            Undo_Clicked(new object(), new RoutedEventArgs());
+        }
+        else if (Redogesture == gesture)
+        {
+            Redo_Clicked(new object(), new RoutedEventArgs());
+        }
+        else
+        {
+            switch (e.Key)
+            {
+                case Avalonia.Input.Key.B:
+                    PenB.IsChecked = true;
+                    Tool_Checked(new object(), new RoutedEventArgs());
+                    break;
+                case Avalonia.Input.Key.E:
+                    EraserB.IsChecked = true;
+                    Tool_Checked(new object(), new RoutedEventArgs());
+                    break;
+                case Avalonia.Input.Key.S:
+                    SelB.IsChecked = true;
+                    Tool_Checked(new object(), new RoutedEventArgs());
+                    break;
+                case Avalonia.Input.Key.Delete:
+                    DeleteAll();
+                    break;
+            }
+        }    
+
+        base.OnKeyDown(e);
+    }
+    private void DeleteAll()
+    {
+        currentAction = new ActionCustom();
+        foreach (var shape in chosenList)
+        {
+            int i = shapeList.IndexOf((ITool)shape);
+            currentAction.beforeShape.Add((ITool)shape);
+            currentAction.pos.Add(i);
+            currentAction.ids.Add(shape.ID);
+
+            shapeList.Remove((ITool)shape);
+        }
+        Redraw();
+        shapeUndoStack.Push(currentAction);
+        
     }
     private void CreateTools()
     {
@@ -367,8 +443,9 @@ public partial class MainView : UserControl
             {
                 int i = shapeList.IndexOf((ITool)shape);
 
-                currentAction.afterShape.Add((ITool)shape.Copy());
-                currentAction.posA.Add(i);
+                    currentAction.afterShape.Add((ITool)shape.Copy());
+                    currentAction.posA.Add(i);
+                    
             }
             if (currentAction!=null && (currentAction.afterShape.Count > 0 || currentAction.beforeShape.Count > 0))
             {
@@ -1127,5 +1204,11 @@ public partial class MainView : UserControl
         }
     }
 
+    private void Grid_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
+    {
+    }
 
+    private void Grid_KeyUp_1(object? sender, Avalonia.Input.KeyEventArgs e)
+    {
+    }
 }

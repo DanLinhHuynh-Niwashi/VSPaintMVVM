@@ -70,6 +70,8 @@ namespace VSPaintMVVM.Shapes
 
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(boxEnd.x - boxStart.x, boxEnd.y - boxStart.y),
+                Width = width,
+                Height=height,
                 StrokeThickness = thickness,
                 Stroke = brush,
             };

@@ -40,12 +40,12 @@ public partial class MainView : UserControl
     private Stack<ActionCustom> shapeUndoStack = new Stack<ActionCustom>();
     private Stack<ActionCustom> shapeRedoStack = new Stack<ActionCustom>();
 
-    private static int currentThickness;
+    private int currentThickness;
     private ITool drawingShape = null;
     private string selectedShapeName;
 
-    private static SolidColorBrush currentColor = new SolidColorBrush();
-    private static SolidColorBrush currentFill = new SolidColorBrush();
+    private SolidColorBrush currentColor = new SolidColorBrush();
+    private SolidColorBrush currentFill = new SolidColorBrush();
 
     ShapeCollection shapeCollection = new ShapeCollection();
     List<Button> toolCollection = new List<Button>();
@@ -78,10 +78,12 @@ public partial class MainView : UserControl
             selectedShapeName = toolCollection[0].Name;
         }
 
+        PreviewRedraw();
     }
 
     KeyGesture Undogesture = new KeyGesture(Avalonia.Input.Key.Z, Avalonia.Input.KeyModifiers.Control);
     KeyGesture Redogesture = new KeyGesture(Avalonia.Input.Key.Y, Avalonia.Input.KeyModifiers.Control);
+    bool isShiftPressing = false;
     protected override void OnKeyDown(KeyEventArgs e)
     {
         KeyGesture gesture = new KeyGesture(e.Key, e.KeyModifiers);
@@ -133,10 +135,25 @@ public partial class MainView : UserControl
                 case Avalonia.Input.Key.Delete:
                     DeleteAll();
                     break;
+                case Avalonia.Input.Key.LeftShift:
+                case Avalonia.Input.Key.RightShift:
+                    isShiftPressing = true;
+                    break;
             }
         }    
 
         base.OnKeyDown(e);
+    }
+
+    protected override void OnKeyUp(KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Avalonia.Input.Key.LeftShift:
+            case Avalonia.Input.Key.RightShift:
+                isShiftPressing = false;
+                break;
+        }
     }
     private void DeleteAll()
     {
@@ -204,6 +221,11 @@ public partial class MainView : UserControl
                 selectedShapeName = tool.Name.ToString();
             }
         }
+        if (selectedShapeName!="" && selectedShapeName!=null)
+        {
+            PreviewRedraw();
+        }    
+        
     }
 
     //Color slider
@@ -415,13 +437,14 @@ public partial class MainView : UserControl
         if (isChanging == false)
         {
             currentAction = new ActionCustom();
+            isChanging = true;
             timer = new System.Timers.Timer();
             timeCounting = 0;
             timer.Interval = 1000;
             timer.Start();
             timer.Elapsed += new ElapsedEventHandler(TimerTick);
             timer.Enabled = true;
-            isChanging = true;
+            
 
             foreach (var shape in chosenList)
             {
@@ -442,9 +465,12 @@ public partial class MainView : UserControl
             foreach (var shape in chosenList)
             {
                 int i = shapeList.IndexOf((ITool)shape);
-
+                if (currentAction!=null)
+                {
                     currentAction.afterShape.Add((ITool)shape.Copy());
                     currentAction.posA.Add(i);
+                }    
+                    
                     
             }
             if (currentAction!=null && (currentAction.afterShape.Count > 0 || currentAction.beforeShape.Count > 0))
@@ -615,6 +641,8 @@ public partial class MainView : UserControl
     //Push up & down layer
     private void DownLevel_Clicked(object sender, RoutedEventArgs e)
     {
+        if (chosenList.Count == 0) return;
+        if (chosenList.Count > 1) return;
         for (int i = 0; i < shapeList.Count; i++)
         {
             if (shapeList[i] == chosenList[0] && i != 0)
@@ -628,6 +656,8 @@ public partial class MainView : UserControl
 
     private void UpLevel_Clicked(object sender, RoutedEventArgs e)
     {
+        if (chosenList.Count == 0) return;
+        if (chosenList.Count > 1) return;
         for (int i = 0; i < shapeList.Count; i++)
         {
             if (shapeList[i] == chosenList[0] && i != shapeList.Count - 1)
@@ -735,9 +765,6 @@ public partial class MainView : UserControl
 
         var right = Math.Max(shape.BoxStart.x, shape.BoxEnd.x);
         var bottom = Math.Max(shape.BoxStart.y, shape.BoxEnd.y);
-
-        var width = right - left;
-        var height = bottom - top;
 
         
 
@@ -1045,7 +1072,7 @@ public partial class MainView : UserControl
         }
 
         startingPos = new Point(pos.X, pos.Y);
-        Redraw();
+
     }
 
     private void Moving(ShapeCustom shape, Point oriPos, Point afterPos)
@@ -1058,14 +1085,13 @@ public partial class MainView : UserControl
         shape.BoxEnd.y -= offsetY;
         shape.BoxStart.y -= offsetY;
 
-        Redraw();
+
     }
 
     private void Rotating(AnchorPoint chosenAPoint, ShapeCustom shape, Point pos, AnchorPoint originalPoint)
     {
         double rotatedAngle = Calculate_Angle(shape.BoxCenter(), pos, originalPoint);
         shape.Angle = rotatedAngle;
-        Redraw();
     }
 
     private double Calculate_Angle (PointCustom center, Point endPoint, AnchorPoint originalPoint) 
@@ -1120,7 +1146,8 @@ public partial class MainView : UserControl
                 if (isMoving)
                     startingPos = pos;
             }
-               
+            Redraw();
+
         }    
         else if (isDrawing)
         {
@@ -1147,8 +1174,13 @@ public partial class MainView : UserControl
                 {
                     if (chosenList.Contains(element))
                         chosenList.Remove(element);
+                    else if (isShiftPressing)
+                            chosenList.Add(element);
                     else
+                    {
+                        chosenList.Clear();
                         chosenList.Add(element);
+                    }        
                     break;
                 }
             }
@@ -1210,9 +1242,32 @@ public partial class MainView : UserControl
         currentAction = null;
     }
 
+    private void PreviewRedraw()
+    {
+        previewPanel.Children.Clear();
+        if (selectedShapeName!=null)
+        {
+            ITool previewShape = shapeCollection.getShape(selectedShapeName);
+
+            if (previewShape.Name == "Line")
+            {
+                previewShape.StartCorner(10, 50);
+                previewShape.EndCorner(180, 50);
+            }    
+            else
+            {
+                previewShape.StartCorner(10, 10);
+                previewShape.EndCorner(180, 90);
+            }    
+            
+
+            previewPanel.Children.Add(previewShape.Draw(currentColor, currentFill, currentThickness));
+        }
+    }
     private void Redraw()
     {
         canvas.Children.Clear();
+        PreviewRedraw();
 
         foreach (var shape in shapeList)
         {
@@ -1237,13 +1292,5 @@ public partial class MainView : UserControl
                 }
             }
         }
-    }
-
-    private void Grid_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
-    {
-    }
-
-    private void Grid_KeyUp_1(object? sender, Avalonia.Input.KeyEventArgs e)
-    {
     }
 }

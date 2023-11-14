@@ -88,11 +88,13 @@
 					</RadioButton>
 				</StackPanel>
 				<!--Draw setting-->
-				<Grid Grid.Column="1" Background="Black">
+				<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Grid.Column="1">
+				<Grid Background="Black">
 					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" MinHeight="200"></RowDefinition>
+						<RowDefinition Height="Auto"></RowDefinition>
 						<RowDefinition Height="0.2"></RowDefinition>
-						<RowDefinition Height="Auto" MinHeight="100"></RowDefinition>
+						<RowDefinition Height="Auto"></RowDefinition>
+						<RowDefinition Height="Auto" ></RowDefinition>
 						<RowDefinition Height="*" MinHeight="200"></RowDefinition>
 					</Grid.RowDefinitions>
 					<!--Color Setting-->
@@ -102,7 +104,7 @@
 								
 								<WrapPanel Grid.Row="1" Background="WhiteSmoke"
 										   HorizontalAlignment="Center"
-										   MaxHeight="35" Margin="0 60 0 0">
+										   MaxHeight="45" Margin="0 60 0 0">
 									<!--stroke-->
 									<RadioButton Click="CB_Clicked" GroupName="CGroup" Theme="{StaticResource SquareButton}" Name="strokeCB">
 										<Rectangle Name="strokeColor" Fill="Black"
@@ -116,7 +118,7 @@
 									</RadioButton>
 									<Button Click="Transparent_Click" Name="CTransparent" Theme="{StaticResource SquareButtonN}"
 												  Foreground="Black" Padding="0">
-
+										
 										<Image Source="/Assets/Icons/Transparent.png" Margin="2"></Image>
 									</Button>
 								</WrapPanel>
@@ -243,23 +245,35 @@
 							</Grid>
 						</Viewbox>
 					</Border>
+
+					<!--Brush preview-->
+					<Border Grid.Row="3" Background="LightGray">
+						<Viewbox Margin="20 0 20 0" VerticalAlignment="Top">
+							<Panel Name="previewPanel" Height="100" Width="250"  >
+								<Panel.Background>
+									<VisualBrush>
+										<VisualBrush.Visual>
+											<Image Source="/Assets/Icons/TransparentChecker.png" Stretch="UniformToFill"></Image>
+										</VisualBrush.Visual>
+									</VisualBrush>
+								</Panel.Background>
+							</Panel>
+						</Viewbox>
+					</Border>
 					<!--Shape setting-->
-					<Border Background="LightGray" Grid.Row="3">
-						
-						<ScrollViewer HorizontalScrollBarVisibility="Visible"
-							VerticalScrollBarVisibility="Visible"
-							HorizontalAlignment="Center" 
-							Background="White"
-							MaxHeight="250" Margin="20" >
+					<Border Background="LightGray" Grid.Row="4" Padding="20">
+						<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
 							<WrapPanel Name="shapeListContainer" Background="White"
-									   MinWidth="100"
-										   Width="250"></WrapPanel>
+									   MinWidth="100" MaxHeight="250"
+									   ></WrapPanel>
 						</ScrollViewer>
+
 					</Border>
 				</Grid>
 				
-				
+			</ScrollViewer>	
 			</Grid>
+			
 			<GridSplitter Grid.Column="1" Background="Transparent" ResizeDirection="Columns"/>
 			
 			<!--Drawing Canvas and Selection Tools-->

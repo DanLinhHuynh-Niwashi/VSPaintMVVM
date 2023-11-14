@@ -318,21 +318,6 @@
 						<Image Source="/Assets/Icons/Paste.png" Margin="2"></Image>
 					</Button>
 
-					<Separator Width="0.2" Height="20"></Separator>
-
-					<!--Push up layer level-->
-					<Button Name="UpLevelB"
-						Theme="{StaticResource SquareButtonN}"
-							Click="UpLevel_Clicked">
-						<Image Source="/Assets/Icons/UpLayer.png" Margin="2"></Image>
-					</Button>
-					<!--Push down layer level-->
-					<Button Name="DownLevelB"
-						Theme="{StaticResource SquareButtonN}"
-							Click="DownLevel_Clicked">
-						<Image Source="/Assets/Icons/DownLayer.png" Margin="2"></Image>
-					</Button>
-					
 				</WrapPanel>
 				<!--Drawing Space-->
 				<ScrollViewer HorizontalScrollBarVisibility="Visible"

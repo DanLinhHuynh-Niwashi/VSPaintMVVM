@@ -67,6 +67,7 @@ namespace VSPaintMVVM.Tool
                     if (shape == null)
                         shapeList.Remove(shape);
                 }
+                return;
             }
 
             for (int j = 0; j < shapeList.Count; j++)
@@ -109,7 +110,19 @@ namespace VSPaintMVVM.Tool
             {
                 foreach (var drawedShape in afterShape)
                 {
-                    shapeList.Insert(posA[afterShape.IndexOf(drawedShape)], drawedShape);
+                    shapeList.Add(null);
+                }
+
+                foreach (var drawedShape in afterShape)
+                {
+                    int position = posA[afterShape.IndexOf(drawedShape)];
+                    shapeList.Insert(position, drawedShape);
+                }
+
+                foreach (var shape in shapeList.ToList())
+                {
+                    if (shape == null)
+                        shapeList.Remove(shape);
                 }
                 return;
             }

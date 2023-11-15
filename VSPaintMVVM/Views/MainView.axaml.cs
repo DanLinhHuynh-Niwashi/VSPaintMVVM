@@ -454,7 +454,10 @@ public partial class MainView : UserControl
                 currentAction.ids.Add(shape.ID);
             }
         }
-
+        else
+        {
+            timeCounting = 0;
+        }
     }
     private void TimerTick(object source, ElapsedEventArgs e)
     {

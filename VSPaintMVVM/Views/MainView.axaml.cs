@@ -23,6 +23,7 @@ using System.Reflection;
 using Avalonia.Media.Immutable;
 using System.Diagnostics;
 using System.IO;
+using Avalonia.Platform.Storage;
 
 namespace VSPaintMVVM.Views;
 
@@ -1335,11 +1336,28 @@ public partial class MainView : UserControl
         }
     }
 
-    private void Export_Click(object? sender, RoutedEventArgs e)
+    private async void Export_Click(object? sender, RoutedEventArgs e)
     {
-        ExportToPNG("lmao.png");
+        var topLevel = TopLevel.GetTopLevel(this);
+
+        // Start async operation to open the dialog.
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "Export File",
+            FileTypeChoices = new[] { FilePickerFileTypes.ImageJpg, FilePickerFileTypes.ImagePng }
+
+        });
+
+        if (file is not null)
+        {
+            // Open writing stream from the file.
+            await using var stream = await file.OpenWriteAsync();
+            ExportToPNG(stream);
+        }
+
+        
     }
-    private void ExportToPNG(string FileStream)
+    private void ExportToPNG(Stream FileStream)
     {
         Canvas mainView = new Canvas();
         mainView.Width = canvas.Width;

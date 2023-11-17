@@ -32,8 +32,7 @@
 					Theme="{StaticResource TitleBarButton}" Header="Edit">
 				<MenuItem Name="CopyM" Click="Copy_Clicked" InputGesture="Ctrl+C" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
 				<MenuItem Name="PasteM" Click="Paste_Clicked" InputGesture="Ctrl+V" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
-				<Separator Background="White" Height="0.2"/>
-				<MenuItem Name="TransFM" Click="TransF_Move_Checked" InputGesture="Ctrl+T" Theme="{StaticResource TitleBarButtonChild}" Header="Transform" Width="200"/>
+				
 			</MenuItem>
 
 			<!--Select-->

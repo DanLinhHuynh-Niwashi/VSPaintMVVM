@@ -43,7 +43,7 @@ public partial class MainView : UserControl
     private Stack<ActionCustom> shapeRedoStack = new Stack<ActionCustom>();
 
     private int currentThickness;
-    private ITool drawingShape = null;
+    private ITool? drawingShape = null;
     private string selectedShapeName;
 
     private SolidColorBrush currentColor = new SolidColorBrush();
@@ -85,6 +85,7 @@ public partial class MainView : UserControl
 
     KeyGesture Undogesture = new KeyGesture(Avalonia.Input.Key.Z, Avalonia.Input.KeyModifiers.Control);
     KeyGesture Redogesture = new KeyGesture(Avalonia.Input.Key.Y, Avalonia.Input.KeyModifiers.Control);
+    KeyGesture Transformgesture = new KeyGesture(Avalonia.Input.Key.T, Avalonia.Input.KeyModifiers.Control);
     bool isShiftPressing = false;
     protected override void OnKeyDown(KeyEventArgs e)
     {
@@ -97,7 +98,7 @@ public partial class MainView : UserControl
         {
             Paste_Clicked(new object(), new RoutedEventArgs());
         }
-        else if (TransFM.InputGesture == gesture)
+        else if (Transformgesture == gesture)
         {
             TransFB.IsChecked = !TransFB.IsChecked;
             TransF_Move_Checked(new object(), new RoutedEventArgs());
@@ -212,7 +213,7 @@ public partial class MainView : UserControl
             tool.IsEnabled = true;
         }
     }
-    private void itemChoose(object sender, RoutedEventArgs e)
+    private void itemChoose(object? sender, RoutedEventArgs e)
     {
         foreach (var tool in toolCollection)
         {
@@ -231,7 +232,7 @@ public partial class MainView : UserControl
     }
 
     //Color slider
-    private void CB_Clicked(object sender, RoutedEventArgs e)
+    private void CB_Clicked(object? sender, RoutedEventArgs e)
     {
         if ((bool)fillCB.IsChecked && fillColor.Fill != null)
         {
@@ -250,7 +251,7 @@ public partial class MainView : UserControl
             AText.Text = stroke.Color.A.ToString();
         }
     }
-    private void Transparent_Click(object sender, RoutedEventArgs e)
+    private void Transparent_Click(object? sender, RoutedEventArgs e)
     {
         if ((bool)fillCB.IsChecked)
         {
@@ -262,7 +263,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private void OpacitySlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void OpacitySlider_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         AText.Text = ((int)ASlider.Value).ToString();
         if ((bool)fillCB.IsChecked)
@@ -274,7 +275,7 @@ public partial class MainView : UserControl
             ColorChange(strokeCB);
         }
     }
-    private void BlueSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void BlueSlider_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         BText.Text = ((int)BSlider.Value).ToString();
         if ((bool)fillCB.IsChecked)
@@ -286,7 +287,7 @@ public partial class MainView : UserControl
             ColorChange(strokeCB);
         }    
     }
-    private void RedSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void RedSlider_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         RText.Text = ((int)RSlider.Value).ToString();
         if ((bool)fillCB.IsChecked)
@@ -298,7 +299,7 @@ public partial class MainView : UserControl
             ColorChange(strokeCB);
         }
     }
-    private void GreenSlider_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void GreenSlider_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         GText.Text = ((int)GSlider.Value).ToString();
         if ((bool)fillCB.IsChecked)
@@ -312,7 +313,7 @@ public partial class MainView : UserControl
     }
 
     //Color textbox
-    private void OpacityTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void OpacityTextBox_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         double opacityValue;
         if (double.TryParse(AText.Text, out opacityValue))
@@ -323,7 +324,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private void BlueTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void BlueTextBox_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         double blueValue;
         if (double.TryParse(BText.Text, out blueValue))
@@ -333,7 +334,7 @@ public partial class MainView : UserControl
             BSlider.Value = blueValue;
         }
     }
-    private void RedTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void RedTextBox_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         double redValue;
         if (double.TryParse(RText.Text, out redValue))
@@ -343,7 +344,7 @@ public partial class MainView : UserControl
             RSlider.Value = redValue;
         }
     }
-    private void GreenTextBox_Change(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void GreenTextBox_Change(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         double greenValue;
         if (double.TryParse(GText.Text, out greenValue))
@@ -368,6 +369,9 @@ public partial class MainView : UserControl
         byte a = (byte)ASlider.Value;
         Color tempC = new Color(a, r, g, b);
         SolidColorBrush prevColor = new SolidColorBrush();
+
+        if (sender == null)
+            return;
         if (sender == fillCB)
         {
             prevColor = currentFill;
@@ -405,7 +409,7 @@ public partial class MainView : UserControl
     }
 
     //Brush size slider
-    private void BrushSizeSlider_Changed(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void BrushSizeSlider_Changed(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
 
         if (currentThickness == (int)BrushSlider.Value) return;
@@ -422,7 +426,7 @@ public partial class MainView : UserControl
 
     }
     //Brush size textbox
-    private void BrushSizeTextBox_Changed(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void BrushSizeTextBox_Changed(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         int newThickness;
         if (Int32.TryParse(BrushTextBox.Text, out newThickness))
@@ -461,7 +465,7 @@ public partial class MainView : UserControl
             timeCounting = 0;
         }
     }
-    private void TimerTick(object source, ElapsedEventArgs e)
+    private void TimerTick(object? source, ElapsedEventArgs e)
     {
         timeCounting++;
         if (timeCounting == 3 && isChanging == true)
@@ -489,7 +493,7 @@ public partial class MainView : UserControl
     
 
     bool preIsDrawing, preIsSelecting, preIsErasing;
-    private void TransF_Move_Checked(object sender, RoutedEventArgs e)
+    private void TransF_Move_Checked(object? sender, RoutedEventArgs e)
     {
         
         if ((bool)TransFB.IsChecked)
@@ -516,7 +520,7 @@ public partial class MainView : UserControl
 
 
     //selection + deletion tool
-    private void Tool_Checked(object sender, RoutedEventArgs e)
+    private void Tool_Checked(object? sender, RoutedEventArgs e)
     {
 
         if ((bool)SelB.IsChecked)
@@ -547,7 +551,7 @@ public partial class MainView : UserControl
         TransFB.IsChecked = false;
     }
 
-    private void SelectAll_Clicked(object sender, RoutedEventArgs e)
+    private void SelectAll_Clicked(object? sender, RoutedEventArgs e)
     {
         foreach (var shape in Enumerable.Reverse(shapeList))
         {
@@ -559,7 +563,7 @@ public partial class MainView : UserControl
         Redraw() ;
     }
 
-    private void DeselectAll_Clicked(object sender, RoutedEventArgs e)
+    private void DeselectAll_Clicked(object? sender, RoutedEventArgs e)
     {
         foreach (var shape in Enumerable.Reverse(chosenList))
         {
@@ -571,7 +575,7 @@ public partial class MainView : UserControl
     }
 
     List<ShapeCustom> copyShapeList = new List<ShapeCustom>();
-    private void Copy_Clicked(object sender, RoutedEventArgs e)
+    private void Copy_Clicked(object? sender, RoutedEventArgs e)
     {
         copyShapeList.Clear();
         foreach (var shape in chosenList)
@@ -580,7 +584,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private void Paste_Clicked(object sender, RoutedEventArgs e)
+    private void Paste_Clicked(object? sender, RoutedEventArgs e)
     {
         ITool newShape;
         currentAction = new ActionCustom();
@@ -607,7 +611,7 @@ public partial class MainView : UserControl
             
         Redraw();
     }
-    private void Undo_Clicked(object sender, RoutedEventArgs e)
+    private void Undo_Clicked(object? sender, RoutedEventArgs e)
     {
         if (shapeUndoStack.Count == 0) return;
         TransFB.IsChecked = false;
@@ -625,7 +629,7 @@ public partial class MainView : UserControl
         Redraw();
     }
 
-    private void Redo_Clicked(object sender, RoutedEventArgs e)
+    private void Redo_Clicked(object? sender, RoutedEventArgs e)
     {
 
         if (shapeRedoStack.Count == 0) return;
@@ -644,7 +648,7 @@ public partial class MainView : UserControl
     }
 
     //Push up & down layer
-    private void DownLevel_Clicked(object sender, RoutedEventArgs e)
+    private void DownLevel_Clicked(object? sender, RoutedEventArgs e)
     {
         if (chosenList.Count == 0) return;
         if (chosenList.Count > 1) return;
@@ -671,7 +675,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private void UpLevel_Clicked(object sender, RoutedEventArgs e)
+    private void UpLevel_Clicked(object? sender, RoutedEventArgs e)
     {
         if (chosenList.Count == 0) return;
         if (chosenList.Count > 1) return;
@@ -708,7 +712,7 @@ public partial class MainView : UserControl
     ActionCustom currentAction;
     Point startingPos;
     bool isMoving = false;
-    private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
+    private void canvas_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         Point pos = e.GetPosition(canvas);
         shapeRedoStack.Clear();
@@ -1189,7 +1193,7 @@ public partial class MainView : UserControl
         }
     }
 
-    private void canvas_PointerReleased(object sender, PointerReleasedEventArgs e)
+    private void canvas_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         if(isSelecting)
         {
@@ -1247,6 +1251,8 @@ public partial class MainView : UserControl
         else
         {
             Point pos = e.GetPosition(canvas);
+
+            if (drawingShape == null) { return; }
             drawingShape.EndCorner(pos.X, pos.Y);
 
             // add to list

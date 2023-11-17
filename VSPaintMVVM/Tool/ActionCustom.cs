@@ -15,29 +15,8 @@ namespace VSPaintMVVM.Tool
         public List<int> pos = new List<int>();
         public List<int> posA = new List<int>();
 
-        public void addStarter(ITool before = null, int befPos = -1, string ID = "")
-        {
-            if (before != null || ID == "" || befPos < 0) { }
-            else
-            {
-                beforeShape.Add(before);
-                ids.Add(ID);
-                pos.Add(befPos);
-            }
-        }
-
-        public void addAfter(ITool after = null, int afPos = -1)
-        {
-            if (after != null || afPos < 0) { }
-            else
-            {
-                afterShape.Add(after);
-                posA.Add(afPos);
-            }
-        }
         public virtual void ctrlZ(List<ITool> shapeList)
         {
-            bool found = false;
             //drawAction
             if (beforeShape.Count == 0)
             {
@@ -78,8 +57,8 @@ namespace VSPaintMVVM.Tool
                     if (((ShapeCustom)shape).ID == i)
                     {
                         int a = ids.IndexOf(i);
-                        found = true;
-                        ShapeCustom temp = shape as ShapeCustom;
+                        ShapeCustom? temp = shape as ShapeCustom;
+                        if (temp == null) return;
                         temp.CopyFrom((ShapeCustom)beforeShape[a]);
                         if (pos[ids.IndexOf(i)] != posA[ids.IndexOf(i)])
                         {
@@ -134,7 +113,8 @@ namespace VSPaintMVVM.Tool
                     if (((ShapeCustom)shape).ID == i)
                     {
                         int a = ids.IndexOf(i);
-                        ShapeCustom temp = shape as ShapeCustom;
+                        ShapeCustom? temp = shape as ShapeCustom;
+                        if (temp == null) return;
                         temp.CopyFrom((ShapeCustom)afterShape[a]);
                         if (pos[ids.IndexOf(i)] != posA[ids.IndexOf(i)])
                         {

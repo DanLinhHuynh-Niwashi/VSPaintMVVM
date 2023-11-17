@@ -22,6 +22,7 @@ using Avalonia.Platform;
 using System.Reflection;
 using Avalonia.Media.Immutable;
 using System.Diagnostics;
+using System.IO;
 
 namespace VSPaintMVVM.Views;
 
@@ -1332,6 +1333,34 @@ public partial class MainView : UserControl
             }
 
         }
+    }
+
+    private void Export_Click(object? sender, RoutedEventArgs e)
+    {
+        ExportToPNG("lmao.png");
+    }
+    private void ExportToPNG(string FileStream)
+    {
+        Canvas mainView = new Canvas();
+        mainView.Width = canvas.Width;
+        mainView.Height = canvas.Height;
+        mainView.Background = canvas.Background;
+
+        foreach (var shape in shapeList) 
+        {
+            mainView.Children.Add(shape.Draw(shape.Brush, shape.FillBrush, shape.Thickness));
+        }
+
+        mainView.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+        mainView.Arrange(new Rect(mainView.DesiredSize));
+        mainView.UpdateLayout();
+
+        int w = (int)mainView.DesiredSize.Width;
+        int h = (int)mainView.DesiredSize.Height;
+        var rendersize = new PixelSize(w, h);
+        RenderTargetBitmap bitmap = new RenderTargetBitmap(rendersize);
+        bitmap.Render(mainView);
+        bitmap.Save(FileStream);
     }
     private void Redraw()
     {

@@ -467,6 +467,7 @@ public partial class MainView : UserControl
     }
     private void TimerTick(object? source, ElapsedEventArgs e)
     {
+        bool haveOtherThanImage = false;
         timeCounting++;
         if (timeCounting == 3 && isChanging == true)
         {
@@ -479,10 +480,14 @@ public partial class MainView : UserControl
                     currentAction.afterShape.Add((ITool)shape.Copy());
                     currentAction.posA.Add(i);
                 }    
-                    
+                
+                if(((ITool)shape).Name != new ImageImportCustom().Name)
+                {
+                    haveOtherThanImage = true;
+                }    
                     
             }
-            if (currentAction!=null && (currentAction.afterShape.Count > 0 || currentAction.beforeShape.Count > 0))
+            if (currentAction!=null && (currentAction.afterShape.Count > 0 || currentAction.beforeShape.Count > 0) && haveOtherThanImage)
             {
                 shapeUndoStack.Push(currentAction);
                 shapeRedoStack.Clear();
@@ -1342,6 +1347,28 @@ public partial class MainView : UserControl
         }
     }
 
+    private async void Import_Click(object? sender, RoutedEventArgs args)
+    {
+        // Get top level from the current control. Alternatively, you can use Window reference instead.
+        var topLevel = TopLevel.GetTopLevel(this);
+
+        // Start async operation to open the dialog.
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Import File",
+            AllowMultiple = false,
+            FileTypeFilter = new[] { FilePickerFileTypes.ImageJpg, FilePickerFileTypes.ImagePng },
+
+        });
+
+        if (files.Count >= 1)
+        {
+            // Open reading stream from the first file.
+            await using var stream = await files[0].OpenReadAsync();
+            ImportFile(stream);
+        }
+    }
+
     private async void Export_Click(object? sender, RoutedEventArgs e)
     {
         var topLevel = TopLevel.GetTopLevel(this);
@@ -1360,8 +1387,6 @@ public partial class MainView : UserControl
             await using var stream = await file.OpenWriteAsync();
             ExportToPNG(stream);
         }
-
-        
     }
     private void ExportToPNG(Stream FileStream)
     {
@@ -1385,6 +1410,32 @@ public partial class MainView : UserControl
         RenderTargetBitmap bitmap = new RenderTargetBitmap(rendersize);
         bitmap.Render(mainView);
         bitmap.Save(FileStream);
+    }
+
+    private void ImportFile(Stream FileStream)
+    {
+        shapeRedoStack.Clear();
+        currentAction = new ActionCustom();
+        ImageImportCustom image = new ImageImportCustom();
+
+        ITool imageFile = image.Clone();
+
+        Bitmap btm = new Bitmap(FileStream);
+        imageFile.StartCorner(0, 0);
+        imageFile.EndCorner(btm.Size.Width, btm.Size.Height);
+
+        ImageImportCustom crnImage = imageFile as ImageImportCustom;
+        crnImage.Bitmap = btm;
+        shapeList.Add(crnImage);
+
+        int j = shapeList.IndexOf(imageFile);
+        currentAction.afterShape.Add(imageFile);
+        currentAction.posA.Add(j);
+        currentAction.ids.Add(crnImage.ID);
+
+        shapeUndoStack.Push(currentAction);
+        Redraw();
+
     }
     private void Redraw()
     {

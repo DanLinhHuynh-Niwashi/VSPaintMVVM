@@ -26,6 +26,7 @@
 				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Save As..." Width="200"/>
 				<Separator Background="White" Height="0.2"/>
 				<MenuItem  Click="Export_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Export" Width="200"/>
+				<MenuItem  Click="Import_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Import" Width="200"/>
 			</MenuItem>
 			<!--Edit menu item-->
 			<MenuItem Width="50"

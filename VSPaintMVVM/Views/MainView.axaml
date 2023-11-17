@@ -39,8 +39,8 @@
 			<!--Select-->
 			<MenuItem Width="50"
 								Theme="{StaticResource TitleBarButton}" Header="Select">
-				<MenuItem Name="SelAllM" Click="SelectAll_Clicked" InputGesture="Ctrl+A" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
-				<MenuItem Name="DeSelM" Click="DeselectAll_Clicked" InputGesture="Ctrl+D" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
+				<MenuItem Name="SelAllM" Click="SelectAll_Clicked" InputGesture="Ctrl+A" Theme="{StaticResource TitleBarButtonChild}" Header="Select All" Width="200"/>
+				<MenuItem Name="DeSelM" Click="DeselectAll_Clicked" InputGesture="Ctrl+D" Theme="{StaticResource TitleBarButtonChild}" Header="Deselect All" Width="200"/>
 			</MenuItem>
 			<!--Help menu item-->
 			<MenuItem Width="50"

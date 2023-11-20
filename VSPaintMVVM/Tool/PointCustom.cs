@@ -9,27 +9,17 @@ using System.Threading.Tasks;
 
 namespace VSPaintMVVM.Tool
 {
-    public class PointCustom : ITool
+    public class PointCustom
     {
         public double x { get; set; }
         public double y { get; set; }
-
-        public string Icon { get; }
-
-        public SolidColorBrush Brush { get; set; }
-        public SolidColorBrush FillBrush { get; set; }
-        public string Name => "Point";
-        public int Thickness { get; set; }
 
         public PointCustom(double x = 0, double y = 0)
         {
             this.x = x;
             this.y = y;
         }
-        public ITool Clone()
-        {
-            return new PointCustom();
-        }
+
         public PointCustom Copy()
         {
             PointCustom temp = new PointCustom();
@@ -52,20 +42,17 @@ namespace VSPaintMVVM.Tool
         }
 
 
-        public Control Draw(SolidColorBrush brush, SolidColorBrush fillbrush, int thickness)
+        public Control Draw(Color brush, Color fillbrush, int thickness)
         {
             Line line = new Line()
             {
                 StartPoint = new Avalonia.Point(x, y),
                 EndPoint = new Avalonia.Point(x, y),
                 StrokeThickness = thickness,
-                Stroke = brush,
+                Stroke = new SolidColorBrush(brush),
             };
 
             return line;
         }
-
-
-
     }
 }

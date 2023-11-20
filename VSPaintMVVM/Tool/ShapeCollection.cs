@@ -45,5 +45,16 @@ namespace VSPaintMVVM.Tool
             }
             return null;
         }
+
+        public void reset ()
+        {
+            foreach (ITool proto in prototypes.Values)
+            {
+                proto.IdIndex = 0;
+            }
+            ITool img = new ImageImportCustom();
+            img.IdIndex = 0;
+
+        }
     }
 }

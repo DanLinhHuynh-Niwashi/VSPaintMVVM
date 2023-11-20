@@ -24,6 +24,7 @@ namespace VSPaintMVVM.Tool
 
         protected List<AnchorPoint> apoints;
         protected List<AnchorPoint> showingApoints;
+
         virtual public void CreateAnchorPoints()
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
@@ -135,7 +136,7 @@ namespace VSPaintMVVM.Tool
                 newPoint.y = (aPoint.x - centerX) * sina + (aPoint.y - centerY) * cosa + centerY;
                 newPoint.angle = angle;
                 showingApoints.Add(newPoint);
-                anchor.Add(newPoint.Draw(new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.White), 1));
+                anchor.Add(newPoint.Draw(Colors.Black, Colors.White, 1));
             }    
             
             return anchor;

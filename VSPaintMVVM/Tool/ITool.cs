@@ -13,13 +13,15 @@ namespace VSPaintMVVM.Tool
         string Name { get; }
         string Icon { get; }
 
-        SolidColorBrush Brush { get; set; }
+        Color Brush { get; set; }
 
-        SolidColorBrush FillBrush { get; set; }
+        Color FillBrush { get; set; }
+
         int Thickness { get; set; }
 
+        int IdIndex { get; set; }
         ITool Clone();
-        Control Draw(SolidColorBrush brush, SolidColorBrush fillBrush, int thickness);
+        Control Draw(Color brush, Color fillBrush, int thickness);
         void StartCorner(double x, double y);
         void EndCorner(double x, double y);
     }

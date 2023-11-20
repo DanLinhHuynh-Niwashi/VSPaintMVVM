@@ -19,11 +19,13 @@ using Avalonia.Media.Imaging;
 
 using Avalonia.Platform;
 
+using Newtonsoft.Json;
 using System.Reflection;
 using Avalonia.Media.Immutable;
 using System.Diagnostics;
 using System.IO;
 using Avalonia.Platform.Storage;
+using System.Security.Principal;
 
 namespace VSPaintMVVM.Views;
 
@@ -34,7 +36,7 @@ public partial class MainView : UserControl
     private bool isSelecting = false;
     private bool isErasing = false;
     private bool isTransforming = false;
-    private bool isChangingFromText = false;
+    private bool isFileSaved = false;
 
     private List<ITool> shapeList = new List<ITool>();
     private List<ShapeCustom> chosenList = new List<ShapeCustom>();
@@ -46,8 +48,8 @@ public partial class MainView : UserControl
     private ITool? drawingShape = null;
     private string selectedShapeName;
 
-    private SolidColorBrush currentColor = new SolidColorBrush();
-    private SolidColorBrush currentFill = new SolidColorBrush();
+    private Color currentColor = new Color();
+    private Color currentFill = new Color();
 
     ShapeCollection shapeCollection = new ShapeCollection();
     List<Button> toolCollection = new List<Button>();
@@ -172,6 +174,7 @@ public partial class MainView : UserControl
         }
         Redraw();
         shapeUndoStack.Push(currentAction);
+        isFileSaved = false;
         
     }
     private void CreateTools()
@@ -368,7 +371,7 @@ public partial class MainView : UserControl
         byte b = (byte)BSlider.Value;
         byte a = (byte)ASlider.Value;
         Color tempC = new Color(a, r, g, b);
-        SolidColorBrush prevColor = new SolidColorBrush();
+        Color prevColor = new Color();
 
         if (sender == null)
             return;
@@ -383,18 +386,18 @@ public partial class MainView : UserControl
             strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         }
         
-        if (prevColor.Color == tempC) return;
+        if (prevColor == tempC) return;
 
         ChangedStart();
 
         if (sender == fillCB)
         {
-            currentFill = new SolidColorBrush(tempC);
+            currentFill = tempC;
             fillColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         }
         else
         {
-            currentColor = new SolidColorBrush(tempC);
+            currentColor = tempC;
             strokeColor.Fill = new SolidColorBrush(tempC).ToImmutable();
         }
 
@@ -490,6 +493,7 @@ public partial class MainView : UserControl
             if (currentAction!=null && (currentAction.afterShape.Count > 0 || currentAction.beforeShape.Count > 0) && haveOtherThanImage)
             {
                 shapeUndoStack.Push(currentAction);
+                isFileSaved = false;
                 shapeRedoStack.Clear();
             }
             timer.Enabled = true;
@@ -612,6 +616,7 @@ public partial class MainView : UserControl
         {
             shapeRedoStack.Clear();
             shapeUndoStack.Push(currentAction);
+            isFileSaved = false;
         }
             
         Redraw();
@@ -630,7 +635,8 @@ public partial class MainView : UserControl
         shapeRedoStack.Push(temp);
 
         temp.ctrlZ(shapeList);
-        
+
+        isFileSaved = false;
         Redraw();
     }
 
@@ -648,7 +654,8 @@ public partial class MainView : UserControl
 
         
         temp.ctrlY(shapeList);
-        
+
+        isFileSaved = false;
         Redraw();
     }
 
@@ -674,6 +681,7 @@ public partial class MainView : UserControl
                 currentAction.posA.Add(i - 1);
 
                 shapeUndoStack.Push(currentAction);
+                isFileSaved = false;
                 Redraw();
                 return;
             }
@@ -699,6 +707,7 @@ public partial class MainView : UserControl
                 currentAction.posA.Add(i + 1);
 
                 shapeUndoStack.Push(currentAction);
+                isFileSaved = false;
                 Redraw() ;
                 return;
             }
@@ -1200,7 +1209,7 @@ public partial class MainView : UserControl
 
     private void canvas_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if(isSelecting)
+        if (isSelecting)
         {
             Point pos = e.GetPosition(canvas);
             foreach (var shape in Enumerable.Reverse(shapeList))
@@ -1211,18 +1220,20 @@ public partial class MainView : UserControl
                     if (chosenList.Contains(element))
                         chosenList.Remove(element);
                     else if (isShiftPressing)
-                            chosenList.Add(element);
+                        chosenList.Add(element);
                     else
                     {
                         chosenList.Clear();
                         chosenList.Add(element);
-                    }        
+                    }
                     break;
                 }
             }
             Redraw();
         }
 
+        else if (currentAction == null)
+            return;
         else if (isErasing)
         {
             Point pos = e.GetPosition(canvas);
@@ -1237,9 +1248,10 @@ public partial class MainView : UserControl
             }
 
             shapeUndoStack.Push(currentAction);
+            isFileSaved = false;
             Redraw();
         }
-        
+
         else if (isTransforming)
         {
             chosenAPoint = null;
@@ -1252,7 +1264,8 @@ public partial class MainView : UserControl
                 currentAction.posA.Add(i);
             }
             shapeUndoStack.Push(currentAction);
-        }    
+            isFileSaved = false;
+        }
         else
         {
             Point pos = e.GetPosition(canvas);
@@ -1272,7 +1285,7 @@ public partial class MainView : UserControl
             currentAction.posA.Add(i);
 
             shapeUndoStack.Push(currentAction);
-            
+            isFileSaved = false;
 
             Redraw();
             isDrawing = false;
@@ -1345,6 +1358,125 @@ public partial class MainView : UserControl
             }
 
         }
+    }
+
+    string filePath = "";
+    private async void Save_Click(object? sender, RoutedEventArgs args)
+    {
+        if (filePath == "")
+        {
+            var topLevel = TopLevel.GetTopLevel(this);
+
+            // Start async operation to open the dialog.
+            var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Save File",
+                FileTypeChoices = new[] { new FilePickerFileType("JSON") { 
+                    Patterns = new[] { "*.json"}, AppleUniformTypeIdentifiers = new[]{"public.json"} } }
+
+            });
+
+            if (file is not null)
+            {
+                // Open writing stream from the file.
+                await using var stream = await file.OpenWriteAsync();
+                using var streamWriter = new StreamWriter(stream);
+                filePath = file.TryGetLocalPath() ?? string.Empty;
+                SaveasJson(streamWriter);
+            }
+        }    
+        else
+        {
+            StreamWriter writing = new StreamWriter(filePath);
+            SaveasJson(writing);
+        }    
+        
+    }
+
+    private async void Open_Click(object? sender, RoutedEventArgs args)
+    {
+        if (!isFileSaved && shapeList.Count > 0)
+        {
+            Save_Click(sender, args);
+        }    
+            
+
+        var topLevel = TopLevel.GetTopLevel(this);
+
+        // Start async operation to open the dialog.
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open File",
+            AllowMultiple = false,
+            FileTypeFilter = new[] { new FilePickerFileType("JSON") {
+                    Patterns = new[] { "*.json"}, AppleUniformTypeIdentifiers = new[]{"public.json"} } },
+
+        });
+
+        if (files.Count >= 1)
+        {
+            // Open reading stream from the first file.
+            await using var stream = await files[0].OpenReadAsync();
+            using var streamReader = new StreamReader(stream);
+            filePath = files[0].TryGetLocalPath() ?? string.Empty;
+            OpenFile(streamReader);
+        }
+        
+
+
+    }
+
+    private void OpenFile(StreamReader FileStream)
+    {
+        shapeCollection.reset();
+        shapeRedoStack.Clear();
+        shapeUndoStack.Clear();
+
+        string jsonString = FileStream.ReadToEnd();
+
+        var options = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All,
+
+        };
+
+        
+
+        if (jsonString != null)
+        {
+            dynamic record = JsonConvert.DeserializeObject(jsonString, options);
+
+            shapeList = record.list;
+            canvas.Width = record.cv[0];
+            canvas.Height = record.cv[1];
+        }
+
+        
+
+        Redraw();
+        FileStream.Close();
+    }
+
+    private void SaveasJson(StreamWriter FileStream)
+    {
+        dynamic record = new
+        {
+            list = shapeList,
+            cv = new Double[]
+            {
+                canvas.Width, canvas.Height
+            }
+        };
+        var options = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+
+        };
+
+        string jsonString = JsonConvert.SerializeObject(record, Formatting.Indented, options);
+        FileStream.Write(jsonString);
+        FileStream.Close();
+        isFileSaved = true;
     }
 
     private async void Import_Click(object? sender, RoutedEventArgs args)
@@ -1434,6 +1566,7 @@ public partial class MainView : UserControl
         currentAction.ids.Add(crnImage.ID);
 
         shapeUndoStack.Push(currentAction);
+        isFileSaved = false;
         Redraw();
 
     }

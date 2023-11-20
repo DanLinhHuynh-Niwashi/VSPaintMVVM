@@ -12,19 +12,20 @@ namespace VSPaintMVVM.Shapes
 {
     public class ImageImportCustom : ShapeCustom, ITool
     {
-        static int idIndex = 0;
+        public static int idIndex = 0;
 
         private Bitmap btm;
         public string Icon => "Assets/Icons/ToolIcon/rectangle.png";
         public string Name => "Image";
 
+        public int IdIndex { get { return idIndex; } set { idIndex = value; } }
         public Bitmap Bitmap {
             get { return btm; }
             set { btm = value; } 
         }
-        public SolidColorBrush Brush { get; set; }
+        public Color Brush { get; set; }
 
-        public SolidColorBrush FillBrush { get; set; }
+        public Color FillBrush { get; set; }
         public int Thickness { get; set; }
 
         public ITool Clone()
@@ -55,7 +56,7 @@ namespace VSPaintMVVM.Shapes
             Bitmap = ((ImageImportCustom)shape).Bitmap;
         }
 
-        public Control Draw(SolidColorBrush brush, SolidColorBrush fillBrush, int thickness)
+        public Control Draw(Color brush, Color fillBrush, int thickness)
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
             var top = Math.Min(boxStart.y, boxEnd.y);

@@ -10,15 +10,16 @@ namespace VSPaintMVVM.Shapes
 {
     public class PentagonCustom : ShapeCustom, ITool
     {
-        static int idIndex = 0;
+        public static int idIndex = 0;
         public string Icon => "Assets/Icons/ToolIcon/pentagon.png";
         public string Name => "Pentagon";
 
-        public SolidColorBrush Brush { get; set; }
+        public Color Brush { get; set; }
 
-        public SolidColorBrush FillBrush { get; set; }
+        public Color FillBrush { get; set; }
         public int Thickness { get; set; }
 
+        public int IdIndex { get { return idIndex; } set { idIndex = value; } }
         public ITool Clone()
         {
             idIndex = idIndex + 1;
@@ -39,9 +40,7 @@ namespace VSPaintMVVM.Shapes
 
             temp.Thickness = Thickness;
 
-            if (Brush != null)
                 temp.Brush = Brush;
-            if (FillBrush != null)
                 temp.FillBrush = FillBrush;
             return temp;
         }
@@ -50,13 +49,11 @@ namespace VSPaintMVVM.Shapes
         {
             base.CopyFrom(shape);
             Thickness = ((ITool)shape).Thickness;
-            if (((ITool)shape).Brush != null)
                 Brush = ((ITool)shape).Brush;
-            if (((ITool)shape).FillBrush != null)
                 FillBrush = ((ITool)shape).FillBrush;
         }
 
-        public Control Draw(SolidColorBrush brush, SolidColorBrush fillBrush, int thickness)
+        public Control Draw(Color brush, Color fillBrush, int thickness)
         {
             var left = Math.Min(boxStart.x, boxEnd.x);
             var top = Math.Min(boxStart.y, boxEnd.y);
@@ -81,8 +78,8 @@ namespace VSPaintMVVM.Shapes
                 Width = width,
                 Height = height,
                 StrokeThickness = thickness,
-                Fill = fillBrush,
-                Stroke = brush,
+                Fill = new SolidColorBrush(fillBrush),
+                Stroke = new SolidColorBrush(brush),
             };
 
             Canvas.SetLeft(pentagon, left);

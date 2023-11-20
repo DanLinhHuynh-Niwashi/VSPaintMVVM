@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using Avalonia.Platform.Storage;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace VSPaintMVVM.Views;
 
@@ -1361,7 +1362,12 @@ public partial class MainView : UserControl
     }
 
     string filePath = "";
-    private async void Save_Click(object? sender, RoutedEventArgs args)
+
+    private async void Save_Click (object? sender, RoutedEventArgs e)
+    {
+        await Save();
+    }
+    private async Task Save ()
     {
         if (filePath == "")
         {
@@ -1397,7 +1403,9 @@ public partial class MainView : UserControl
     {
         if (!isFileSaved && shapeList.Count > 0)
         {
-            Save_Click(sender, args);
+
+            await Save();
+            
         }    
             
         if (isFileSaved)

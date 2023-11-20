@@ -20,6 +20,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
 using Newtonsoft.Json;
+
 using System.Reflection;
 using Avalonia.Media.Immutable;
 using System.Diagnostics;
@@ -27,6 +28,8 @@ using System.IO;
 using Avalonia.Platform.Storage;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using MsBox.Avalonia.Enums;
+using MsBox.Avalonia;
 
 namespace VSPaintMVVM.Views;
 
@@ -38,6 +41,8 @@ public partial class MainView : UserControl
     private bool isErasing = false;
     private bool isTransforming = false;
     private bool isFileSaved = false;
+
+    string filePath = "";
 
     private List<ITool> shapeList = new List<ITool>();
     private List<ShapeCustom> chosenList = new List<ShapeCustom>();
@@ -54,6 +59,7 @@ public partial class MainView : UserControl
 
     ShapeCollection shapeCollection = new ShapeCollection();
     List<Button> toolCollection = new List<Button>();
+
     public MainView()
     {
         InitializeComponent();
@@ -90,6 +96,16 @@ public partial class MainView : UserControl
     KeyGesture Redogesture = new KeyGesture(Avalonia.Input.Key.Y, Avalonia.Input.KeyModifiers.Control);
     KeyGesture Transformgesture = new KeyGesture(Avalonia.Input.Key.T, Avalonia.Input.KeyModifiers.Control);
     bool isShiftPressing = false;
+
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {
+        base.OnPointerMoved(e);
+        if (filePath == "") crnPath.Content = "Untitled";
+        else crnPath.Content = filePath;
+
+        if (isFileSaved) saveState.Content = "Saved";
+        else saveState.Content = "Unsaved";
+    }
     protected override void OnKeyDown(KeyEventArgs e)
     {
         KeyGesture gesture = new KeyGesture(e.Key, e.KeyModifiers);
@@ -113,6 +129,18 @@ public partial class MainView : UserControl
         else if (DeSelM.InputGesture == gesture)
         {
             DeselectAll_Clicked(new object(), new RoutedEventArgs());
+        }
+        else if (OpenM.InputGesture == gesture)
+        {
+            Open_Click(new object(), new RoutedEventArgs());
+        }
+        else if (SaveM.InputGesture == gesture)
+        {
+            Save_Click(new object(), new RoutedEventArgs());
+        }
+        else if (SaveAsM.InputGesture == gesture)
+        {
+            SaveAs_Click(new object(), new RoutedEventArgs());
         }
         else if (Undogesture == gesture)
         {
@@ -182,6 +210,8 @@ public partial class MainView : UserControl
     {
         foreach (var shape in shapeCollection.prototypes)
         {
+            if (shape.Value.Name == new ImageImportCustom().Name) continue;
+
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
             Bitmap btm = new Bitmap(AssetLoader.Open(new Uri($"avares://{assemblyName}/" + shape.Value.Icon)));
             Image shapeImage = new Image()
@@ -1150,6 +1180,7 @@ public partial class MainView : UserControl
     {
 
         Point pos = e.GetPosition(canvas);
+        pointerPos.Content = "Pointer: " + (int)pos.X + ", " + (int)pos.Y;
 
         if (isSelecting || isErasing)
         {
@@ -1361,15 +1392,20 @@ public partial class MainView : UserControl
         }
     }
 
-    string filePath = "";
+    
 
     private async void Save_Click (object? sender, RoutedEventArgs e)
     {
         await Save();
     }
-    private async Task Save ()
+
+    private async void SaveAs_Click(object? sender, RoutedEventArgs e)
     {
-        if (filePath == "")
+        await Save(true);
+    }
+    private async Task Save (bool isSaveAs = false)
+    {
+        if (filePath == "" || isSaveAs)
         {
             var topLevel = TopLevel.GetTopLevel(this);
 
@@ -1387,7 +1423,7 @@ public partial class MainView : UserControl
                 // Open writing stream from the file.
                 await using var stream = await file.OpenWriteAsync();
                 using var streamWriter = new StreamWriter(stream);
-                filePath = file.TryGetLocalPath() ?? string.Empty;
+                if (!isSaveAs) filePath = file.TryGetLocalPath() ?? string.Empty;
                 SaveasJson(streamWriter);
             }
         }    
@@ -1403,45 +1439,43 @@ public partial class MainView : UserControl
     {
         if (!isFileSaved && shapeList.Count > 0)
         {
+            var box = MessageBoxManager
+            .GetMessageBoxStandard("Save current file", "Unsaved change detected. Do you want to save the current progress?",
+                ButtonEnum.YesNo);
 
-            await Save();
+            var result = await box.ShowAsync();
+
+            if (result == ButtonResult.Yes)
+                await Save();
             
-        }    
-            
-        if (isFileSaved)
+        }
+
+
+        var topLevel = TopLevel.GetTopLevel(this);
+
+        // Start async operation to open the dialog.
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            var topLevel = TopLevel.GetTopLevel(this);
-
-            // Start async operation to open the dialog.
-            var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-            {
-                Title = "Open File",
-                AllowMultiple = false,
-                FileTypeFilter = new[] { new FilePickerFileType("JSON") {
+            Title = "Open File",
+            AllowMultiple = false,
+            FileTypeFilter = new[] { new FilePickerFileType("JSON") {
                     Patterns = new[] { "*.json"}, AppleUniformTypeIdentifiers = new[]{"public.json"} } },
 
-            });
+        });
 
-            if (files.Count >= 1)
-            {
-                // Open reading stream from the first file.
-                await using var stream = await files[0].OpenReadAsync();
-                using var streamReader = new StreamReader(stream);
-                filePath = files[0].TryGetLocalPath() ?? string.Empty;
-                OpenFile(streamReader);
-            }
-        }    
-        
-        
-
+        if (files.Count >= 1)
+        {
+            // Open reading stream from the first file.
+            await using var stream = await files[0].OpenReadAsync();
+            using var streamReader = new StreamReader(stream);
+            filePath = files[0].TryGetLocalPath() ?? string.Empty;
+            OpenFile(streamReader);
+        }
 
     }
 
-    private void OpenFile(StreamReader FileStream)
+    private async void OpenFile(StreamReader FileStream)
     {
-        shapeCollection.reset();
-        shapeRedoStack.Clear();
-        shapeUndoStack.Clear();
 
         string jsonString = FileStream.ReadToEnd();
 
@@ -1451,20 +1485,55 @@ public partial class MainView : UserControl
 
         };
 
-        
-
-        if (jsonString != null)
+        if (jsonString != null && jsonString!="")
         {
-            dynamic record = JsonConvert.DeserializeObject(jsonString, options);
+            Dictionary<string, int> pre = shapeCollection.reset();
+            try
+            {
+                dynamic record = JsonConvert.DeserializeObject(jsonString, options);
 
-            shapeList = record.list;
-            canvas.Width = record.cv[0];
-            canvas.Height = record.cv[1];
+                if (record.list == null || record.cv == null) 
+                    throw new Exception();
+                List<ITool> temp = record.list;
+                double tempW = record.cv[0];
+                double tempH = record.cv[1];
+
+                shapeList = temp;
+                canvas.Width = tempW;
+                canvas.Height = tempH;
+
+                shapeRedoStack.Clear();
+                shapeUndoStack.Clear();
+            }
+            catch (Exception e)
+            {
+                var box = MessageBoxManager
+                .GetMessageBoxStandard("Error", "Can not open this file",
+                ButtonEnum.Ok);
+
+                var result = await box.ShowAsync();
+
+                shapeCollection.restore(pre);
+                FileStream.Close();
+                return;
+            }
+            
         }
 
-        
+        else
+        {
+            var box = MessageBoxManager
+                .GetMessageBoxStandard("Error", "Can not open this file",
+                ButtonEnum.Ok);
+
+            var result = await box.ShowAsync();
+            FileStream.Close();
+            return;
+        }    
 
         Redraw();
+
+        isFileSaved = true;
         FileStream.Close();
     }
 

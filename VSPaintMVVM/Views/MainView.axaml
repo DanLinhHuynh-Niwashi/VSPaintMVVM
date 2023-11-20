@@ -22,8 +22,9 @@
 				Theme="{StaticResource TitleBarButton}"
 					  Header="File">
 				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="New" Width="200"/>
-				<MenuItem Click="Open_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Open" Width="200"/>
-				<MenuItem Click="Save_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Save" Width="200"/>
+				<MenuItem Click="Open_Click" Name="OpenM" InputGesture="Ctrl+O" Theme="{StaticResource TitleBarButtonChild}" Header="Open" Width="200"/>
+				<MenuItem Click="Save_Click" Name="SaveM" InputGesture="Ctrl+S" Theme="{StaticResource TitleBarButtonChild}" Header="Save" Width="200"/>
+				<MenuItem Click="SaveAs_Click" Name="SaveAsM" InputGesture="Ctrl+Shift+S" Theme="{StaticResource TitleBarButtonChild}" Header="Save As..." Width="200"/>
 				<Separator Background="White" Height="0.2"/>
 				<MenuItem  Click="Export_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Export" Width="200"/>
 				<MenuItem  Click="Import_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Import" Width="200"/>
@@ -379,6 +380,12 @@
 		</Grid>
 
 		<!--Footer-->
-		<Border Grid.Row="2" Background="Black" Height="20"></Border>
+		<Border Grid.Row="2" Background="WhiteSmoke" Height="25" >
+			<Grid ColumnDefinitions="Auto, Auto, Auto" HorizontalAlignment="Center">
+				<Label Name="pointerPos" Grid.Column="0" Margin="20 0 0 0">Pointer: 0, 0</Label>
+				<Label Name="crnPath" Grid.Column="1" Margin="20 0 0 0">Untitled</Label>
+				<Label Name="saveState" Grid.Column="2" Margin="20 0 0 0">Unsaved</Label>
+			</Grid>
+		</Border>
 	</Grid>
 </UserControl>

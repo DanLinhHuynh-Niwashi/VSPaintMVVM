@@ -8,6 +8,7 @@ namespace VSPaintMVVM.Views
         public MainWindow()
         {
             InitializeComponent();
+            
             this.AttachDevTools();
         }
     }

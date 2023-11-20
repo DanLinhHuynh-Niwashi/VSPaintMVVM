@@ -1400,27 +1400,30 @@ public partial class MainView : UserControl
             Save_Click(sender, args);
         }    
             
-
-        var topLevel = TopLevel.GetTopLevel(this);
-
-        // Start async operation to open the dialog.
-        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        if (isFileSaved)
         {
-            Title = "Open File",
-            AllowMultiple = false,
-            FileTypeFilter = new[] { new FilePickerFileType("JSON") {
+            var topLevel = TopLevel.GetTopLevel(this);
+
+            // Start async operation to open the dialog.
+            var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Open File",
+                AllowMultiple = false,
+                FileTypeFilter = new[] { new FilePickerFileType("JSON") {
                     Patterns = new[] { "*.json"}, AppleUniformTypeIdentifiers = new[]{"public.json"} } },
 
-        });
+            });
 
-        if (files.Count >= 1)
-        {
-            // Open reading stream from the first file.
-            await using var stream = await files[0].OpenReadAsync();
-            using var streamReader = new StreamReader(stream);
-            filePath = files[0].TryGetLocalPath() ?? string.Empty;
-            OpenFile(streamReader);
-        }
+            if (files.Count >= 1)
+            {
+                // Open reading stream from the first file.
+                await using var stream = await files[0].OpenReadAsync();
+                using var streamReader = new StreamReader(stream);
+                filePath = files[0].TryGetLocalPath() ?? string.Empty;
+                OpenFile(streamReader);
+            }
+        }    
+        
         
 
 

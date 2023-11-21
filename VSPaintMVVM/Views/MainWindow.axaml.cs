@@ -34,8 +34,10 @@ namespace VSPaintMVVM.Views
 
                     if (result == ButtonResult.Yes)
                         await mainView.Save();
-                    if (result == ButtonResult.No)
+                    else if (result == ButtonResult.No)
                         savingRequest = false;
+                    else
+                        e.Cancel = false;
                 }
             }
 

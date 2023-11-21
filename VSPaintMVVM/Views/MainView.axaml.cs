@@ -32,7 +32,6 @@ using MsBox.Avalonia.Enums;
 using MsBox.Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using VSPaintMVVM.ViewModels;
-
 namespace VSPaintMVVM.Views;
 
 public partial class MainView : UserControl
@@ -103,11 +102,8 @@ public partial class MainView : UserControl
 
     protected override async void OnPointerEntered(PointerEventArgs e)
     {
-        
-        if (canvas.Width < 200 || canvas.Height < 200)
-        {
-            await New(true);
-        }
+
+        InitializeCanvas();
 
         if (filePath == "") crnPath.Content = "Untitled";
         else crnPath.Content = filePath;
@@ -116,7 +112,25 @@ public partial class MainView : UserControl
         else saveState.Content = "Unsaved";
     }
 
-   
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {
+        if (filePath == "") crnPath.Content = "Untitled";
+        else crnPath.Content = filePath;
+
+        if (isFileSaved) saveState.Content = "Saved";
+        else saveState.Content = "Unsaved";
+
+        base.OnPointerMoved(e);
+    }
+
+
+    protected async Task InitializeCanvas()
+    {
+        if (canvas.Width < 200 || canvas.Height < 200)
+        {
+            await New(true);
+        }
+    }
     protected override void OnKeyDown(KeyEventArgs e)
     {
         KeyGesture gesture = new KeyGesture(e.Key, e.KeyModifiers);
@@ -152,6 +166,10 @@ public partial class MainView : UserControl
         else if (SaveAsM.InputGesture == gesture)
         {
             SaveAs_Click(new object(), new RoutedEventArgs());
+        }
+        else if (NewM.InputGesture == gesture)
+        {
+            New_Click(new object(), new RoutedEventArgs());
         }
         else if (Undogesture == gesture)
         {
@@ -1555,7 +1573,10 @@ public partial class MainView : UserControl
             OpenFile(streamReader);
         }
         else
-        { MainWindowViewModel.isOpeningFile = false; }    
+        { MainWindowViewModel.isOpeningFile = false;
+            InitializeCanvas();
+           
+        }    
     }
         private async void OpenFile(StreamReader FileStream)
     {
@@ -1598,6 +1619,8 @@ public partial class MainView : UserControl
 
                 shapeCollection.restore(pre);
                 FileStream.Close();
+
+                MainWindowViewModel.isOpeningFile = false;
                 return;
             }
             
@@ -1611,6 +1634,8 @@ public partial class MainView : UserControl
 
             var result = await box.ShowAsync();
             FileStream.Close();
+
+            MainWindowViewModel.isOpeningFile = false;
             return;
         }    
 
@@ -1717,10 +1742,32 @@ public partial class MainView : UserControl
 
         Bitmap btm = new Bitmap(FileStream);
         imageFile.StartCorner(0, 0);
-        imageFile.EndCorner(btm.Size.Width, btm.Size.Height);
+
+        double w = btm.Size.Width;
+        double h = btm.Size.Height;
+
+        if (w > canvas.Width)
+        {
+            w = canvas.Width;
+            h = h * (w / btm.Size.Width);
+        }
+        else if (h > canvas.Height)
+        {
+            h = canvas.Height;
+            w = w * (h / btm.Size.Height);
+        }
+
+        imageFile.EndCorner(w, h);
 
         ImageImportCustom crnImage = imageFile as ImageImportCustom;
-        crnImage.Bitmap = btm;
+
+        using (MemoryStream stream = new MemoryStream())
+        {
+            btm.Save(stream);
+            crnImage.Bitmap = stream.ToArray();
+        }
+
+
         shapeList.Add(crnImage);
 
         int j = shapeList.IndexOf(imageFile);

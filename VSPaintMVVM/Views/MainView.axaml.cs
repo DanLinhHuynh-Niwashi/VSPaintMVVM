@@ -98,6 +98,11 @@ public partial class MainView : UserControl
     KeyGesture Undogesture = new KeyGesture(Avalonia.Input.Key.Z, Avalonia.Input.KeyModifiers.Control);
     KeyGesture Redogesture = new KeyGesture(Avalonia.Input.Key.Y, Avalonia.Input.KeyModifiers.Control);
     KeyGesture Transformgesture = new KeyGesture(Avalonia.Input.Key.T, Avalonia.Input.KeyModifiers.Control);
+
+    KeyGesture UndogestureMeta = new KeyGesture(Avalonia.Input.Key.Z, Avalonia.Input.KeyModifiers.Meta);
+    KeyGesture RedogestureMeta = new KeyGesture(Avalonia.Input.Key.Y, Avalonia.Input.KeyModifiers.Meta);
+    KeyGesture TransformgestureMeta = new KeyGesture(Avalonia.Input.Key.T, Avalonia.Input.KeyModifiers.Meta);
+
     bool isShiftPressing = false;
 
     protected override async void OnPointerEntered(PointerEventArgs e)
@@ -142,7 +147,7 @@ public partial class MainView : UserControl
         {
             Paste_Clicked(new object(), new RoutedEventArgs());
         }
-        else if (Transformgesture == gesture)
+        else if (Transformgesture == gesture || TransformgestureMeta == gesture)
         {
             TransFB.IsChecked = !TransFB.IsChecked;
             TransF_Move_Checked(new object(), new RoutedEventArgs());
@@ -171,11 +176,11 @@ public partial class MainView : UserControl
         {
             New_Click(new object(), new RoutedEventArgs());
         }
-        else if (Undogesture == gesture)
+        else if (Undogesture == gesture || UndogestureMeta == gesture)
         {
             Undo_Clicked(new object(), new RoutedEventArgs());
         }
-        else if (Redogesture == gesture)
+        else if (Redogesture == gesture || RedogestureMeta == gesture)
         {
             Redo_Clicked(new object(), new RoutedEventArgs());
         }

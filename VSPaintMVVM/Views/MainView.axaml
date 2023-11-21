@@ -21,10 +21,10 @@
 			<MenuItem Width="50"
 				Theme="{StaticResource TitleBarButton}"
 					  Header="File">
-				<MenuItem Click="New_Click" Name="NewM" InputGesture="Ctrl+N" Theme="{StaticResource TitleBarButtonChild}" Header="New" Width="200"/>
-				<MenuItem Click="Open_Click" Name="OpenM" InputGesture="Ctrl+O" Theme="{StaticResource TitleBarButtonChild}" Header="Open" Width="200"/>
-				<MenuItem Click="Save_Click" Name="SaveM" InputGesture="Ctrl+S" Theme="{StaticResource TitleBarButtonChild}" Header="Save" Width="200"/>
-				<MenuItem Click="SaveAs_Click" Name="SaveAsM" InputGesture="Ctrl+Shift+S" Theme="{StaticResource TitleBarButtonChild}" Header="Save As..." Width="200"/>
+				<MenuItem Click="New_Click" Name="NewM" InputGesture="{OnPlatform Ctrl+N, macOS=⌘+N}" Theme="{StaticResource TitleBarButtonChild}" Header="New" Width="200"/>
+				<MenuItem Click="Open_Click" Name="OpenM" InputGesture="{OnPlatform Ctrl+O, macOS=⌘+O}" Theme="{StaticResource TitleBarButtonChild}" Header="Open" Width="200"/>
+				<MenuItem Click="Save_Click" Name="SaveM" InputGesture="{OnPlatform Ctrl+S, macOS=⌘+S}" Theme="{StaticResource TitleBarButtonChild}" Header="Save" Width="200"/>
+				<MenuItem Click="SaveAs_Click" Name="SaveAsM" InputGesture="{OnPlatform Ctrl+Shift+S, macOS=⌘+Shift+S}" Theme="{StaticResource TitleBarButtonChild}" Header="Save As..." Width="200"/>
 				<Separator Background="White" Height="0.2"/>
 				<MenuItem  Click="Export_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Export" Width="200"/>
 				<MenuItem  Click="Import_Click" Theme="{StaticResource TitleBarButtonChild}" Header="Import" Width="200"/>
@@ -32,16 +32,16 @@
 			<!--Edit menu item-->
 			<MenuItem Width="50"
 					Theme="{StaticResource TitleBarButton}" Header="Edit">
-				<MenuItem Name="CopyM" Click="Copy_Clicked" InputGesture="Ctrl+C" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
-				<MenuItem Name="PasteM" Click="Paste_Clicked" InputGesture="Ctrl+V" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
+				<MenuItem Name="CopyM" Click="Copy_Clicked" InputGesture="{OnPlatform Ctrl+C, macOS=⌘+C}" Theme="{StaticResource TitleBarButtonChild}" Header="Copy" Width="200"/>
+				<MenuItem Name="PasteM" Click="Paste_Clicked" InputGesture="{OnPlatform Ctrl+V, macOS=⌘+V}" Theme="{StaticResource TitleBarButtonChild}" Header="Paste" Width="200"/>
 				
 			</MenuItem>
 
 			<!--Select-->
 			<MenuItem Width="50"
 								Theme="{StaticResource TitleBarButton}" Header="Select">
-				<MenuItem Name="SelAllM" Click="SelectAll_Clicked" InputGesture="Ctrl+A" Theme="{StaticResource TitleBarButtonChild}" Header="Select All" Width="200"/>
-				<MenuItem Name="DeSelM" Click="DeselectAll_Clicked" InputGesture="Ctrl+D" Theme="{StaticResource TitleBarButtonChild}" Header="Deselect All" Width="200"/>
+				<MenuItem Name="SelAllM" Click="SelectAll_Clicked" InputGesture="{OnPlatform Ctrl+A, macOS=⌘+A}" Theme="{StaticResource TitleBarButtonChild}" Header="Select All" Width="200"/>
+				<MenuItem Name="DeSelM" Click="DeselectAll_Clicked" InputGesture="{OnPlatform Ctrl+D, macOS=⌘+D}" Theme="{StaticResource TitleBarButtonChild}" Header="Deselect All" Width="200"/>
 			</MenuItem>
 			<!--Help menu item-->
 			<MenuItem Width="50"

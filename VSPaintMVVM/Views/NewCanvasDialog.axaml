@@ -1,0 +1,63 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300" CanResize="False"
+        x:Class="VSPaintMVVM.Views.NewCanvasDialog"
+        Title="NewCanvasDialog">
+	<Panel>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"></RowDefinition>
+				<RowDefinition Height="Auto"></RowDefinition>
+			</Grid.RowDefinitions>
+
+			<TextBlock Text="New Canvas Setting" Grid.Row="0" Foreground="White" Background="#301934" Padding="5"/>
+			<TextBlock Text="Set the size of the new canvas:" Grid.Row="1" Padding="10" HorizontalAlignment="Left"/>
+			<Grid Grid.Row="1">
+				<Grid Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="110"></RowDefinition>
+						<RowDefinition Height="Auto"></RowDefinition>
+					</Grid.RowDefinitions>
+
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="130"></ColumnDefinition>
+						<ColumnDefinition Width="30"></ColumnDefinition>
+					</Grid.ColumnDefinitions>
+
+					<Border Grid.Column="0" VerticalAlignment="Center">
+						<Label FontSize="15" Margin="10"
+							   Foreground="Black">Width (px):</Label>
+					</Border>
+					<Border Grid.Column="1" VerticalAlignment="Center">
+						<TextBox Name="NewCanvasWidthTBox" Grid.Row="0" Grid.Column="1" MaxHeight="20"></TextBox>
+					</Border>
+
+					<Border Grid.Column="0" VerticalAlignment="Center" Grid.Row="1">
+						<Label FontSize="15" Margin="10"
+							   Foreground="Black">Height (px):</Label>
+					</Border>
+					<Border Grid.Column="1" VerticalAlignment="Center" Grid.Row="1">
+						<TextBox Name="NewCanvasHeightTBox" Grid.Row="1" Grid.Column="1" MaxHeight="20"></TextBox>
+					</Border>
+				</Grid>
+			</Grid>
+		</Grid>
+
+		<Grid>
+			<Button Content="Open"
+					VerticalAlignment="Bottom"
+					HorizontalAlignment="Left"
+					Margin="35"/>
+			<Button Content="Ok"
+					VerticalAlignment="Bottom"
+					HorizontalAlignment="Center"
+					Margin="35" Width="55" HorizontalContentAlignment="Center"/>
+			<Button Content="Cancel"
+					VerticalAlignment="Bottom"
+					HorizontalAlignment="Right"
+					Margin="35"/>
+		</Grid>
+	</Panel>
+</Window>

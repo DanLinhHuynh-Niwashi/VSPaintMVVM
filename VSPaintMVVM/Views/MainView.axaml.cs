@@ -30,6 +30,8 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using VSPaintMVVM.ViewModels;
 
 namespace VSPaintMVVM.Views;
 
@@ -40,7 +42,7 @@ public partial class MainView : UserControl
     private bool isSelecting = false;
     private bool isErasing = false;
     private bool isTransforming = false;
-    private bool isFileSaved = false;
+    public bool isFileSaved = false;
 
     string filePath = "";
 
@@ -63,9 +65,10 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        canvas.Height = 600; canvas.Width = 600;
-        canvasContainer.Height = canvas.Height + 2000; canvasContainer.Width = canvas.Width + 2000;
         CreateTools();
+
+        canvas.Width = 0; canvas.Height = 0;
+        canvasContainer.Width = canvas.Width+2000; canvasContainer.Height = canvas.Height + 2000;
 
         strokeCB.IsChecked = true;
         ASlider.Value = 255;
@@ -92,20 +95,28 @@ public partial class MainView : UserControl
         PreviewRedraw();
     }
 
+    
     KeyGesture Undogesture = new KeyGesture(Avalonia.Input.Key.Z, Avalonia.Input.KeyModifiers.Control);
     KeyGesture Redogesture = new KeyGesture(Avalonia.Input.Key.Y, Avalonia.Input.KeyModifiers.Control);
     KeyGesture Transformgesture = new KeyGesture(Avalonia.Input.Key.T, Avalonia.Input.KeyModifiers.Control);
     bool isShiftPressing = false;
 
-    protected override void OnPointerMoved(PointerEventArgs e)
+    protected override async void OnPointerEntered(PointerEventArgs e)
     {
-        base.OnPointerMoved(e);
+        
+        if (canvas.Width < 200 || canvas.Height < 200)
+        {
+            await New(true);
+        }
+
         if (filePath == "") crnPath.Content = "Untitled";
         else crnPath.Content = filePath;
 
         if (isFileSaved) saveState.Content = "Saved";
         else saveState.Content = "Unsaved";
     }
+
+   
     protected override void OnKeyDown(KeyEventArgs e)
     {
         KeyGesture gesture = new KeyGesture(e.Key, e.KeyModifiers);
@@ -1392,9 +1403,76 @@ public partial class MainView : UserControl
         }
     }
 
-    
 
-    private async void Save_Click (object? sender, RoutedEventArgs e)
+    public async void New_Click(object? sender, RoutedEventArgs e)
+    {
+        await New();
+    }
+
+
+    private async Task New(bool isInitialize = false)
+    {
+        NewCanvasDialog dialog = new NewCanvasDialog();
+        if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            if (desktop.MainWindow == null) return;
+
+            if (!(isInitialize && (MainWindowViewModel.canvasW > 200 && MainWindowViewModel.canvasH > 200 || MainWindowViewModel.isOpeningFile == true)))
+                await dialog.ShowDialog(desktop.MainWindow);
+
+            if (dialog.choosenState == 0)
+            {   
+                if (isInitialize)
+                {
+                    if (MainWindowViewModel.canvasW > 200 && MainWindowViewModel.canvasH > 200 || MainWindowViewModel.isOpeningFile == true) { return; }
+                    var box = MessageBoxManager
+                    .GetMessageBoxStandard("Alert", "There is no canvas in the current workspace, please create a canvas or the application will be closed.",
+                    ButtonEnum.OkCancel);
+
+                    
+                    var result = await box.ShowWindowDialogAsync(desktop.MainWindow);
+
+                    if (result == ButtonResult.Cancel)
+                        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime) lifetime.Shutdown();
+
+                }    
+            }
+            else if (dialog.choosenState == 2)
+            {
+                if (!isFileSaved && shapeList.Count > 0)
+                {
+                    var box = MessageBoxManager
+                    .GetMessageBoxStandard("Save current file", "Unsaved change detected. Do you want to save the current progress?",
+                    ButtonEnum.YesNo);
+
+                    var result = await box.ShowAsync();
+
+                    if (result == ButtonResult.Yes)
+                        await Save();
+                }
+                shapeCollection.reset();
+                shapeList.Clear();
+                chosenList.Clear();
+                shapeRedoStack.Clear();
+                shapeUndoStack.Clear();
+
+                Redraw();
+                canvas.Width = dialog.w; canvas.Height = dialog.h;
+                canvasContainer.Width = canvas.Width + 2000;
+                canvasContainer.Height = canvas.Height + 2000;
+
+                isFileSaved = false;
+                filePath = "";
+            }
+
+            else if (dialog.choosenState == 1)
+            {
+                await Open();
+
+            }
+        }
+    }
+    private async void Save_Click(object? sender, RoutedEventArgs e)
     {
         await Save();
     }
@@ -1403,7 +1481,7 @@ public partial class MainView : UserControl
     {
         await Save(true);
     }
-    private async Task Save (bool isSaveAs = false)
+    public async Task Save (bool isSaveAs = false)
     {
         if (filePath == "" || isSaveAs)
         {
@@ -1437,6 +1515,11 @@ public partial class MainView : UserControl
 
     private async void Open_Click(object? sender, RoutedEventArgs args)
     {
+        await Open();
+    }
+
+    private async Task Open()
+    {
         if (!isFileSaved && shapeList.Count > 0)
         {
             var box = MessageBoxManager
@@ -1447,7 +1530,7 @@ public partial class MainView : UserControl
 
             if (result == ButtonResult.Yes)
                 await Save();
-            
+
         }
 
 
@@ -1471,10 +1554,10 @@ public partial class MainView : UserControl
             filePath = files[0].TryGetLocalPath() ?? string.Empty;
             OpenFile(streamReader);
         }
-
+        else
+        { MainWindowViewModel.isOpeningFile = false; }    
     }
-
-    private async void OpenFile(StreamReader FileStream)
+        private async void OpenFile(StreamReader FileStream)
     {
 
         string jsonString = FileStream.ReadToEnd();

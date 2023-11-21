@@ -21,7 +21,7 @@
 			<MenuItem Width="50"
 				Theme="{StaticResource TitleBarButton}"
 					  Header="File">
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="New" Width="200"/>
+				<MenuItem Click="New_Click" Theme="{StaticResource TitleBarButtonChild}" Header="New" Width="200"/>
 				<MenuItem Click="Open_Click" Name="OpenM" InputGesture="Ctrl+O" Theme="{StaticResource TitleBarButtonChild}" Header="Open" Width="200"/>
 				<MenuItem Click="Save_Click" Name="SaveM" InputGesture="Ctrl+S" Theme="{StaticResource TitleBarButtonChild}" Header="Save" Width="200"/>
 				<MenuItem Click="SaveAs_Click" Name="SaveAsM" InputGesture="Ctrl+Shift+S" Theme="{StaticResource TitleBarButtonChild}" Header="Save As..." Width="200"/>
@@ -350,7 +350,7 @@
 						<Panel Name="canvasContainer">
 							<Border Background="Transparent" PointerPressed="canvas_PointerPressed" PointerReleased="canvas_PointerReleased"
 									PointerMoved="canvas_PointerMoved"/>
-							<Canvas Name="canvas"  IsHitTestVisible="False" ClipToBounds="True" Background="White"/>
+							<Canvas Name="canvas" IsHitTestVisible="False" ClipToBounds="True" Background="White"/>
 						</Panel>
 					</paz:ZoomBorder>
 				</ScrollViewer>

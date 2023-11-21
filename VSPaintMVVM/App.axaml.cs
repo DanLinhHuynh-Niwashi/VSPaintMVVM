@@ -25,10 +25,16 @@ namespace VSPaintMVVM
                 desktop.MainWindow = new MainWindow
                 {
                     DataContext = new MainWindowViewModel(),
+                    
                 };
+
+
+                
             }
 
             base.OnFrameworkInitializationCompleted();
         }
+
+        
     }
 }

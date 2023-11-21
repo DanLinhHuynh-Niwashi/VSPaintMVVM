@@ -14,12 +14,12 @@ namespace VSPaintMVVM.Shapes
     {
         public static int idIndex = 0;
 
-        private Bitmap btm;
+        private byte[] btm;
         public string Icon => "Assets/Icons/ToolIcon/rectangle.png";
         public string Name => "Image";
 
         public int IdIndex { get { return idIndex; } set { idIndex = value; } }
-        public Bitmap Bitmap {
+        public byte[] Bitmap {
             get { return btm; }
             set { btm = value; } 
         }
@@ -67,14 +67,18 @@ namespace VSPaintMVVM.Shapes
             var width = right - left;
             var height = bottom - top;
 
-            
+
+            MemoryStream memoryStream = new MemoryStream(btm);
+            memoryStream.Position = 0;
+
+            Bitmap image = new Bitmap(memoryStream);
 
             var rect = new Image()
             {
                 Width = width,
                 Height = height,
                 Stretch = Stretch.Fill,
-                Source = btm,
+                Source = image,
             };
 
             Canvas.SetLeft(rect, left);

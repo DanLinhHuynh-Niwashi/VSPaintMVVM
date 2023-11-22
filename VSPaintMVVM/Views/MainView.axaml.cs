@@ -149,7 +149,7 @@ public partial class MainView : UserControl
         }
         else if (Transformgesture == gesture || TransformgestureMeta == gesture)
         {
-            TransFB.IsChecked = !TransFB.IsChecked;
+            TransFB.IsChecked = true;
             TransF_Move_Checked(new object(), new RoutedEventArgs());
         }
         else if (SelAllM.InputGesture == gesture)
@@ -235,6 +235,7 @@ public partial class MainView : UserControl
 
             shapeList.Remove((ITool)shape);
         }
+        chosenList.Clear();
         Redraw();
         shapeUndoStack.Push(currentAction);
         isFileSaved = false;
@@ -589,6 +590,7 @@ public partial class MainView : UserControl
 
         if (isDrawing == false)
             DisableDrawing();
+        else EnableDrawing();
         Redraw();
     }
 
@@ -633,7 +635,10 @@ public partial class MainView : UserControl
             if (!chosenList.Contains(element))
                 chosenList.Add(element);
         }
-        
+
+        isTransforming = false;
+        TransFB.IsChecked = false;
+        TransF_Move_Checked(new object(), new RoutedEventArgs());
         Redraw() ;
     }
 
@@ -645,6 +650,7 @@ public partial class MainView : UserControl
         }
         TransFB.IsChecked = false;
         isTransforming = false;
+        TransF_Move_Checked(new object(), new RoutedEventArgs());
         Redraw();
     }
 

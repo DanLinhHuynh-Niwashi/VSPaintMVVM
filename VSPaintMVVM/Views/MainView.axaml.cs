@@ -1315,6 +1315,8 @@ public partial class MainView : UserControl
                 if (element.isHovering(pos))
                 {
                     shapeList.Remove(shape);
+                    if (chosenList.Contains(element))
+                        chosenList.Remove(element);
                     break;
                 }
             }

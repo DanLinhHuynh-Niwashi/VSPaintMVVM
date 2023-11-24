@@ -15,7 +15,12 @@
 		<Grid RowDefinitions="*,Auto" ColumnDefinitions="*,Auto">
 			<Image Source="/Assets/SplashBg.png"
 				   Height="500" Stretch="Uniform"></Image>
-			
+			<Image Source="/Assets/VSPaintLongLogo.png"
+				   Height="225" Stretch="Uniform"
+				   
+				   VerticalAlignment="Top"
+				   Margin="0 100 0 0"
+				   HorizontalAlignment="Center" ></Image>
 			<Label FontSize="14"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
@@ -23,7 +28,7 @@
                    HorizontalContentAlignment="Center"
                    VerticalContentAlignment="Bottom"
 				   Margin="20">
-				Launching Application...
+				Launching VSPaint...
 			</Label>
 		</Grid>
 	</Panel>

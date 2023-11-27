@@ -9,7 +9,7 @@
 		MinWidth="830"
         x:Class="VSPaintMVVM.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/VSPaintLogo.ico"
+        Icon="/Assets/icon.ico"
 		xmlns:local="clr-namespace:VSPaintMVVM.Views"
         Title="VSPaint">
 

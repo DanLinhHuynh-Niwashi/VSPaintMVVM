@@ -128,7 +128,7 @@ public partial class MainView : UserControl
         base.OnPointerMoved(e);
     }
 
-
+    
     protected async Task InitializeCanvas()
     {
         if (canvas.Width < 200 || canvas.Height < 200)
@@ -1440,7 +1440,7 @@ public partial class MainView : UserControl
         await New();
     }
 
-
+    bool taskEnded = true;
     private async Task New(bool isInitialize = false)
     {
         NewCanvasDialog dialog = new NewCanvasDialog();
@@ -1448,21 +1448,23 @@ public partial class MainView : UserControl
         {
             if (desktop.MainWindow == null) return;
 
-            if (!(isInitialize && (MainWindowViewModel.canvasW > 200 && MainWindowViewModel.canvasH > 200 || MainWindowViewModel.isOpeningFile == true)))
+            if (taskEnded)
+            {
                 await dialog.ShowDialog(desktop.MainWindow);
+                taskEnded = false;
+            }
+            else return;
 
             if (dialog.choosenState == 0)
             {   
                 if (isInitialize)
                 {
-                    if (MainWindowViewModel.canvasW > 200 && MainWindowViewModel.canvasH > 200 || MainWindowViewModel.isOpeningFile == true) { return; }
                     var box = MessageBoxManager
                     .GetMessageBoxStandard("Alert", "There is no canvas in the current workspace, please create a canvas or the application will be closed.",
                     ButtonEnum.OkCancel);
 
-                    
                     var result = await box.ShowWindowDialogAsync(desktop.MainWindow);
-
+                    taskEnded = true;
                     if (result == ButtonResult.Cancel)
                         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime) lifetime.Shutdown();
 
@@ -1472,12 +1474,13 @@ public partial class MainView : UserControl
             {
                 if (!isFileSaved && shapeList.Count > 0)
                 {
+                    if (taskEnded == false) { return; }
                     var box = MessageBoxManager
                     .GetMessageBoxStandard("Save current file", "Unsaved change detected. Do you want to save the current progress?",
                     ButtonEnum.YesNo);
 
                     var result = await box.ShowAsync();
-
+                    taskEnded = true;
                     if (result == ButtonResult.Yes)
                         await Save();
                 }
@@ -1499,7 +1502,7 @@ public partial class MainView : UserControl
             else if (dialog.choosenState == 1)
             {
                 await Open();
-
+                taskEnded = true;
             }
         }
     }

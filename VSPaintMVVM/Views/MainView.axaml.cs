@@ -41,7 +41,7 @@ public partial class MainView : UserControl
     private bool isSelecting = false;
     private bool isErasing = false;
     private bool isTransforming = false;
-    public bool isFileSaved = false;
+    public bool isFileSaved = true;
 
     string filePath = "";
 
@@ -1472,7 +1472,7 @@ public partial class MainView : UserControl
             }
             else if (dialog.choosenState == 2)
             {
-                if (!isFileSaved && shapeList.Count > 0)
+                if (!isFileSaved)
                 {
                     if (taskEnded == false) { return; }
                     var box = MessageBoxManager
@@ -1495,7 +1495,7 @@ public partial class MainView : UserControl
                 canvasContainer.Width = canvas.Width + 2000;
                 canvasContainer.Height = canvas.Height + 2000;
 
-                isFileSaved = false;
+                isFileSaved = true;
                 filePath = "";
             }
 
@@ -1554,7 +1554,7 @@ public partial class MainView : UserControl
 
     private async Task Open()
     {
-        if (!isFileSaved && shapeList.Count > 0)
+        if (!isFileSaved)
         {
             var box = MessageBoxManager
             .GetMessageBoxStandard("Save current file", "Unsaved change detected. Do you want to save the current progress?",

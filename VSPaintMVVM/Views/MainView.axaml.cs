@@ -1,32 +1,21 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Markup.Xaml;
 using System.Collections.Generic;
 using VSPaintMVVM.Tool;
 using VSPaintMVVM.Shapes;
-using OpenTK.Input;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Visuals;
 using System;
 using Avalonia.Interactivity;
 using System.Linq;
-
 using System.Timers;
-
 using Avalonia.Media.Imaging;
-
 using Avalonia.Platform;
-
 using Newtonsoft.Json;
-
 using System.Reflection;
 using Avalonia.Media.Immutable;
-using System.Diagnostics;
 using System.IO;
 using Avalonia.Platform.Storage;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia;

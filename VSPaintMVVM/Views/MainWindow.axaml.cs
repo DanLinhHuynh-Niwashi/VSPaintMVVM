@@ -26,7 +26,7 @@ namespace VSPaintMVVM.Views
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/Window/WindowVSPaintappcast.xml", new DSAChecker(NetSparkleUpdater.Enums.SecurityMode.Strict))
+                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/Window/WindowVSPaintappcast.xml", new Ed25519Checker(NetSparkleUpdater.Enums.SecurityMode.Unsafe))
                     {
                         UIFactory = new NetSparkleUpdater.UI.Avalonia.UIFactory(Icon),
                         RelaunchAfterUpdate = true,
@@ -40,7 +40,7 @@ namespace VSPaintMVVM.Views
                 }    
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/MacOS/MacOsVSPaintappcast.xml", new DSAChecker(NetSparkleUpdater.Enums.SecurityMode.Strict))
+                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/MacOS/MacOsVSPaintappcast.xml", new Ed25519Checker(NetSparkleUpdater.Enums.SecurityMode.Unsafe))
                     {
                         UIFactory = new NetSparkleUpdater.UI.Avalonia.UIFactory(Icon),
                         RelaunchAfterUpdate = true,
@@ -54,7 +54,7 @@ namespace VSPaintMVVM.Views
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/Linux/LinuxVSPaintappcast.xml", new DSAChecker(NetSparkleUpdater.Enums.SecurityMode.Strict))
+                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/Linux/LinuxVSPaintappcast.xml", new Ed25519Checker(NetSparkleUpdater.Enums.SecurityMode.Unsafe))
                     {
                         UIFactory = new NetSparkleUpdater.UI.Avalonia.UIFactory(Icon),
                         RelaunchAfterUpdate = true,

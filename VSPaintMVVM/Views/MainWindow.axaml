@@ -11,7 +11,7 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/icon.ico"
 		xmlns:local="clr-namespace:VSPaintMVVM.Views"
-        Title="VSPaint">
+        Title="VSPaint 1.0.0">
 
 	<Design.DataContext>
 		<!-- This only sets the DataContext for the previewer in an IDE,

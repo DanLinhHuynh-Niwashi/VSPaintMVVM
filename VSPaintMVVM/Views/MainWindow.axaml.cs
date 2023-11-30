@@ -4,17 +4,89 @@ using Avalonia.Interactivity;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia;
 using System.ComponentModel;
+using NetSparkleUpdater;
+using NetSparkleUpdater.SignatureVerifiers;
+using System;
+using System.Runtime.InteropServices;
 
 namespace VSPaintMVVM.Views
 {
     public partial class MainWindow : Window
     {
+        private SparkleUpdater _sparkle;
         public MainWindow()
         {
             InitializeComponent();
 
             this.Closing += MainWindow_Closing;
-            this.AttachDevTools();
+
+            // set icon in project properties!
+            string manifestModuleName = System.Reflection.Assembly.GetEntryAssembly().ManifestModule.FullyQualifiedName;
+            try
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/Window/WindowVSPaintappcast.xml", new DSAChecker(NetSparkleUpdater.Enums.SecurityMode.Strict))
+                    {
+                        UIFactory = new NetSparkleUpdater.UI.Avalonia.UIFactory(Icon),
+                        RelaunchAfterUpdate = true,
+                        // Avalonia version doesn't support separate threads: https://github.com/AvaloniaUI/Avalonia/issues/3434#issuecomment-573446972
+                        ShowsUIOnMainThread = true,
+                        //UseNotificationToast = false // Avalonia version doesn't yet support notification toast messages
+                    };
+                    // TLS 1.2 required by GitHub (https://developer.github.com/changes/2018-02-01-weak-crypto-removal-notice/)
+                    _sparkle.SecurityProtocolType = System.Net.SecurityProtocolType.Tls12;
+                    _sparkle.StartLoop(true, true);
+                }    
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/MacOS/MacOsVSPaintappcast.xml", new DSAChecker(NetSparkleUpdater.Enums.SecurityMode.Strict))
+                    {
+                        UIFactory = new NetSparkleUpdater.UI.Avalonia.UIFactory(Icon),
+                        RelaunchAfterUpdate = true,
+                        // Avalonia version doesn't support separate threads: https://github.com/AvaloniaUI/Avalonia/issues/3434#issuecomment-573446972
+                        ShowsUIOnMainThread = true,
+                        //UseNotificationToast = false // Avalonia version doesn't yet support notification toast messages
+                    };
+                    // TLS 1.2 required by GitHub (https://developer.github.com/changes/2018-02-01-weak-crypto-removal-notice/)
+                    _sparkle.SecurityProtocolType = System.Net.SecurityProtocolType.Tls12;
+                    _sparkle.StartLoop(true, true);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    _sparkle = new SparkleUpdater("https://q190504.github.io/VSPaint-Website/files/Linux/LinuxVSPaintappcast.xml", new DSAChecker(NetSparkleUpdater.Enums.SecurityMode.Strict))
+                    {
+                        UIFactory = new NetSparkleUpdater.UI.Avalonia.UIFactory(Icon),
+                        RelaunchAfterUpdate = true,
+                        // Avalonia version doesn't support separate threads: https://github.com/AvaloniaUI/Avalonia/issues/3434#issuecomment-573446972
+                        ShowsUIOnMainThread = true,
+                        //UseNotificationToast = false // Avalonia version doesn't yet support notification toast messages
+                    };
+                    // TLS 1.2 required by GitHub (https://developer.github.com/changes/2018-02-01-weak-crypto-removal-notice/)
+                    _sparkle.SecurityProtocolType = System.Net.SecurityProtocolType.Tls12;
+                    _sparkle.StartLoop(true, true);
+                }
+
+                _sparkle.PreparingToExit += (async (x, cancellable) =>
+                {
+                    var box = MessageBoxManager
+                    .GetMessageBoxStandard("Alert", "Ypu will need to shutdown the application to update.",
+                    ButtonEnum.YesNo);
+
+                    var result = await box.ShowAsync();
+
+                    if (result == ButtonResult.Yes)
+                    { }    
+                    else 
+                        cancellable.Cancel = false;
+                });
+            }
+            catch (Exception)
+            {
+
+            }
+
+
         }
 
         public bool savingRequest = true;
@@ -23,7 +95,7 @@ namespace VSPaintMVVM.Views
             
             if (mainView != null)
             {
-                if (mainView.canvas.Children.Count > 0 && mainView.isFileSaved == false && savingRequest) 
+                if (mainView.isFileSaved == false && savingRequest) 
                 {
                     e.Cancel = true;
                     var box = MessageBoxManager

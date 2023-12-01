@@ -3,7 +3,8 @@ VSPaint is a simple vector drawing application available on Window and Linux!
 
 **Creators:** VSPain Group, University of Information Technology, Vietnam National University of Ho Chi Minh City
 - Huỳnh Lê Đan Linh (Student ID: 22520759)
-- Huỳnh Trần Khánh Quỳnh (Student ID: 22521230)  
+- Huỳnh Trần Khánh Quỳnh (Student ID: 22521230)    
+
 **Language:** C#  
 **Framework:** Net6.0  
 **UI Framework:** [AvaloniaUI](https://avaloniaui.net/)

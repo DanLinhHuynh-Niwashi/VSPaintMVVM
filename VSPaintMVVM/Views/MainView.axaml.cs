@@ -1564,7 +1564,7 @@ public partial class MainView : UserControl
         {
             Title = "Open File",
             AllowMultiple = false,
-            FileTypeFilter = new[] { new FilePickerFileType("JSON") {
+            FileTypeFilter = new[] { FilePickerFileTypes.All, new FilePickerFileType("JSON") {
                     Patterns = new[] { "*.json"}, AppleUniformTypeIdentifiers = new[]{"public.json"} } },
 
         });
@@ -1682,7 +1682,7 @@ public partial class MainView : UserControl
         {
             Title = "Import File",
             AllowMultiple = false,
-            FileTypeFilter = new[] { FilePickerFileTypes.ImageJpg, FilePickerFileTypes.ImagePng },
+            FileTypeFilter = new[] { FilePickerFileTypes.All, FilePickerFileTypes.ImageJpg, FilePickerFileTypes.ImagePng },
 
         });
 
@@ -1690,7 +1690,23 @@ public partial class MainView : UserControl
         {
             // Open reading stream from the first file.
             await using var stream = await files[0].OpenReadAsync();
-            ImportFile(stream);
+            try
+            {
+                ImportFile(stream);
+            }
+
+            catch (Exception e)
+            {
+                var box = MessageBoxManager
+                .GetMessageBoxStandard("Error", "Can not import this file",
+                ButtonEnum.Ok);
+
+                var result = await box.ShowAsync();
+                stream.Close();
+
+                return;
+            }
+            
         }
     }
 
@@ -1745,7 +1761,9 @@ public partial class MainView : UserControl
 
         ITool imageFile = image.Clone();
 
+        
         Bitmap btm = new Bitmap(FileStream);
+
         imageFile.StartCorner(0, 0);
 
         double w = btm.Size.Width;

@@ -1,6 +1,9 @@
 # VSPaint
 VSPaint is a simple vector drawing application available on Window and Linux!  
 
+**Creators:** VSPain Group, University of Information Technology, Vietnam National University of Ho Chi Minh City
+- Huỳnh Lê Đan Linh (Student ID: 22520759)
+- Huỳnh Trần Khánh Quỳnh (Student ID: 22521230)
 **Language:** C#  
 **Framework:** Net6.0  
 **UI Framework:** [AvaloniaUI](https://avaloniaui.net/)
@@ -23,6 +26,10 @@ There're some few steps to be taken before you can launch VSPaint on Linux!
 - After extracting the .zip file, you will get a VSPaint folder
 - Run `chmod +x VSPaintMVVM` to make the file executable
 - You can now double-click on the VSPaintMVVM to lauch the application
+
+## License
+
+VSPaint is licenced under the [MIT licence](LICENSE.md).
 
 ## NuGet Packages
 - [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Avalonia)  

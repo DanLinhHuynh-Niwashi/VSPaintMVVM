@@ -22,6 +22,12 @@ See detail functions and shortcuts from our [reference page](https://q190504.git
 
 ### Selecting and Modifying shapes
 
+### Layering
+
+### Undo and Redo
+
+### Save and Open, Export and Import
+
 ## Installing on Linux
 There're some few steps to be taken before you can launch VSPaint on Linux!  
 - After extracting the .zip file, you will get a VSPaint folder

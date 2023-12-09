@@ -46,7 +46,7 @@
 			<!--Help menu item-->
 			<MenuItem Width="50"
 					Theme="{StaticResource TitleBarButton}" Header="Help">
-				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Header="Go to Intro Page..." Width="200"/>
+				<MenuItem Theme="{StaticResource TitleBarButtonChild}" Click="Help_Clicked" Header="Go to Intro Page..." Width="200"/>
 			</MenuItem>
 		</Menu>
 

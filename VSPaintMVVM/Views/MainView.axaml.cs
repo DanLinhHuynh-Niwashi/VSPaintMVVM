@@ -21,6 +21,9 @@ using MsBox.Avalonia.Enums;
 using MsBox.Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using VSPaintMVVM.ViewModels;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
 namespace VSPaintMVVM.Views;
 
 public partial class MainView : UserControl
@@ -631,6 +634,35 @@ public partial class MainView : UserControl
         Redraw() ;
     }
 
+    private void Help_Clicked(object? sender, RoutedEventArgs e)
+    {
+        string url = "https://q190504.github.io/VSPaint-Website/reference.html";
+        try
+        {
+            Process.Start(url);
+        }
+        catch
+        {
+            // hack because of this: https://github.com/dotnet/corefx/issues/10361
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                url = url.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", url);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", url);
+            }
+            else
+            {
+                throw;
+            }
+        }
+    }
     private void DeselectAll_Clicked(object? sender, RoutedEventArgs e)
     {
         foreach (var shape in Enumerable.Reverse(chosenList))

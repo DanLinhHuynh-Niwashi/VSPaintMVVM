@@ -15,7 +15,7 @@ Visit download website [here](https://q190504.github.io/VSPaint-Website/).
 See detail functions and shortcuts from our [reference page](https://q190504.github.io/VSPaint-Website/reference.html).
 
 ### Drawing and Erasing
-- Supporting shapes: **Line, Rectangle, Circle, Triangle, Pentagon, Star**. Switching via the Tool Box
+- Supporting shapes: **Line, Rectangle, Oval, Circle, Triangle, Pentagon, Star**. Switching via the Tool Box
 - User can change the Fill color and Stroke color of the shape via a color slider
 - User can change the Brush size via a brush size slider
 - User can choose and erase any drawed shape by hovering and clicking on the shape with **Erase tool (E)**

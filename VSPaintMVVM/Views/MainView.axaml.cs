@@ -1433,10 +1433,11 @@ public partial class MainView : UserControl
         {
             var element = shape.Draw(shape.Brush, shape.FillBrush, shape.Thickness);
             canvas.Children.Add(element);
-            if (chosenList.Contains(((ShapeCustom)shape)))
-            {
-                canvas.Children.Add(((ShapeCustom)shape).drawChosenLine());
-            }
+        }
+        foreach (var shape in chosenList)
+        {
+            canvas.Children.Add(((ShapeCustom)shape).drawChosenLine());
+
             if (isTransforming)
             {
                 if (chosenList.Count != 1)
@@ -1464,6 +1465,7 @@ public partial class MainView : UserControl
     bool taskEnded = true;
     private async Task New(bool isInitialize = false)
     {
+        if (isInitialize == false) taskEnded = true;
         NewCanvasDialog dialog = new NewCanvasDialog();
         if (Avalonia.Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -1495,7 +1497,6 @@ public partial class MainView : UserControl
             {
                 if (!isFileSaved)
                 {
-                    if (taskEnded == false) { return; }
                     var box = MessageBoxManager
                     .GetMessageBoxStandard("Save current file", "Unsaved change detected. Do you want to save the current progress?",
                     ButtonEnum.YesNo);

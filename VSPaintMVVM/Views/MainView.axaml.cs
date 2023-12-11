@@ -23,6 +23,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using VSPaintMVVM.ViewModels;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Avalonia.Controls.Shapes;
 
 namespace VSPaintMVVM.Views;
 
@@ -50,6 +51,9 @@ public partial class MainView : UserControl
     private Color currentColor = new Color();
     private Color currentFill = new Color();
 
+    
+    private Bitmap rotateIcon;
+
     ShapeCollection shapeCollection = new ShapeCollection();
     List<Button> toolCollection = new List<Button>();
 
@@ -57,7 +61,10 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
         CreateTools();
-
+        
+        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+        rotateIcon = new Bitmap(AssetLoader.Open(new Uri($"avares://{assemblyName}/Assets/Icons/Rotate.png")));
+        
         canvas.Width = 0; canvas.Height = 0;
         canvasContainer.Width = canvas.Width+2000; canvasContainer.Height = canvas.Height + 2000;
 
@@ -577,6 +584,7 @@ public partial class MainView : UserControl
             isSelecting = preIsSelecting;
             isErasing = preIsErasing;
             isTransforming = false;
+            this.Cursor = new Cursor(StandardCursorType.Arrow);
             
         }
 
@@ -590,7 +598,7 @@ public partial class MainView : UserControl
     //selection + deletion tool
     private void Tool_Checked(object? sender, RoutedEventArgs e)
     {
-
+        this.Cursor = new Cursor(StandardCursorType.Arrow);
         if ((bool)SelB.IsChecked)
         {
             isDrawing = false;
@@ -813,7 +821,10 @@ public partial class MainView : UserControl
     }
 
 
-
+    private void canvas_PointerExited(object? sender, PointerEventArgs e)
+    {
+        this.Cursor = new Cursor(StandardCursorType.Arrow);
+    }
     Tuple<AnchorPoint, int, AnchorPoint> chosenAPoint;
     ActionCustom currentAction;
     Point startingPos;
@@ -1260,9 +1271,10 @@ public partial class MainView : UserControl
         }
         else if (isTransforming)
         {
-
-            if (chosenList.Count == 1 && chosenAPoint!=null)
+            
+            if (chosenList.Count == 1 && chosenAPoint != null)
             {
+
                 foreach (var shape in chosenList)
                 {
                     if (chosenAPoint.Item2 == 1) Resizing(chosenAPoint.Item1, shape, pos, chosenAPoint.Item3);
@@ -1271,18 +1283,44 @@ public partial class MainView : UserControl
                         Rotating(chosenAPoint.Item1, shape, pos, chosenAPoint.Item3);
                     }
                 }
+
             }
             else
             {
-                foreach (var shape in chosenList)
+                if (chosenList.Count == 1)
                 {
-                    if (isMoving)
+                    foreach (var shape in chosenList)
+                    {
+                        foreach (var apoint in shape.ShowingAPoints)
+                        {
+                            if (apoint.isHovering(pos) == 1)
+                            {
+                                this.Cursor = new Cursor(StandardCursorType.Hand);
+                                break;
+                            }
+
+                            else if (apoint.isHovering(pos) == 2)
+                            {
+                                this.Cursor = new Cursor(rotateIcon, new PixelPoint(16,16));
+                                break;
+                            }
+
+                            else this.Cursor = new Cursor(StandardCursorType.SizeAll);
+
+                        }
+                    }
+                }
+                else this.Cursor = new Cursor(StandardCursorType.SizeAll);
+                if (isMoving)
+                {
+
+                    foreach (var shape in chosenList)
                     {
                         Moving(shape, startingPos, pos);
-                    }    
-                }
-                if (isMoving)
+                    }
+
                     startingPos = pos;
+                }
             }
             Redraw();
 

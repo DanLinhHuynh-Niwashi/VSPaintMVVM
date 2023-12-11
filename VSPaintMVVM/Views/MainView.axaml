@@ -349,7 +349,7 @@
 									VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 						<Panel Name="canvasContainer">
 							<Border Background="Transparent" PointerPressed="canvas_PointerPressed" PointerReleased="canvas_PointerReleased"
-									PointerMoved="canvas_PointerMoved"/>
+									PointerMoved="canvas_PointerMoved" PointerExited="canvas_PointerExited"/>
 							<Canvas Name="canvas" IsHitTestVisible="False" ClipToBounds="True" Background="White"/>
 						</Panel>
 					</paz:ZoomBorder>

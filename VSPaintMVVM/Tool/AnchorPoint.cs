@@ -35,12 +35,13 @@ namespace VSPaintMVVM.Tool
         public int isHovering(Point pos)
         {
             Point sample = new Point(x, y);
-            if (Point.Distance(sample, pos) <= 10)
+            if (type == "") return 0;
+            if (Point.Distance(sample, pos) <= 20)
             {
                 return 1;
             }
 
-            if (rotable == true && Point.Distance(sample, pos) <= 20)
+            if (rotable == true && Point.Distance(sample, pos) <= 40)
             {
                 return 2;
             }    

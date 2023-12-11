@@ -32,8 +32,17 @@ See detail functions and shortcuts from our [reference page](https://q190504.git
 - User can change a shape's layer position via layer switching buttons.
 
 ### Undo and Redo
+- Every of your actions are manage by Undo stack and Redo stack.
+- Undo and Redo's datas will remain until the current canvas is replaced by a new one/ is closed.
+- User can **Undo** their action via button on UI, or press **Ctrl + Z**.
+- Unser can **Redo** their action via button on UI, or press **Ctrl + Y**.
+- If any action is performed, the Redo stack will be cleared.
 
-### Save and Open, Export and Import
+### New, Save, Open project
+- User can create a new canvas via **File > New**, or by pressing **Ctrl + N**.
+- The current project's state (with layered shapes and canvas's size) can be saved as a **(*.json)** file via **File > Save**, or by pressing **Ctrl + S**.
+- The *.json file can be opened anytime via **File > Open**, or by pressing **Ctrl + O**.
+- Use **File > Save As...**, or press **Ctrl + Shift + S** if you want to save the project with a different name.
 
 ## Installing on Linux
 There're some few steps to be taken before you can launch VSPaint on Linux!  

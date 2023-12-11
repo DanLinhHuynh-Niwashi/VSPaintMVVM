@@ -21,11 +21,15 @@ See detail functions and shortcuts from our [reference page](https://q190504.git
 - User can choose and erase any drawed shape by hovering and clicking on the shape with **Erase tool (E)**
 
 ### Selecting and Modifying shapes
-- You can select a single shape via **Selecting tool (S)** hold **Shift** for selecting multiple shapes.
-- You can only select the shape on top most layer if the tool is hovering on multiple overlaying shapes.
-- Modifying: Resizing and Rotating (available when there's only **one** shape chosed), Moving.
+- User can select a single shape via **Selecting tool (S)** hold **Shift** for selecting multiple shapes.
+- User can only select the shape on top most layer if the tool is hovering on multiple intersecting shapes.
+- Modifying: **Resizing** and **Rotating** (available when there's only *one* shape chosed), **Moving**.
 
 ### Layering
+- Shapes are placed in different layers.
+- Layer structure is displayed on the left panel of the working screen.
+- Shapes on higher layers can overlay shapes on lower layers.
+- User can change a shape's layer position via layer switching buttons.
 
 ### Undo and Redo
 

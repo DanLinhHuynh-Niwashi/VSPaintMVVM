@@ -26,7 +26,7 @@ See detail functions and shortcuts from our [reference page](https://q190504.git
 - Modifying: **Resizing** and **Rotating** (available when there's only *one* shape chosed), **Moving**.
 
 ### Layering
-- Shapes are placed in different layers.
+- **Shapes are placed in different layers.**
 - Layer structure is displayed on the left panel of the working screen.
 - Shapes on higher layers can overlay shapes on lower layers.
 - User can change a shape's layer position via layer switching buttons.
@@ -41,9 +41,13 @@ See detail functions and shortcuts from our [reference page](https://q190504.git
 ### New, Save, Open project
 - User can create a new canvas via **File > New**, or by pressing **Ctrl + N**.
 - The current project's state (with layered shapes and canvas's size) can be saved as a **(*.json)** file via **File > Save**, or by pressing **Ctrl + S**.
-- The *.json file can be opened anytime via **File > Open**, or by pressing **Ctrl + O**.
+- The **(*.json)** file can be opened anytime via **File > Open**, or by pressing **Ctrl + O**.
 - Use **File > Save As...**, or press **Ctrl + Shift + S** if you want to save the project with a different name.
 
+### Import and Export
+- User can Import an *image* (*.jpeg, *.png) into the canvas as a shape *(modifiable)* via **File > Import**, or by pressing **Ctrl + I**.
+- User can Export the *current drawing canvas* as an *image* (*.jpeg, *.png) via **File > Export**, or by pressing **Ctrl + E**.
+- 
 ## Installing on Linux
 There're some few steps to be taken before you can launch VSPaint on Linux!  
 - After extracting the .zip file, you will get a VSPaint folder

@@ -25,6 +25,9 @@ See detail functions and shortcuts from our [reference page](https://q190504.git
 - User can only select the shape on top most layer if the tool is hovering on multiple intersecting shapes.
 - Modifying: **Resizing** and **Rotating** (available when there's only *one* shape chosed), **Moving**.
 
+### Copy and Paste
+- Selected shapes can be copied and paste into the current canvas via buttons, or by pressing **Ctrl + C (Copy)**, **Ctrl + V (Paste)**.
+
 ### Layering
 - **Shapes are placed in different layers.**
 - Layer structure is displayed on the left panel of the working screen.
@@ -47,7 +50,7 @@ See detail functions and shortcuts from our [reference page](https://q190504.git
 ### Import and Export
 - User can Import an *image* (*.jpeg, *.png) into the canvas as a shape *(modifiable)* via **File > Import**, or by pressing **Ctrl + I**.
 - User can Export the *current drawing canvas* as an *image* (*.jpeg, *.png) via **File > Export**, or by pressing **Ctrl + E**.
-- 
+
 ## Installing on Linux
 There're some few steps to be taken before you can launch VSPaint on Linux!  
 - After extracting the .zip file, you will get a VSPaint folder
